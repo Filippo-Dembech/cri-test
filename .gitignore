@@ -77,3 +77,6 @@ types/generated/
 .rts2_cache_umd/
 .parcel-cache/
 .rollup.cache/
+
+# Todo
+todo.md
