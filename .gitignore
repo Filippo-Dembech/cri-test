@@ -1,0 +1,79 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+out/
+*.local
+dist-ssr/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Vite cache
+.vite/
+.vitepress/
+.cache/
+
+# Testing / coverage
+coverage/
+*.lcov
+.jest/
+.nyc_output/
+test-results/
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.DS_Store
+*.db
+*.swp
+*~
+
+# OS generated
+.DS_Store?
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Desktop.ini
+
+# Logs
+logs/
+*.log
+
+# Optional caches
+.npm/
+.yarn-integrity
+.eslintcache
+.stylelintcache
+
+# Storybook / other tools
+storybook-static/
+
+# Generated types (if any)
+types/generated/
+
+# Tailwind / PostCSS / bundler caches (if applicable)
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+.parcel-cache/
+.rollup.cache/
