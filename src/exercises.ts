@@ -1,5 +1,7 @@
+import type { ReactNode } from "react";
+
 export interface TrueFalseData {
-    question: string;
+    prompt: string;
     answer: boolean;
 }
 
@@ -8,7 +10,7 @@ export interface FillInData {
     correctWords: string;
 }
 
-export interface StepsData {
+export interface ReorderData {
     prompt: string;
     steps: string[];
     correctOrder: number[];
@@ -20,23 +22,24 @@ export interface MultipleChoiceData {
     answerId: number;
 }
 
-export interface ReorderData {
+export interface StepsData {
     steps: string[];
 }
 
 export interface CategorizeData {
-    value: string;
+    givenValue: string;
+    rangeOptions: string[];
     categorization: string;
 }
 
 export interface TerminologyData {
-    term: string;
+    definition: string;
     answer: string;
 }
 
 export interface FlashcardData {
     front: string;
-    back: string;
+    back: ReactNode;
 }
 
 export interface Exercise {

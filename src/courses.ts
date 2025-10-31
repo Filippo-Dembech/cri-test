@@ -4,7 +4,8 @@ export interface CourseChapter {
     id?: number;
     courseId?: number;
     name: string;
-    exercises: Exercise[];
+    exercises?: Exercise[];
+    subchapters?: CourseChapter[];
 }
 
 export interface Course {
