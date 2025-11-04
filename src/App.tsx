@@ -3,6 +3,7 @@ import ArchitecturesPage from "./pages/ArchitecturesPage";
 import CoursesPage from "./pages/CoursesPage";
 import SsePage from "./pages/SsePage";
 import { PracticeProvider } from "./context/PracticeContext";
+import PracticePage from "./pages/PracticePage";
 
 export default function App() {
     return (
@@ -30,6 +31,10 @@ export default function App() {
                     <Route
                         path="/sse"
                         element={<SsePage />}
+                    />
+                    <Route
+                        path="/practice"
+                        element={<PracticePage />}
                     />
                 </Routes>
             </PracticeProvider>
