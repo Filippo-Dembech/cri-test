@@ -1,7 +1,7 @@
-import type { Course } from "./courses";
+import { Course } from "./courses";
 import { ExerciseFactory } from "./exercises";
 
-export const sse: Course = {
+export const sse: Course = new Course({
     name: "Soccorso Sanitario Extraospedaliero",
     chapters: [
         {
@@ -99,7 +99,7 @@ export const sse: Course = {
             name: "Trauma",
             subchapters: [
                 {
-                    name: "Intruduzione",
+                    name: "Introduzione",
                     exercises: [
                         ExerciseFactory.trueFalse({
                             prompt: "La morte a seguito di un evento traumatico può essere descritta da un andamento con 4 picchi di mortalità",
@@ -206,4 +206,6 @@ export const sse: Course = {
             ],
         },
     ],
-};
+})
+
+console.log(sse);

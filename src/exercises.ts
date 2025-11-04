@@ -42,66 +42,96 @@ export interface FlashcardData {
     back: ReactNode;
 }
 
-export interface Exercise {
-    id?: number;
-    courseId?: number;
-    chapterId?: number;
-    type: "true-false" | "fill-in" | "steps" | "multiple-choice" | "terminology" | "reorder" | "categorize" | "flashcard"
-    data: object;
+export type ExerciseType = 
+        | "true-false"
+        | "fill-in"
+        | "steps"
+        | "multiple-choice"
+        | "terminology"
+        | "reorder"
+        | "categorize"
+        | "flashcard";
+
+export interface ExerciseData {
+    type: ExerciseType;
+    data: object    
 }
 
+export class Exercise {
+    private static id = 0;
+    
+    public id: number;
+    public courseId: number;
+    public chapterId: number;
+    public type: ExerciseType;
+    public data: object;
+
+    constructor(
+        courseId: number,
+        chapterId: number,
+        type: ExerciseType,
+        data: object,
+    ) {
+        this.id = Exercise.id++;
+        this.courseId = courseId;
+        this.chapterId = chapterId;
+        this.type = type;
+        this.data = data;
+    }
+}
 
 export class ExerciseFactory {
-    static trueFalse(data: TrueFalseData): Exercise {
+
+    static trueFalse(data: TrueFalseData): ExerciseData {
         return {
             type: "true-false",
-            data
+            data,
         };
     }
-    static multipleChoice(data: MultipleChoiceData): Exercise {
+    static multipleChoice(data: MultipleChoiceData):ExerciseData {
         return {
             type: "multiple-choice",
-            data
+            data,
         };
     }
 
-    static terminology(data: TerminologyData): Exercise {
+    static terminology(data: TerminologyData): ExerciseData {
         return {
             type: "terminology",
-            data
+            data,
         };
     }
 
-    static fillIn(data: FillInData): Exercise {
+    static fillIn(data: FillInData): ExerciseData {
         return {
             type: "fill-in",
-            data
+            data,
         };
     }
-    static steps(data: StepsData): Exercise {
+    static steps(data: StepsData): ExerciseData {
         return {
             type: "steps",
-            data
+            data,
         };
     }
 
-    static reorder(data: ReorderData): Exercise {
+    static reorder(data: ReorderData): ExerciseData {
         return {
             type: "reorder",
-            data
+            data,
         };
     }
 
-    static categorize(data: CategorizeData): Exercise {
+    static categorize(data: CategorizeData): ExerciseData {
         return {
             type: "categorize",
-            data
+            data,
         };
     }
-    static flashcard(data: FlashcardData): Exercise {
+    static flashcard(data: FlashcardData): ExerciseData {
         return {
             type: "flashcard",
-            data
-        }
+            data,
+        };
     }
 }

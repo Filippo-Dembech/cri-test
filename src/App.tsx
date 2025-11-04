@@ -1,32 +1,38 @@
-import { Link, Route, Routes } from "react-router-dom"
-
-function ContactPage() {
-  return (
-    <div>ContactPage</div>
-  )
-}
-
-function AboutPage() {
-  return (
-    <div>AboutPage</div>
-  )
-}
+import { Route, Routes } from "react-router-dom";
+import ArchitecturesPage from "./pages/ArchitecturesPage";
+import CoursesPage from "./pages/CoursesPage";
+import SsePage from "./pages/SsePage";
+import { PracticeProvider } from "./context/PracticeContext";
 
 export default function App() {
-
-  return (
-    <div>
-      <nav>
-        <Link to="/contacts">Contacts</Link>
-        <Link to="/about">About</Link>
-      </nav>
-      <div>
-        <Routes>
-          <Route path="/contacts" element={<ContactPage />}/>
-          <Route path="/about" element={<AboutPage />} />
-        </Routes>
-      </div>
-    </div>
-  )
-
+    return (
+        <div className="p-8">
+            <PracticeProvider>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<ArchitecturesPage />}
+                    />
+                    <Route
+                        path="/all-courses"
+                        element={
+                            <CoursesPage
+                                courses={[
+                                    "TS",
+                                    "SSE",
+                                    "ECG",
+                                    "Glicemia",
+                                    "Multiparametrico",
+                                ]}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/sse"
+                        element={<SsePage />}
+                    />
+                </Routes>
+            </PracticeProvider>
+        </div>
+    );
 }
