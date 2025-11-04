@@ -1,8 +1,8 @@
-import type { CourseChapter } from "../courses";
+import type { Chapter } from "../courses";
 import SelectableChapter from "./SelectableChapter";
 
 interface ChapterRecordProps {
-    chapter: CourseChapter;
+    chapter: Chapter;
     level?: number;
 }
 

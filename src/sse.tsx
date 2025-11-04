@@ -207,5 +207,3 @@ export const sse: Course = new Course({
         },
     ],
 })
-
-console.log(sse);

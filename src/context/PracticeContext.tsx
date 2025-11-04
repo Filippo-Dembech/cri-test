@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import type { Exercise } from "../exercises";
 
 type PracticeContextType = {
@@ -15,13 +15,14 @@ const PracticeContext = createContext<PracticeContextType | undefined>(
 export const PracticeProvider = ({ children }: { children: ReactNode }) => {
     const [exercises, setExercises] = useState<Exercise[]>([]);
     
-    const addExercise = useCallback((exercise: Exercise) => {
+    function addExercise(exercise: Exercise){
+        if (exercises.some(ex => ex.id === exercise.id)) return;
         setExercises(exercises => [ ...exercises, exercise ])
-    }, [])
+    }
     
-    const removeExercise = useCallback((targetExercise: Exercise) => {
+    function removeExercise(targetExercise: Exercise) {
         setExercises(exercises => exercises.filter(exercise => exercise.id != targetExercise.id))
-    }, [])
+    }
     
     function toggleExercise(targetExercise: Exercise) {
         if (exercises.some(exercise => exercise.id === targetExercise.id)) {
