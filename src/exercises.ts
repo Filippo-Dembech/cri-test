@@ -23,6 +23,7 @@ export interface MultipleChoiceData {
 }
 
 export interface StepsData {
+    procedureName: string;
     steps: string[];
 }
 

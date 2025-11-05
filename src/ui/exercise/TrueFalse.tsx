@@ -1,13 +1,18 @@
 import { useState } from "react";
 import type { TrueFalseData } from "../../exercises";
 
+function removeEndingDot(str: string) {
+    if (str.endsWith(".")) return str.slice(0, -1)
+    return str;
+}
+
 export default function TrueFalse({ prompt, answer }: TrueFalseData) {
 
     const [givenAnswer, setGivenAnswer] = useState("");
 
     return (
         <div>
-            <p>{prompt}:</p>
+            <p>{removeEndingDot(prompt)}:</p>
             <div className="flex flex-col">
                 <label>
                     <input

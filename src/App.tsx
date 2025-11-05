@@ -4,6 +4,7 @@ import CoursesPage from "./pages/CoursesPage";
 import SsePage from "./pages/SsePage";
 import { PracticeProvider } from "./context/PracticeContext";
 import PracticePage from "./pages/PracticePage";
+import ParametersGame from "./pages/ParametersGame";
 
 export default function App() {
     return (
@@ -35,6 +36,10 @@ export default function App() {
                     <Route
                         path="/practice"
                         element={<PracticePage />}
+                    />
+                    <Route
+                        path="/parameters-game"
+                        element={<ParametersGame />}
                     />
                 </Routes>
             </PracticeProvider>
