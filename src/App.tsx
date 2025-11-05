@@ -4,7 +4,11 @@ import CoursesPage from "./pages/CoursesPage";
 import SsePage from "./pages/SsePage";
 import { PracticeProvider } from "./context/PracticeContext";
 import PracticePage from "./pages/PracticePage";
-import ParametersGame from "./pages/ParametersGame";
+import ParametersPractice from "./pages/ParametersPractice";
+import TerminologyPractice from "./pages/TerminologyPractice";
+import SkillsPractice from "./pages/SkillsPractice";
+import AnalyzePractice from "./pages/AnalyzePractice";
+import DiseasePractice from "./pages/DiseasePractice";
 
 export default function App() {
     return (
@@ -38,8 +42,24 @@ export default function App() {
                         element={<PracticePage />}
                     />
                     <Route
-                        path="/parameters-game"
-                        element={<ParametersGame />}
+                        path="/parameters-practice"
+                        element={<ParametersPractice />}
+                    />
+                    <Route
+                        path="/terminology-practice"
+                        element={<TerminologyPractice />}
+                    />
+                    <Route
+                        path="/skills-practice"
+                        element={<SkillsPractice />}
+                    />
+                    <Route
+                        path="/analyze-practice"
+                        element={<AnalyzePractice />}
+                    />
+                    <Route
+                        path="/disease-practice"
+                        element={<DiseasePractice />}
                     />
                 </Routes>
             </PracticeProvider>

@@ -9,6 +9,8 @@ function Step({ step }: { step: string }) {
 }
 
 export default function Steps({ procedureName, steps }: StepsData) {
+    
+    console.log("render steps: ", procedureName)
     const [stepsToShow, setStepsToShow] = useState(0);
 
     return (
@@ -28,11 +30,6 @@ export default function Steps({ procedureName, steps }: StepsData) {
                     <Button outlined>End</Button>
                 )}
             </div>
-            {/* ======================================================== */}
-            {/* Just code for the presentation, remove afterwards */}
-            <p>NOTA: Possibilità di creare una sezione a parte per le skills</p>
-            <p>NOTA: Aggiungere anche delle domande per le particolarità di ogni presidio (e.g. Cosa controllare prima di posizionare il materassino a depressione per terra? Che non ci siano oggetti taglienti)</p>
-            {/* ======================================================== */}
         </div>
     );
 }
