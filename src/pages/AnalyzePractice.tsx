@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Button from "../ui/Button";
+import Title from "../ui/Title";
 
 interface Situation {
     name: string;
@@ -86,7 +87,7 @@ export default function AnalyzePractice() {
 
     return (
         <div>
-            <h1 className="text-4xl font-bold">Domande di Rito</h1>
+            <Title h={1}>Domande di Rito</Title>
             <div className="mt-8">
                 <p className="text-2xl mb-4">{currentSituation.name}</p>
                 <Button onClick={() => setShowQuestions(show => !show)}>{showQuestions ? "Nascondi" : "Mostra"} domande</Button>

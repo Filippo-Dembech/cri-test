@@ -1,7 +1,27 @@
-import { useCallback, useEffect, useState, type CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import type { Chapter } from "../courses";
 import { type ExerciseType, type Exercise } from "../exercises";
 import { usePractice } from "../context/PracticeContext";
+
+interface ExerciseTypeFlagProps {
+    isChecked?: boolean;
+    onCheck: () => void;
+    text: string;
+}
+
+function ExerciseTypeFlag({ isChecked, onCheck, text }: ExerciseTypeFlagProps) {
+    return (
+        <label className="inline-flex items-center">
+            <input
+                className="accent-red-500 mr-2"
+                type="checkbox"
+                checked={isChecked}
+                onChange={onCheck}
+            />
+            <span>{text}</span>
+        </label>
+    );
+}
 
 interface SelectableChapterProps {
     chapter: Chapter;
@@ -13,17 +33,19 @@ export default function SelectableChapter({
     style,
 }: SelectableChapterProps) {
     const { exercises, addExercise, removeExercise } = usePractice();
-    const [isChecked, setIsChecked] = useState(
-        () =>
-            chapter.subchapters?.some((subchapter) =>
-                exercises.some(
-                    (exercise) => exercise.chapterId === subchapter.id
-                )
-            ) || false
-    );
-    const hasExercisePractice = exercises.some(
-        (exercise) => exercise.chapterId === chapter.id
-    );
+
+    const hasExercisesInPractice = (
+        chapter: Chapter,
+        exercises: Exercise[]
+    ): boolean | undefined => {
+        const hasOwn = exercises.some((ex) => ex.chapterId === chapter.id);
+        const hasSubs = chapter.subchapters?.some((sub) =>
+            hasExercisesInPractice(sub, exercises)
+        );
+        return hasOwn || hasSubs;
+    };
+
+    const isChecked = hasExercisesInPractice(chapter, exercises);
     const [choosenExerciseTypes, setChoosenExerciseTypes] = useState<
         ExerciseType[]
     >([]);
@@ -36,125 +58,130 @@ export default function SelectableChapter({
             setChoosenExerciseTypes((exTypes) =>
                 exTypes.filter((exType) => exType !== exerciseType)
             );
-            getAllExercisesOf(chapter).forEach(exercise => {
-                if (exercise.type === exerciseType) removeExercise(exercise)
-            })
+            getAllExercisesOf(chapter).forEach((exercise) => {
+                if (exercise.type === exerciseType) removeExercise(exercise);
+            });
         } else {
             setChoosenExerciseTypes((exTypes) => [...exTypes, exerciseType]);
-            getAllExercisesOf(chapter).forEach(exercise => {
+            getAllExercisesOf(chapter).forEach((exercise) => {
                 if (exercise.type === exerciseType) addExercise(exercise);
-            })
+            });
         }
     }
 
-    function toggle() {
-        setIsChecked((curr) => !curr);
+    function hasExerciseType(chapter: Chapter, exerciseType: ExerciseType): boolean {
+        // Check exercises in current chapter
+        const foundHere = exercises.some(
+            (exercise) =>
+                exercise.chapterId === chapter.id &&
+                exercise.type === exerciseType
+        );
+
+        if (foundHere) return true;
+
+        // Recursively check subchapters
+        return (
+            chapter.subchapters?.some((sub) =>
+                hasExerciseType(sub, exerciseType)
+            ) ?? false
+        );
     }
 
-    // helper: get all exercises recursively
-    const getAllExercisesOf = useCallback((chapter: Chapter): Exercise[] => {
+    // function hasExerciseType(exerciseType: ExerciseType) {
+    //     return exercises.some(
+    //         (exercise) =>
+    //             exercise.chapterId === chapter.id &&
+    //             exercise.type === exerciseType
+    //     );
+    // }
+
+    function getAllExercisesOf(chapter: Chapter): Exercise[] {
         const currentExercises = chapter.exercises ?? [];
         const subExercises =
             chapter.subchapters?.flatMap((sub) => getAllExercisesOf(sub)) ?? [];
         return [...currentExercises, ...subExercises];
-    }, []);
-
-    useEffect(() => {
-        if (hasExercisePractice) {
-            setIsChecked(true);
-        }
-        if (
-            !hasExercisePractice &&
-            chapter.exercises &&
-            chapter.exercises.length > 0
-        ) {
-            setIsChecked(false);
-        }
-    }, [isChecked, setIsChecked, hasExercisePractice, chapter]);
+    }
 
     return (
-        <div>
-            <label
-                style={style}
-                className="flex gap-3 text-xl"
-                htmlFor={chapter.name}
-            >
-                <input
-                    type="checkbox"
-                    className="accent-red-500"
-                    checked={hasExercisePractice || isChecked}
-                    onChange={(e) => {
-                        toggle();
-                        if (e.target.checked) {
-                            if (choosenExerciseTypes.length === 0)
-                                getAllExercisesOf(chapter).forEach(addExercise);
-                            else 
-                                getAllExercisesOf(chapter).forEach(exercise => {
-                                    if (!choosenExerciseTypes.includes(exercise.type)) return
-                                    addExercise(exercise)
-                                });
-                        } else {
-                            getAllExercisesOf(chapter).forEach(removeExercise);
-                        }
-                    }}
-                    name={chapter.name}
-                    id={chapter.name}
-                />
-                {chapter.name}
-            </label>
-            <div
-                style={style}
-                className="flex gap-3 bg-red-100 px-2 py-1 rounded-lg"
-            >
-                <label>
-                    <input
-                        className="accent-red-500 mr-2"
-                        type="checkbox"
-                        onChange={() => toggleExerciseType("true-false")}
+        <div className="select-none">
+            <details className="max-w-200">
+                <summary>
+                    <label
+                        style={style}
+                        className="flex gap-3 text-xl font-bold items-center"
+                        htmlFor={chapter.name}
+                    >
+                        <input
+                            type="checkbox"
+                            className="accent-red-500"
+                            checked={isChecked}
+                            onChange={(e) => {
+                                if (e.target.checked) {
+                                    if (choosenExerciseTypes.length === 0)
+                                        getAllExercisesOf(chapter).forEach(
+                                            addExercise
+                                        );
+                                    else
+                                        getAllExercisesOf(chapter).forEach(
+                                            (exercise) => {
+                                                if (
+                                                    !choosenExerciseTypes.includes(
+                                                        exercise.type
+                                                    )
+                                                )
+                                                    return;
+                                                addExercise(exercise);
+                                            }
+                                        );
+                                } else {
+                                    getAllExercisesOf(chapter).forEach(
+                                        removeExercise
+                                    );
+                                }
+                            }}
+                            name={chapter.name}
+                            id={chapter.name}
+                        />
+                        {chapter.name}
+                    </label>
+                </summary>
+
+                <div
+                    style={style}
+                    className="inline-flex gap-3 bg-red-100 px-3 py-1 rounded-lg translate-x-6 mt-1 text-sm"
+                >
+                    <ExerciseTypeFlag
+                        text="Vero/Falso"
+                        isChecked={hasExerciseType(chapter, "true-false")}
+                        onCheck={() => toggleExerciseType("true-false")}
                     />
-                    <span>Vero/Falso</span>
-                </label>
-                <label>
-                    <input
-                        className="accent-red-500 mr-2"
-                        type="checkbox"
-                        onChange={() => toggleExerciseType("multiple-choice")}
+                    <ExerciseTypeFlag
+                        text="Scelta Multipla"
+                        isChecked={hasExerciseType(chapter, "multiple-choice")}
+                        onCheck={() => toggleExerciseType("multiple-choice")}
                     />
-                    <span>Scelta Multipla</span>
-                </label>
-                <label>
-                    <input
-                        className="accent-red-500 mr-2"
-                        type="checkbox"
-                        onChange={() => toggleExerciseType("fill-in")}
+                    <ExerciseTypeFlag
+                        text="Completa"
+                        isChecked={hasExerciseType(chapter, "fill-in")}
+                        onCheck={() => toggleExerciseType("fill-in")}
                     />
-                    <span>Completa</span>
-                </label>
-                <label>
-                    <input
-                        className="accent-red-500 mr-2"
-                        type="checkbox"
-                        onChange={() => toggleExerciseType("terminology")}
+                    <ExerciseTypeFlag
+                        text="Terminologia"
+                        isChecked={hasExerciseType(chapter, "terminology")}
+                        onCheck={() => toggleExerciseType("terminology")}
                     />
-                    <span>Terminologia</span>
-                </label>
-                <label>
-                    <input
-                        className="accent-red-500 mr-2"
-                        type="checkbox"
-                        onChange={() => toggleExerciseType("steps")}
+                    <ExerciseTypeFlag
+                        text="Steps"
+                        isChecked={hasExerciseType(chapter, "steps")}
+                        onCheck={() => toggleExerciseType("steps")}
                     />
-                    <span>Steps</span>
-                </label>
-                <label>
-                    <input
-                        className="accent-red-500 mr-2"
-                        type="checkbox"
-                        onChange={() => toggleExerciseType("flashcard")}
+                    <ExerciseTypeFlag
+                        text="Flashcard"
+                        isChecked={hasExerciseType(chapter, "flashcard")}
+                        onCheck={() => toggleExerciseType("flashcard")}
                     />
-                    <span>Flashcard</span>
-                </label>
-            </div>
+                </div>
+            </details>
         </div>
     );
 }

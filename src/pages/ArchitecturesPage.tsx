@@ -1,9 +1,10 @@
 import ArchitectureCard from "../ui/ArchitectureCard";
+import Title from "../ui/Title";
 
 export default function ArchitecturesPage() {
     return (
         <div>
-            <h2 className="text-4xl my-4">Architettures</h2>
+            <Title h={1}>Architettures</Title>
             <div className="flex flex-col gap-8">
                 <ArchitectureCard
                     title="Un App Per Corso"

@@ -10,12 +10,14 @@ import TrueFalse from "../ui/exercise/TrueFalse";
 export default function PracticePage() {
     
     const {exercises} = usePractice();
+    
+    const sortedExercises = exercises.sort((a, b) => a.type.localeCompare(b.type));
 
     return (
         <div>
-            <h1 className="text-4xl font-bold">Practice</h1>
+            <h1 className="text-4xl font-bold mb-8">Practice</h1>
             <div className="flex flex-col gap-3">
-                {exercises.map(exercise => {
+                {sortedExercises.map(exercise => {
                     if (exercise.type === "true-false") {
                         const { prompt, answer }= exercise.data as TrueFalseData;
                         return <TrueFalse prompt={prompt} answer={answer}/>;

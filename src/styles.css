@@ -1,1 +1,57 @@
 @import 'tailwindcss';
+
+details summary {
+  list-style: none;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details summary::after {
+  content: "(dettagli)";
+  color: gray;
+}
+
+details[open] summary::after {
+  color: black;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  border: 2px solid red;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.3s;
+}
+
+input[type="checkbox"]:checked {
+  background-color: red;
+}
+
+input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('check.png') center/60% no-repeat;
+  opacity: 0;
+  transform: rotate(0deg);
+  scale: 2;
+  transition: transform 0.4s ease, opacity 0.3s ease;
+}
+
+input[type="checkbox"]:checked::after {
+  opacity: 1;
+  transform: rotate(360deg);
+}
+
+

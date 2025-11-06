@@ -33,7 +33,7 @@ export default function ArchitectureCard({ title, pros, cons, graphSrc, exampleL
                         </ul>
                     </div>
                 </div>
-                {exampleLink && <Link className="bg-slate-300 py-2 px-4 rounded-xl block text-center" to={exampleLink}>Example</Link>}
+                {exampleLink && <Link className="bg-slate-300 py-2 px-4 rounded-xl block text-center" to={exampleLink}>Esempio</Link>}
             </div>
             <img className="block rounded-2xl h-[60vh]" src={graphSrc} />
         </div>

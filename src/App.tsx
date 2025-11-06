@@ -23,12 +23,27 @@ export default function App() {
                         path="/all-courses"
                         element={
                             <CoursesPage
-                                courses={[
-                                    "TS",
-                                    "SSE",
-                                    "ECG",
-                                    "Glicemia",
-                                    "Multiparametrico",
+                                coursesLinks={[
+                                    {
+                                        name: "Trasporto Semplice (TS)",
+                                        url: "/ts",
+                                    },
+                                    {
+                                        name: "Soccorso Sanitario Extraospedaliero (SSE)",
+                                        url: "/sse",
+                                    },
+                                    {
+                                        name: "Elettrocardiogramma (ECG)",
+                                        url: "/ecg",
+                                    },
+                                    {
+                                        name: "Glicemia",
+                                        url: "/glicemia",
+                                    },
+                                    {
+                                        name: "Multiparametrico",
+                                        url: "/multiparametrico",
+                                    },
                                 ]}
                             />
                         }
