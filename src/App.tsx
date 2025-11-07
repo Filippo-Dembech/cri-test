@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import ArchitecturesPage from "./pages/ArchitecturesPage";
 import CoursesPage from "./pages/CoursesPage";
-import SsePage from "./pages/SsePage";
 import { PracticeProvider } from "./context/PracticeContext";
 import PracticePage from "./pages/PracticePage";
 import ParametersPractice from "./pages/ParametersPractice";
@@ -9,6 +8,9 @@ import TerminologyPractice from "./pages/TerminologyPractice";
 import SkillsPractice from "./pages/SkillsPractice";
 import AnalyzePractice from "./pages/AnalyzePractice";
 import DiseasePractice from "./pages/DiseasePractice";
+import CoursePage from "./pages/CoursePage";
+import TheoryPage from "./pages/TheoryPage";
+import RecapPage from "./pages/RecapPage";
 
 export default function App() {
     return (
@@ -20,38 +22,37 @@ export default function App() {
                         element={<ArchitecturesPage />}
                     />
                     <Route
-                        path="/all-courses"
+                        path="/corsi"
                         element={
                             <CoursesPage
                                 coursesLinks={[
                                     {
                                         name: "Trasporto Semplice (TS)",
-                                        url: "/ts",
+                                        url: "/corsi/ts",
                                     },
                                     {
                                         name: "Soccorso Sanitario Extraospedaliero (SSE)",
-                                        url: "/sse",
+                                        url: "/corsi/sse",
                                     },
                                     {
                                         name: "Elettrocardiogramma (ECG)",
-                                        url: "/ecg",
+                                        url: "/corsi/ecg",
                                     },
                                     {
                                         name: "Glicemia",
-                                        url: "/glicemia",
+                                        url: "/corsi/glicemia",
                                     },
                                     {
                                         name: "Multiparametrico",
-                                        url: "/multiparametrico",
+                                        url: "/corsi/multiparametrico",
                                     },
                                 ]}
                             />
                         }
                     />
-                    <Route
-                        path="/sse"
-                        element={<SsePage />}
-                    />
+p                   <Route path="corsi/:course" element={<CoursePage />} />
+                    <Route path="corsi/:course/teoria" element={<TheoryPage />} />
+                    <Route path="corsi/:course/pratica" element={<RecapPage />} />
                     <Route
                         path="/practice"
                         element={<PracticePage />}

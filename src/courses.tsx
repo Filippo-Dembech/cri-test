@@ -1,8 +1,72 @@
-import { Course } from "./courses";
-import { ExerciseFactory } from "./exercises";
+import { ExerciseFactory, Exercise, type ExerciseType } from "./exercises";
+
+export interface ExerciseData {
+    type: ExerciseType;
+    data: object;
+}
+
+export interface ChapterData {
+    name: string;
+    exercises?: ExerciseData[];
+    subchapters?: ChapterData[];
+}
+
+export interface CourseData {
+    name: string;
+    acronym?: string;
+    chapters: ChapterData[];
+}
+
+export class Chapter {
+    private static id = 0;
+
+    public id: number;
+    public courseId: number;
+    public name: string;
+    public exercises?: Exercise[] = [];
+    public subchapters?: Chapter[] = [];
+
+    constructor(courseId: number, chapterData: ChapterData) {
+        this.id = Chapter.id++;
+        this.courseId = courseId;
+        this.name = chapterData.name;
+        chapterData.exercises?.forEach((exerciseData) =>
+            this.exercises?.push(
+                new Exercise(
+                    this.courseId,
+                    this.id,
+                    exerciseData.type,
+                    exerciseData.data
+                )
+            )
+        );
+        chapterData.subchapters?.forEach((subchapterData) =>
+            this.subchapters?.push(new Chapter(this.courseId, subchapterData))
+        );
+    }
+}
+
+export class Course {
+    private static id = 0;
+
+    public id: number;
+    public chapters: Chapter[] = [];
+    public name: string;
+    public acronym?: string;
+
+    constructor(courseData: CourseData) {
+        this.id = Course.id++;
+        this.name = courseData.name;
+        this.acronym = courseData.acronym;
+        courseData.chapters.forEach((chapterData) =>
+            this.chapters.push(new Chapter(this.id, chapterData))
+        );
+    }
+}
 
 export const sse: Course = new Course({
     name: "Soccorso Sanitario Extraospedaliero",
+    acronym: "SSE",
     chapters: [
         {
             name: "Ruolo e Responsabilità",
@@ -533,3 +597,84 @@ export const sse: Course = new Course({
         },
     ],
 });
+
+export const ts = new Course({
+    name: "Trasporto Sanitario",
+    acronym: "TS",
+    chapters: [
+        {
+            name: "Modulo B",
+            subchapters: [
+                {
+                    name: "Normativa, Ruolo e Responsabilità"
+                }
+            ]
+        },
+        {
+            name: "Modulo C",
+            subchapters: [
+                {
+                    name: "Cenni di Anatomia e Fisiologia",
+                },
+                {
+                    name: "Rilevazione dei Parametri Vitali",
+                },
+                {
+                    name: "Valutazione Primaria del Paziente",
+                },
+                {
+                    name: "Rilevazione dei Parametri",
+                },
+            ]
+        },
+        {
+            name: "Modulo D",
+            subchapters: [
+                {
+                    name: "Caratteristiche del Paziente da Assistere e Trasportare"
+                }
+            ]
+        },
+        {
+            name: "Modulo E",
+            subchapters: [
+                {
+                    name: "Approccio Psicologico e Relazionale con le Persone Malate"
+                }
+            ]
+        },
+        {
+            name: "Modulo F",
+            subchapters: [
+                {
+                    name: "Tecniche Assistenziali di Approccio al Paziente"
+                }
+            ]
+        },
+        {
+            name: "Modulo G",
+            subchapters: [
+                {
+                    name: "BLSD",
+                },
+                {
+                    name: "Ostruzione delle Vie Aeree"
+                }
+            ]
+        },
+        {
+            name: "Modulo I",
+            subchapters: [
+                {
+                    name: "Trasporto in Ambulanza",
+                },
+            ]
+        }
+    ]
+})
+    
+
+export const courses = [
+    sse,
+    ts
+]

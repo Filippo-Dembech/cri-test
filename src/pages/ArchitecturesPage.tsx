@@ -17,7 +17,7 @@ export default function ArchitecturesPage() {
                     pros={[ "unico sito", "gestione", "no log-in" ]}
                     cons={[ "accesso a tutto" ]}
                     graphSrc="/single-app-all-accessible.png"
-                    exampleLink="/all-courses"
+                    exampleLink="/corsi"
                 />
                 <ArchitectureCard
                     title="Solo Corsi Accessibili"

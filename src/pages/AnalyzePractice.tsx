@@ -9,7 +9,7 @@ interface Situation {
 
 const situations: Situation[] = [
     {
-        name: "Dolore Addnominale",
+        name: "Dolore Addominale",
         questions: [
             "Da quanto è insorto?",
             "Insorgenza graduale o improvvisa?",
