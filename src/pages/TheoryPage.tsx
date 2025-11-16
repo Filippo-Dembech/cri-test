@@ -3,6 +3,7 @@ import ChapterRecord from "../ui/ChapterRecord";
 import PracticeRecapButton from "../ui/PracticeRecapButton";
 import Title from "../ui/Title";
 import { courses } from "../courses";
+import Background from "../ui/Background";
 
 export default function TheoryPage() {
     
@@ -13,6 +14,7 @@ export default function TheoryPage() {
     return (
         <div>
             <Title h={1}>{pickedCourse.name.toUpperCase()}</Title>
+            <Background />
             <div className="mb-3">
                 {pickedCourse.chapters.map((chapter) => (
                     <ChapterRecord chapter={chapter} />
