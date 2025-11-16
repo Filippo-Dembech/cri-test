@@ -3,7 +3,7 @@ import ArchitecturesPage from "./pages/ArchitecturesPage";
 import CoursesPage from "./pages/CoursesPage";
 import { PracticeProvider } from "./context/PracticeContext";
 import PracticePage from "./pages/PracticePage";
-import ParametersPractice from "./pages/ParametersPractice";
+import ParametersPractice from "./pages/ParametersPractice/ParametersPractice";
 import TerminologyPractice from "./pages/TerminologyPractice";
 import SkillsPractice from "./pages/SkillsPractice";
 import AnalyzePractice from "./pages/AnalyzePractice";

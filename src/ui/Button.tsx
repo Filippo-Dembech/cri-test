@@ -27,6 +27,7 @@ export default function Button({
     return (
         <div>
             <button
+                style={htmlButtonAttributes.disabled ? { backgroundColor: "gray" }: {}}
                 className="flex items-center px-2 py-1 text-white bg-red-500 rounded-lg cursor-pointer hover:bg-red-600 transition-colors duration-400 w-full"
                 {...htmlButtonAttributes}
             >
