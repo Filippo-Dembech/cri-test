@@ -19,12 +19,10 @@ export default function CoursePage() {
         <div>
             <Title h={1}>{pickedCourse.name.toUpperCase()}</Title>
             <Background />
-            <div className="flex gap-4 absolute top-1/2 -translate-1/2 right-1/2">
-                <div>
+            <div className="flex gap-4 absolute top-0 -translate-y-1/2 border-4">
                 <Link to={`/corsi/${pickedCourse.acronym}/teoria`}>
                     <Button icon={<IoSchool />}>Ripasso Teoria</Button>
                 </Link>
-                </div>
                 <Link to={`/corsi/${pickedCourse.acronym}/pratica`}>
                     <Button icon={<FaAmbulance />}>Ripasso Pratica</Button>
                 </Link>
