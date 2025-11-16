@@ -19,7 +19,7 @@ export default function CoursePage() {
         <div>
             <Title h={1}>{pickedCourse.name.toUpperCase()}</Title>
             <Background />
-            <div className="flex flex-col gap-4 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 border-4">
+            <div className="flex flex-col gap-4 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
                 <Link to={`/corsi/${pickedCourse.acronym}/teoria`}>
                     <Button icon={<IoSchool />}>Ripasso Teoria</Button>
                 </Link>
