@@ -89,7 +89,7 @@ export default function TerminologyPractice() {
 
     return (
         <PracticePage title="Pratica Terminologia">
-            <div>
+            <div className="flex flex-col">
                 <p className="text-xl mb-3">{term.definition}</p>
                 <form
                     className="flex flex-col gap-3 mb-3 sm:flex-row"
@@ -112,13 +112,15 @@ export default function TerminologyPractice() {
                 >
                     <input
                         type="text"
-                        style={{
-                            backgroundColor:
-                                isRightAnswer === false
-                                    ? "rgb(252, 165, 165)"
-                                    : "",
-                        }}
-                        className="border-2 border-slate-300 rounded-lg pb-1 px-2"
+                        style={
+                            isRightAnswer === false
+                                ? {
+                                      backgroundColor: "rgb(252, 165, 165)",
+                                      border: "2px solid red",
+                                  }
+                                : {}
+                        }
+                        className="border-2 border-slate-300 rounded-lg pb-1 px-2 outline-0"
                         value={givenAnswer}
                         onChange={(e) => setGivenAnswer(e.target.value)}
                     />
@@ -129,7 +131,7 @@ export default function TerminologyPractice() {
                     />
                 </form>
                 <button
-                    className="bg-slate-200 px-3 py-1 rounded-2xl"
+                    className="bg-slate-200 px-4 py-1 rounded-lg cursor-pointer hover:bg-slate-300 transition-all duration-200"
                     onClick={() => {
                         setTerm(getRandomTerm);
                         setIsRightAnswer(undefined);
@@ -146,11 +148,9 @@ export default function TerminologyPractice() {
                     y={0.9}
                 />
             )}
-            <div>
-                <p>
-                    Risposte corrette: {rightAnswers} / {rounds}
-                </p>
-            </div>
+            <p className="mt-3">
+                Risposte corrette: {rightAnswers} / {rounds}
+            </p>
         </PracticePage>
     );
 }
