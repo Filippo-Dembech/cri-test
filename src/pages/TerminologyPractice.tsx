@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { TerminologyData } from "../exercises";
 import PracticePage from "../ui/PracticePage";
+import Confetti from "react-confetti-boom";
 
 const terms: TerminologyData[] = [
     {
@@ -74,8 +75,17 @@ export default function TerminologyPractice() {
     const [rounds, setRounds] = useState(0);
     const [rightAnswers, setRightAnswers] = useState(0);
     const [givenAnswer, setGivenAnswer] = useState("");
+    const [showConfetti, setShowConfetti] = useState(false);
     const [term, setTerm] = useState(getRandomTerm);
-    const [isRightAnswer, setIsRightAnswer] = useState<boolean | undefined>(undefined);
+    const [isRightAnswer, setIsRightAnswer] = useState<boolean | undefined>(
+        undefined,
+    );
+
+    useEffect(() => {
+        setTimeout(() => {
+            setShowConfetti(false);
+        }, 3000);
+    }, [term]);
 
     return (
         <PracticePage title="Pratica Terminologia">
@@ -85,12 +95,16 @@ export default function TerminologyPractice() {
                     className="flex flex-col gap-3 mb-3 sm:flex-row"
                     onSubmit={(e) => {
                         e.preventDefault();
-                        if (givenAnswer.toLowerCase() === term.answer.toLowerCase()) {
-                            setRightAnswers(rightAnswers => rightAnswers + 1);
-                            setTerm(getRandomTerm)
-                            setIsRightAnswer(true)
-                            setRounds(rounds => rounds + 1)
+                        if (
+                            givenAnswer.toLowerCase() ===
+                            term.answer.toLowerCase()
+                        ) {
+                            setRightAnswers((rightAnswers) => rightAnswers + 1);
+                            setTerm(getRandomTerm);
+                            setIsRightAnswer(true);
+                            setRounds((rounds) => rounds + 1);
                             setGivenAnswer("");
+                            setShowConfetti(true);
                         } else {
                             setIsRightAnswer(false);
                         }
@@ -98,8 +112,13 @@ export default function TerminologyPractice() {
                 >
                     <input
                         type="text"
-                        style={{backgroundColor: isRightAnswer === true ? "oklch(96.7% 0.067 122.328)" : isRightAnswer === false ? "rgb(252, 165, 165)" : ""}}
-                        className="border-2 border-red-200 rounded-lg pb-1 px-2"
+                        style={{
+                            backgroundColor:
+                                isRightAnswer === false
+                                    ? "rgb(252, 165, 165)"
+                                    : "",
+                        }}
+                        className="border-2 border-slate-300 rounded-lg pb-1 px-2"
                         value={givenAnswer}
                         onChange={(e) => setGivenAnswer(e.target.value)}
                     />
@@ -109,13 +128,28 @@ export default function TerminologyPractice() {
                         value="Rispondi"
                     />
                 </form>
-                <button className="bg-slate-200 px-3 py-1 rounded-2xl" onClick={() => {
-                    setTerm(getRandomTerm)
-                    setIsRightAnswer(undefined);
-                }}>Salta</button>
+                <button
+                    className="bg-slate-200 px-3 py-1 rounded-2xl"
+                    onClick={() => {
+                        setTerm(getRandomTerm);
+                        setIsRightAnswer(undefined);
+                    }}
+                >
+                    Salta
+                </button>
             </div>
+            {showConfetti && (
+                <Confetti
+                    mode="boom"
+                    particleCount={150}
+                    colors={["#ff577f", "#99ff4b", "#eeffe0"]}
+                    y={0.9}
+                />
+            )}
             <div>
-                <p>Risposte corrette: {rightAnswers} / {rounds}</p>
+                <p>
+                    Risposte corrette: {rightAnswers} / {rounds}
+                </p>
             </div>
         </PracticePage>
     );

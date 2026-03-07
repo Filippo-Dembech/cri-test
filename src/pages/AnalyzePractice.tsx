@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Button from "../ui/Button";
-import Title from "../ui/Title";
 import PracticePage from "../ui/PracticePage";
 
 interface Situation {
