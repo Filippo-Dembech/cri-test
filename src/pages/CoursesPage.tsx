@@ -43,7 +43,7 @@ export default function CoursesPage({ coursesLinks }: CoursesPageProps) {
                                     backgroundColor: "rgba(0,0,0,0.5)",
                                 }}
                             >
-                                {(close) => (
+                                {(close: () => void) => (
                                     <div className="bg-white p-8 rounded-2xl flex flex-col gap-4 mx-8">
                                         <h3 className="text-2xl">
                                             Coming Soon

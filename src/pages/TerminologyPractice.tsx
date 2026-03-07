@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { TerminologyData } from "../exercises";
+import PracticePage from "../ui/PracticePage";
 
 const terms: TerminologyData[] = [
     {
@@ -73,48 +74,49 @@ export default function TerminologyPractice() {
     const [rounds, setRounds] = useState(0);
     const [rightAnswers, setRightAnswers] = useState(0);
     const [givenAnswer, setGivenAnswer] = useState("");
-    const [term, setTerm] = useState(() => getRandomTerm());
-    const [isRightAnswer, setIsRightAnswer] = useState(false);
-    
-    useEffect(() => {
-        setTerm(getRandomTerm())
-    }, [rounds])
+    const [term, setTerm] = useState(getRandomTerm);
+    const [isRightAnswer, setIsRightAnswer] = useState<boolean | undefined>(undefined);
 
     return (
-        <div>
-            <h1 className="text-4xl font-bold mb-4">Terminology Practice</h1>
+        <PracticePage title="Pratica Terminologia">
             <div>
                 <p className="text-xl mb-3">{term.definition}</p>
                 <form
+                    className="flex flex-col gap-3 mb-3 sm:flex-row"
                     onSubmit={(e) => {
                         e.preventDefault();
                         if (givenAnswer.toLowerCase() === term.answer.toLowerCase()) {
                             setRightAnswers(rightAnswers => rightAnswers + 1);
+                            setTerm(getRandomTerm)
                             setIsRightAnswer(true)
+                            setRounds(rounds => rounds + 1)
+                            setGivenAnswer("");
                         } else {
                             setIsRightAnswer(false);
                         }
-                        setRounds(rounds => rounds + 1)
-                        setGivenAnswer("");
                     }}
                 >
                     <input
                         type="text"
-                        style={isRightAnswer ? {backgroundColor: "oklch(96.7% 0.067 122.328)"}: {}}
+                        style={{backgroundColor: isRightAnswer === true ? "oklch(96.7% 0.067 122.328)" : isRightAnswer === false ? "rgb(252, 165, 165)" : ""}}
                         className="border-2 border-red-200 rounded-lg pb-1 px-2"
                         value={givenAnswer}
                         onChange={(e) => setGivenAnswer(e.target.value)}
                     />
                     <input
                         type="submit"
-                        className="ml-3 rounded-lg bg-red-500 text-white pb-1 px-2 transition-colors hover:bg-red-600 duration-100 cursor-pointer"
+                        className="rounded-lg bg-red-500 text-white pb-1 px-2 transition-colors hover:bg-red-600 duration-100 cursor-pointer"
                         value="Rispondi"
                     />
                 </form>
+                <button className="bg-slate-200 px-3 py-1 rounded-2xl" onClick={() => {
+                    setTerm(getRandomTerm)
+                    setIsRightAnswer(undefined);
+                }}>Salta</button>
             </div>
             <div>
                 <p>Risposte corrette: {rightAnswers} / {rounds}</p>
             </div>
-        </div>
+        </PracticePage>
     );
 }

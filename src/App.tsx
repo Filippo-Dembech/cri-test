@@ -12,6 +12,9 @@ import RecapPage from "./pages/RecapPage";
 import SSEPractice from "./pages/SSEPractice";
 import OxygenPractice from "./pages/OxygenPractice";
 import SweepingTriagePractice from "./pages/SweepingTriagePractice";
+import ECGPractice from "./pages/ECGPractice";
+import GlucosePractice from "./pages/GlucosePractice";
+import DiagnosticSuspicionScorePractice from "./pages/DiagnosticSuspicionScorePractice";
 
 export default function App() {
     return (
@@ -95,6 +98,18 @@ export default function App() {
                     <Route
                         path="/sweeping-triage-practice"
                         element={<SweepingTriagePractice />}
+                    />
+                    <Route
+                        path="/ecg-practice"
+                        element={<ECGPractice />}
+                    />
+                    <Route
+                        path="/blood-glucose-practice"
+                        element={<GlucosePractice />}
+                    />
+                    <Route
+                        path="/diagnostic-suspicion-score-practice"
+                        element={<DiagnosticSuspicionScorePractice />}
                     />
                 </Routes>
             </PracticeProvider>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "../ui/Button";
 import Title from "../ui/Title";
+import PracticePage from "../ui/PracticePage";
 
 interface Situation {
     name: string;
@@ -86,9 +87,8 @@ export default function AnalyzePractice() {
     const [showQuestions, setShowQuestions] = useState(false);
 
     return (
-        <div>
-            <Title h={1}>Domande di Rito</Title>
-            <div className="mt-8">
+        <PracticePage title="Pratica Domande di Rito">
+            <div className="mt-8 flex flex-col max-w-200 m-auto">
                 <p className="text-2xl mb-4">{currentSituation.name}</p>
                 <Button onClick={() => setShowQuestions(show => !show)}>{showQuestions ? "Nascondi" : "Mostra"} domande</Button>
                 {showQuestions && (
@@ -99,10 +99,10 @@ export default function AnalyzePractice() {
                     </ul>
                 )}
             </div>
-            <Button style={{marginTop: 20}} onClick={() => {
+            <Button outlined className="flex justify-center max-w-200 m-auto" style={{marginTop: 20}} onClick={() => {
                 setCurrentSituation(getRandomSituation())
                 setShowQuestions(false);
             }}>Prossima Situazione</Button>
-        </div>
+        </PracticePage>
     )
 }
