@@ -599,7 +599,7 @@ export const sse: Course = new Course({
 });
 
 export const ts = new Course({
-    name: "Trasporto Sanitario",
+    name: "Trasporto Semplice",
     acronym: "TS",
     chapters: [
         {

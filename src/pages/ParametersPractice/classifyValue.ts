@@ -9,21 +9,19 @@ export function classifyValue(
 
     if (typeof value === "string" && value.includes("/")) {
         const [sys, dia] = value.split("/").map(Number);
-        const [healthySysMin, healthyDiaMin] = (
-            param.healthyRange.min as string
-        )
-            .split("/")
-            .map(Number);
-        const [healthySysMax, healthyDiaMax] = (
-            param.healthyRange.max as string
-        )
-            .split("/")
-            .map(Number);
-
-        if (sys < healthySysMin || dia < healthyDiaMin) return "valore-basso";
-        if (sys > healthySysMax || dia > healthyDiaMax) return "valore-alto";
-        return "valore-normale";
+        if (sys > 150 || dia > 130) return "valore-alto";
+        if (sys < 90) return "valore-basso";
+        return "valore-normale"
     }
+    
+    // minimo 25 range tra PAS e PAD
+    // fixare saturazione sempre bassa
+    // fixare glicemia sempre alta
+    // fixare UX terminologia
+    // fixare responsività mobile skills
+    // ECG autonomia
+    // Glicemia autonomia
+    // Indice di sospetto
 
     const { healthyRange } = param;
     if (Number(value) < Number(healthyRange.min)) return "valore-basso";

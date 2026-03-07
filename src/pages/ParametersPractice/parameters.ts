@@ -4,7 +4,7 @@ export const parameters: Parameter[] = [
     {
         name: "Frequenza Cardiaca (FC)",
         healthyRange: { min: 60, max: 100 },
-        unhealthyRange: { min: 30, max: 130 },
+        unhealthyRange: { min: 40, max: 130 },
     },
     {
         name: "Frequenza Respiratoria (FR)",
@@ -19,7 +19,7 @@ export const parameters: Parameter[] = [
     {
         name: "Glicemia",
         healthyRange: { min: 70, max: 99 },
-        unhealthyRange: { min: 40, max: 250 },
+        unhealthyRange: { min: 40, max: 210 },
     },
     {
         name: "Temperatura",

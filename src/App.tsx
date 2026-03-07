@@ -1,6 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import ArchitecturesPage from "./pages/ArchitecturesPage";
-import CoursesPage from "./pages/CoursesPage";
 import { PracticeProvider } from "./context/PracticeContext";
 import PracticePage from "./pages/PracticePage";
 import ParametersPractice from "./pages/ParametersPractice/ParametersPractice";
@@ -11,6 +9,9 @@ import DiseasePractice from "./pages/DiseasePractice";
 import CoursePage from "./pages/CoursePage";
 import TheoryPage from "./pages/TheoryPage";
 import RecapPage from "./pages/RecapPage";
+import SSEPractice from "./pages/SSEPractice";
+import OxygenPractice from "./pages/OxygenPractice";
+import SweepingTriagePractice from "./pages/SweepingTriagePractice";
 
 export default function App() {
     return (
@@ -19,19 +20,20 @@ export default function App() {
                 <Routes>
                     <Route
                         path="/"
-                        element={<ArchitecturesPage />}
+                        // element={<SSEPage />}
+                        element={<SSEPractice />}
                     />
-                    <Route
-                        path="/corsi"
+                    {/* <Route
+                        path="/"
                         element={
                             <CoursesPage
                                 coursesLinks={[
                                     {
-                                        name: "Trasporto Semplice (TS)",
+                                        name: "Trasporto Semplice",
                                         url: "/corsi/ts",
                                     },
                                     {
-                                        name: "Soccorso Sanitario Extraospedaliero (SSE)",
+                                        name: "Soccorso Sanitario Extraospedaliero",
                                         url: "/corsi/sse",
                                     },
                                     {
@@ -49,10 +51,19 @@ export default function App() {
                                 ]}
                             />
                         }
+                    /> */}
+                    <Route
+                        path="corsi/:course"
+                        element={<CoursePage />}
                     />
-p                   <Route path="corsi/:course" element={<CoursePage />} />
-                    <Route path="corsi/:course/teoria" element={<TheoryPage />} />
-                    <Route path="corsi/:course/pratica" element={<RecapPage />} />
+                    <Route
+                        path="corsi/:course/teoria"
+                        element={<TheoryPage />}
+                    />
+                    <Route
+                        path="corsi/:course/pratica"
+                        element={<RecapPage />}
+                    />
                     <Route
                         path="/practice"
                         element={<PracticePage />}
@@ -76,6 +87,14 @@ p                   <Route path="corsi/:course" element={<CoursePage />} />
                     <Route
                         path="/disease-practice"
                         element={<DiseasePractice />}
+                    />
+                    <Route
+                        path="/oxygen-practice"
+                        element={<OxygenPractice/>}
+                    />
+                    <Route
+                        path="/sweeping-triage-practice"
+                        element={<SweepingTriagePractice />}
                     />
                 </Routes>
             </PracticeProvider>

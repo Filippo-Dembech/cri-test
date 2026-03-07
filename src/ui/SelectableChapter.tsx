@@ -87,14 +87,6 @@ export default function SelectableChapter({
         );
     }
 
-    // function hasExerciseType(exerciseType: ExerciseType) {
-    //     return exercises.some(
-    //         (exercise) =>
-    //             exercise.chapterId === chapter.id &&
-    //             exercise.type === exerciseType
-    //     );
-    // }
-
     function getAllExercisesOf(chapter: Chapter): Exercise[] {
         const currentExercises = chapter.exercises ?? [];
         const subExercises =
@@ -108,7 +100,7 @@ export default function SelectableChapter({
                 <summary>
                     <label
                         style={style}
-                        className="flex gap-3 text-xl font-bold items-center"
+                        className="flex gap-3 text-[1rem] font-bold items-center md:text-xl bg-slate-200 p-2 rounded-2xl mt-3 cursor-pointer"
                         htmlFor={chapter.name}
                     >
                         <input
@@ -148,7 +140,7 @@ export default function SelectableChapter({
 
                 <div
                     style={style}
-                    className="inline-flex gap-3 bg-red-100 px-3 py-1 rounded-lg translate-x-6 mt-1 text-sm"
+                    className="inline-flex gap-3 bg-red-100 px-3 py-1 rounded-lg translate-x-6 mt-1 text-sm flex-col my-4 md:flex-row md:my-0"
                 >
                     <ExerciseTypeFlag
                         text="Vero/Falso"

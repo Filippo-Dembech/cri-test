@@ -13,6 +13,10 @@ details summary::-webkit-details-marker {
   display: none;
 }
 
+details summary {
+  width: fit-content;
+}
+
 details summary::after {
   content: "(dettagli)";
   color: gray;
@@ -25,8 +29,8 @@ details[open] summary::after {
 input[type="checkbox"] {
   appearance: none;
   -webkit-appearance: none;
-  width: 15px;
-  height: 15px;
+  min-width: 15px;
+  aspect-ratio: 1;
   border: 2px solid red;
   border-radius: 50%;
   cursor: pointer;

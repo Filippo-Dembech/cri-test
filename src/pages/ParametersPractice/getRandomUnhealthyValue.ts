@@ -14,7 +14,17 @@ export function getRandomUnhealthyValue(paramName: string): number | string {
         const [sysMax, diaMax] = unhealthyRange.max.split("/").map(Number);
 
         const sys = Math.floor(Math.random() * (sysMax - sysMin + 1)) + sysMin;
-        const dia = Math.floor(Math.random() * (diaMax - diaMin + 1)) + diaMin;
+
+        // la diastolica non può superare sys - 25
+        const effectiveDiaMax = Math.min(diaMax, sys - 25);
+
+        // sicurezza se i range sono strani
+        const effectiveDiaMin = Math.min(diaMin, effectiveDiaMax);
+
+        const dia =
+            Math.floor(
+                Math.random() * (effectiveDiaMax - effectiveDiaMin + 1),
+            ) + effectiveDiaMin;
 
         return `${sys}/${dia}`;
     }
