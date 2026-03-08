@@ -71,7 +71,7 @@ const skills: StepsData[] = [
             "Far posizionare il 2° soccorritore a lato del paziente, con un ginocchio sopra la tavola spinale con le mani a livello del torace e del femore",
             "Al via del soccorritore alla testa, si ruota il paziente sul fianco; la testa va portata in posizione neutra",
             "Spostare le mani posteriormente alla schiena",
-            "Al via del soccorritore alla testa, si ruota il paziente adagiandolo sulla tavola spinale",
+            "Al via del soccorritore alla testa, ruotare il paziente adagiandolo sulla tavola spinale",
             "Il soccorritore alla testa comunica la necessità di centrare il paziente sulla spinale",
             "Se necessario i soccorritori si posizionano a lato (o a cavalcioni) del paziente, lo afferrano all'altezza delle spalle e del bacino",
             "Al via del soccorritore alla testa, si centra il paziente sulla tavola spinale",
@@ -237,27 +237,29 @@ export default function SkillsPractice() {
         <div>
             <h1 className="text-4xl font-bold mb-5">Practica Skills</h1>
             <div className="flex flex-col gap-10 max-w-200 m-auto">
-                <select
-                    onChange={(e) =>
-                        setSelectedSkill(
-                            skills.find(
-                                (skill) =>
-                                    skill.procedureName === e.target.value,
-                            ),
-                        )
-                    }
-                    className="p-3 bg-slate-100 cursor-pointer rounded-2xl outline-0"
-                >
-                    <option
-                        selected
-                        disabled
+                <div className="p-3 bg-slate-100 cursor-pointer rounded-2xl">
+                    <select
+                        className="w-full outline-0 cursor-pointer"
+                        onChange={(e) =>
+                            setSelectedSkill(
+                                skills.find(
+                                    (skill) =>
+                                        skill.procedureName === e.target.value,
+                                ),
+                            )
+                        }
                     >
-                        Seleziona la skill...
-                    </option>
-                    {skills.map((skill) => (
-                        <option>{skill.procedureName}</option>
-                    ))}
-                </select>
+                        <option
+                            selected
+                            disabled
+                        >
+                            Seleziona la skill...
+                        </option>
+                        {skills.map((skill) => (
+                            <option>{skill.procedureName}</option>
+                        ))}
+                    </select>
+                </div>
                 <div className="flex-3 bg-red-50 rounded-lg p-3">
                     {selectedSkill ? (
                         <Steps
@@ -266,7 +268,7 @@ export default function SkillsPractice() {
                             steps={selectedSkill.steps}
                         />
                     ) : (
-                        <p className="italic text-slate-500">
+                        <p className="italic text-red-400">
                             Nessuna skill selezionata
                         </p>
                     )}
