@@ -47,14 +47,34 @@ const skills: StepsData[] = [
         steps: [
             "Far immobilizzare manualmente il capo in posizione già pronta per la rotazione",
             "Chiamare il paziente, presentarsi, e spiegare la manovra",
+            "Controllare la schiena",
             "Allineare gli arti",
             "Inginocchiarsi a lato del paziente",
             "Posizionare le mani all'altezza della spalla e del bacino (contenendo il polso)",
             "Il 2° soccorritore si posiziona a lato del paziente, con la mano a livello del torace incrociando il braccio con quello del 2° soccorritore e l'altra mano a livello del femore poco sopra l'articolazione del ginocchio",
-            "Il soccorritore alla testa dà il via alla manovra di rotazione del paziente sul fianco, portando la testa in posizione neutra",
+            "Al via del soccorritore alla testa, si ruota il paziente sul fianco; la testa va portata in posizione neutra",
             "Il cambiare orientamento delle mani (sposta la mano dalla spalla al centro del dorso posteriormente e la mano dal bacino lungo il tronco anteriormente)",
             "Il 2° soccorritore cambia orientamento delle mani (sposta la mano dal torace al centro del ratto lombo-sacrale posteriormente e la mano sul fermore lungo il acino anteriormente)",
             "Al via del soccorritore alla testa si porta il paziente in posizione supina mantenendo la colonna vertebrale allineata",
+        ],
+    },
+    {
+        procedureName: "Pronosupinazione su Tavola Spinale Sottile",
+        steps: [
+            "Far immobilizzare manualmente il capo",
+            "Chiamare il paziente, presentarsi, e spiegare la manovra",
+            "Controllare la schiena",
+            "Allineare gli arti",
+            "Far posizionare la tavola spinale a lato del paziente (lato opposto dello sguardo)",
+            "Inginocchiarsi a lato del paziente, con un ginocchio sopra la tavola spinale",
+            "Posizionare le mani all'altezza della spalla e del bacino (contenendo il polso)",
+            "Far posizionare il 2° soccorritore a lato del paziente, con un ginocchio sopra la tavola spinale con le mani a livello del torace e del femore",
+            "Al via del soccorritore alla testa, si ruota il paziente sul fianco; la testa va portata in posizione neutra",
+            "Spostare le mani posteriormente alla schiena",
+            "Al via del soccorritore alla testa, si ruota il paziente adagiandolo sulla tavola spinale",
+            "Il soccorritore alla testa comunica la necessità di centrare il paziente sulla spinale",
+            "Se necessario i soccorritori si posizionano a lato (o a cavalcioni) del paziente, lo afferrano all'altezza delle spalle e del bacino",
+            "Al via del soccorritore alla testa, si centra il paziente sulla tavola spinale",
         ],
     },
     {
@@ -228,7 +248,12 @@ export default function SkillsPractice() {
                     }
                     className="p-3 bg-slate-100 cursor-pointer rounded-2xl outline-0"
                 >
-                    <option selected disabled>Seleziona la skill...</option>
+                    <option
+                        selected
+                        disabled
+                    >
+                        Seleziona la skill...
+                    </option>
                     {skills.map((skill) => (
                         <option>{skill.procedureName}</option>
                     ))}
@@ -241,7 +266,9 @@ export default function SkillsPractice() {
                             steps={selectedSkill.steps}
                         />
                     ) : (
-                        <p className="italic text-slate-500">Nessuna skill selezionata</p>
+                        <p className="italic text-slate-500">
+                            Nessuna skill selezionata
+                        </p>
                     )}
                 </div>
             </div>

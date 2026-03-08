@@ -134,6 +134,7 @@ export default function TerminologyPractice() {
                     className="bg-slate-200 px-4 py-1 rounded-lg cursor-pointer hover:bg-slate-300 transition-all duration-200"
                     onClick={() => {
                         setTerm(getRandomTerm);
+                        setRounds(rounds => rounds + 1)
                         setIsRightAnswer(undefined);
                     }}
                 >
