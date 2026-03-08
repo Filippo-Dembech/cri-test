@@ -145,17 +145,17 @@ export const sse: Course = new Course({
                 ExerciseFactory.terminology({
                     definition:
                         "Strumenti con la finalità di orientare attività e comportamenti discrezionali degli operatori",
-                    answer: "Protocollo",
+                    validAnswers: ["Protocollo"],
                 }),
                 ExerciseFactory.terminology({
                     definition:
                         "Regole scritte, sintetiche, atte a supportare nel dettaglio specifiche attività operative",
-                    answer: "Istruzioni Operative",
+                    validAnswers: ["Istruzioni Operative"],
                 }),
                 ExerciseFactory.terminology({
                     definition:
                         "Raccomandazioni di comportamento clinico, elaborate mediante un processo di revisione della letteratura e delle opinioni di esperti, con lo scopo di decidere le modalità assistenziali più appropriate in specifiche situazioni cliniche",
-                    answer: "Linee Guida",
+                    validAnswers: ["Linee Guida"],
                 }),
             ],
         },
@@ -191,7 +191,7 @@ export const sse: Course = new Course({
                         ExerciseFactory.terminology({
                             definition:
                                 "Riduzione della gravità delle lesioni del trauma",
-                            answer: "Prevenzione secondaria",
+                            validAnswers: ["Prevenzione secondaria"],
                         }),
                     ],
                 },
@@ -200,7 +200,7 @@ export const sse: Course = new Course({
                     exercises: [
                         ExerciseFactory.terminology({
                             definition: "La A dell'ABCDE per cosa sta?",
-                            answer: "Airways"
+                            validAnswers: ["Airways"]
                         }),
                         ExerciseFactory.fillIn({
                             sentence: "La C dell'ABCDE sta per ...",

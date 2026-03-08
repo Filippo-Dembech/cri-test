@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { TerminologyData } from "../../exercises";
 
-export default function Terminology({definition, answer}: TerminologyData) {
+export default function Terminology({definition, validAnswers}: TerminologyData) {
     const [givenAnswer, setGivenAnswer] = useState("");
 
     return (

@@ -35,8 +35,8 @@ export default function PracticePage() {
                         return <MultipleChoice question={question} options={options} answerId={answerId} /> 
                     }
                     if (exercise.type === "terminology") {
-                        const { definition, answer }= exercise.data as TerminologyData;
-                        return <Terminology definition={definition} answer={answer} /> 
+                        const { definition, validAnswers }= exercise.data as TerminologyData;
+                        return <Terminology definition={definition} validAnswers={validAnswers} /> 
                     }
                     if (exercise.type === "steps") {
                         const { procedureName, steps }= exercise.data as StepsData;
