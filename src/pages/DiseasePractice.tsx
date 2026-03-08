@@ -70,7 +70,7 @@ const diseases: Disease[] = [
             "Asimmetria o ridotta espansione toracica",
             "Dolore (al movimento, respirazione, palpazione)",
             "Enfisemi sottocutanei",
-            "Segni di shock",
+            "GRAVE: Segni di shock",
         ],
         whatToDo: ["ABCDE"],
     },
@@ -104,6 +104,20 @@ const diseases: Disease[] = [
         whatToDo: ["ABCDE", "Fissare manualmente l'oggetto"],
         whatToAvoid: ["Rimuovere l'oggetto"],
     },
+    {
+        name: "Trauma Addominale",
+        symptoms: [
+            "Dolore addominale",
+            "Contusioni/ematomi",
+            "GRAVE: Addome contratto",
+            "GRAVE: Aumento volume addominale (dovuto al riversamento di liquidi interni)",
+            "GRAVE: Segni di shock"
+        ],
+        whatToDo: [
+            "ABCDE",
+            "Indagare dolore addominale per discriminarlo dall'infarto del miocardio"
+        ]
+    }
 ];
 
 function getRandomDisease() {
