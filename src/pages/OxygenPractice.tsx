@@ -87,11 +87,11 @@ export default function OxygenPractice() {
     return (
         <div>
             <h1 className="text-4xl font-bold">Pratica Ossigenoterapia</h1>
-            <div className="flex flex-col gap-4 mt-8 align-center">
+            <div className="flex flex-col gap-4 mt-8 align-center max-w-150 m-auto">
                 <p>{patientStateToString(patientState)}</p>
                 <Button onClick={toggleShowAnswer} className="justify-center">{showAnswer ? "Nascondi Risposta" : "Mostra Risposta"}</Button>
                 {showAnswer && (
-                    <div className="max-w-100">
+                    <div>
                         <div className="p-3 bg-slate-200 shadow rounded-2xl">{answer}</div>
                         <span className="block w-fit m-auto">
                         <Button outlined onClick={() => {
