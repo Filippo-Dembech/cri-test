@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "../ui/Button";
 import PracticePage from "../ui/PracticePage";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import Dropdown from "../ui/Dropdown";
 
 interface Situation {
     name: string;
@@ -82,36 +82,18 @@ export default function AnalyzePractice() {
     const [currentSituation, setCurrentSituation] = useState(() =>
         getRandomSituation(),
     );
-    const [showQuestions, setShowQuestions] = useState(false);
 
     return (
         <PracticePage title="Pratica Domande di Rito">
             <div className="mt-8 flex flex-col max-w-200 m-auto">
                 <p className="text-2xl mb-4">{currentSituation.name}</p>
-                {showQuestions ? (
-                    <Button
-                        className="flex justify-between"
-                        onClick={() => setShowQuestions((show) => !show)}
-                    >
-                        <span>Nascondi domande</span>
-                        <IoIosArrowUp />
-                    </Button>
-                ) : (
-                    <Button
-                        className="flex justify-between"
-                        onClick={() => setShowQuestions((show) => !show)}
-                    >
-                        <span>Mostra domande</span>
-                        <IoIosArrowDown />
-                    </Button>
-                )}
-                {showQuestions && (
+                <Dropdown key={currentSituation.name}>
                     <ul className="my-3">
                         {currentSituation.questions.map((question) => (
                             <li>- {question}</li>
                         ))}
                     </ul>
-                )}
+                </Dropdown>
             </div>
             <Button
                 outlined
@@ -119,7 +101,6 @@ export default function AnalyzePractice() {
                 style={{ marginTop: 20 }}
                 onClick={() => {
                     setCurrentSituation(getRandomSituation());
-                    setShowQuestions(false);
                 }}
             >
                 Prossima Situazione
