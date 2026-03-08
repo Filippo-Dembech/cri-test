@@ -28,44 +28,44 @@ const diseases: Disease[] = [
     },
 ];
 
-function getRandomDesease() {
+function getRandomDisease() {
     return diseases[0];
 }
 
 export default function DiseasePractice() {
-    const [currentDesease, setCurrentDesease] = useState(getRandomDesease);
+    const [currentDisease, setCurrentDisease] = useState(getRandomDisease);
 
     return (
         <div>
             <h1 className="text-4xl font-bold">Pratica Patologie</h1>
             <div className="flex flex-col max-w-200 gap-4">
-                <p className="text-2xl">{currentDesease.name}</p>
+                <p className="text-2xl">{currentDisease.name}</p>
                 <Dropdown
-                    key={currentDesease.name}
+                    key={currentDisease.name}
                     showLabel="Mostra Sintomi"
                 >
                     <ul>
-                        {currentDesease.symptoms.map((s) => (
+                        {currentDisease.symptoms.map((s) => (
                             <li>- {s}</li>
                         ))}
                     </ul>
                 </Dropdown>
                 <Dropdown
-                    key={currentDesease.name}
+                    key={currentDisease.name}
                     showLabel="Mostra Domande di Rito"
                 >
                     <ul>
-                        {currentDesease.questions?.map((s) => (
+                        {currentDisease.questions?.map((s) => (
                             <li>- {s}</li>
                         ))}
                     </ul>
                 </Dropdown>
                 <Dropdown
-                    key={currentDesease.name}
+                    key={currentDisease.name}
                     showLabel="Mostra Assistenza"
                 >
                     <ul>
-                        {currentDesease.whatToDo?.map((s) => (
+                        {currentDisease.whatToDo?.map((s) => (
                             <li>- {s}</li>
                         ))}
                     </ul>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "../ui/Button";
 
-type Desease = 
+type Disease = 
         "shock" | 
         "intossicazione da CO" |
         "annegamento" |
@@ -9,14 +9,14 @@ type Desease =
         "ipotermia"
 
 type PatientState = {
-    desease?: Desease
+    disease?: Disease
     saturationValue: number,
     hasDyspnea: boolean,
     isBPCO: boolean
 }
 
-// desease signs data for modals
-const deseaseSigns = {
+// disease signs data for modals
+const diseaseSigns = {
     shock: {},
     COIntoxication: {},
     drowning: {},
@@ -24,16 +24,16 @@ const deseaseSigns = {
     hypothermia: {},
 };
 
-function getRandomDesease(): Desease | undefined {
-    const deseases: Desease[] = [
+function getRandomDisease(): Disease | undefined {
+    const diseases: Disease[] = [
         "shock",
         "intossicazione da CO",
         "annegamento",
         "disbarismo",
         "ipotermia",
     ];
-    const desease = deseases[Math.floor(Math.random() * deseases.length)];
-    if (Math.random() < 0.3) return desease;
+    const disease = diseases[Math.floor(Math.random() * diseases.length)];
+    if (Math.random() < 0.3) return disease;
 }
 
 function getRandomSaturation(): number {
@@ -46,13 +46,13 @@ function getRandomSaturation(): number {
 }
 
 function getRandomPatientState(): PatientState {
-    const desease = getRandomDesease();
+    const disease = getRandomDisease();
     const saturation = getRandomSaturation();
     const dyspnea = Math.random() < 0.4; // 40% possibility to have dyspnea
     const bpco = Math.random() < 0.3; // 30% possibility to have BPCO
 
     return {
-        desease,
+        disease,
         saturationValue: saturation,
         hasDyspnea: dyspnea,
         isBPCO: bpco,
@@ -61,14 +61,14 @@ function getRandomPatientState(): PatientState {
 
 function patientStateToString(patientState: PatientState) {
     
-    const { desease, saturationValue, hasDyspnea, isBPCO} = patientState;
+    const { disease, saturationValue, hasDyspnea, isBPCO} = patientState;
     
-    return `Paziente${desease ? ` con segni di ${desease},` : " con"} saturazione ${saturationValue}% ${hasDyspnea ? "e dispnea" : ""}${isBPCO ? ", con BPCO" : ""}.`;
+    return `Paziente${disease ? ` con segni di ${disease},` : " con"} saturazione ${saturationValue}% ${hasDyspnea ? "e dispnea" : ""}${isBPCO ? ", con BPCO" : ""}.`;
 }
 
 function getAnswerFrom(patientState: PatientState) {
-    const { desease, saturationValue, hasDyspnea, isBPCO } = patientState;
-    if (desease || saturationValue < 85) return "Maschera con reservoir ad alti flussi (10-15 L/min)";
+    const { disease, saturationValue, hasDyspnea, isBPCO } = patientState;
+    if (disease || saturationValue < 85) return "Maschera con reservoir ad alti flussi (10-15 L/min)";
     if (saturationValue > 94 && !hasDyspnea) return "Proseguo assistenza";
     if (!isBPCO) return "Maschera Semplice e maschera con reservoir fino al raggiungimento di 94-98% di saturazione";
     if (!(saturationValue < 88) && !hasDyspnea) return "Proseguo assistenza";
