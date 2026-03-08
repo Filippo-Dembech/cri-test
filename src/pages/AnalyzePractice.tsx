@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "../ui/Button";
 import PracticePage from "../ui/PracticePage";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 interface Situation {
     name: string;
@@ -23,14 +24,11 @@ const situations: Situation[] = [
             "Intensità?",
             "Il dolore cambia al cambio della posizione?",
             "Il dolore cambia con la respirazione profonda?",
-        ]
+        ],
     },
     {
         name: "Vomito",
-        questions: [
-            "Colore del vomito?",
-            "Con sangue?"
-        ]
+        questions: ["Colore del vomito?", "Con sangue?"],
     },
     {
         name: "Dolore",
@@ -42,7 +40,7 @@ const situations: Situation[] = [
             "Intensità?",
             "Il dolore cambia al cambio della posizione?",
             "Il dolore cambia con la respirazione profonda?",
-        ]
+        ],
     },
     {
         name: "Dolore Toracico",
@@ -62,7 +60,7 @@ const situations: Situation[] = [
             "Intensità?",
             "Il dolore cambia al cambio della posizione?",
             "Il dolore cambia con la respirazione profonda?",
-        ]
+        ],
     },
     {
         name: "Ictus",
@@ -71,37 +69,61 @@ const situations: Situation[] = [
             "A che ora è stato male?",
             "Quand'è l'ultima volta che è stato visto in salute?",
             "Numero caregiver",
-        ]
-    }
-]
+        ],
+    },
+];
 
 function getRandomSituation() {
-  const index = Math.floor(Math.random() * situations.length);
-  return situations[index];
+    const index = Math.floor(Math.random() * situations.length);
+    return situations[index];
 }
 
-
 export default function AnalyzePractice() {
-    const [currentSituation, setCurrentSituation] = useState(() => getRandomSituation());
+    const [currentSituation, setCurrentSituation] = useState(() =>
+        getRandomSituation(),
+    );
     const [showQuestions, setShowQuestions] = useState(false);
 
     return (
         <PracticePage title="Pratica Domande di Rito">
             <div className="mt-8 flex flex-col max-w-200 m-auto">
                 <p className="text-2xl mb-4">{currentSituation.name}</p>
-                <Button onClick={() => setShowQuestions(show => !show)}>{showQuestions ? "Nascondi" : "Mostra"} domande</Button>
+                {showQuestions ? (
+                    <Button
+                        className="flex justify-between"
+                        onClick={() => setShowQuestions((show) => !show)}
+                    >
+                        <span>Nascondi domande</span>
+                        <IoIosArrowUp />
+                    </Button>
+                ) : (
+                    <Button
+                        className="flex justify-between"
+                        onClick={() => setShowQuestions((show) => !show)}
+                    >
+                        <span>Mostra domande</span>
+                        <IoIosArrowDown />
+                    </Button>
+                )}
                 {showQuestions && (
                     <ul className="my-3">
-                        {currentSituation.questions.map(question => (
+                        {currentSituation.questions.map((question) => (
                             <li>- {question}</li>
                         ))}
                     </ul>
                 )}
             </div>
-            <Button outlined className="flex justify-center max-w-200 m-auto" style={{marginTop: 20}} onClick={() => {
-                setCurrentSituation(getRandomSituation())
-                setShowQuestions(false);
-            }}>Prossima Situazione</Button>
+            <Button
+                outlined
+                className="flex justify-center max-w-200 m-auto"
+                style={{ marginTop: 20 }}
+                onClick={() => {
+                    setCurrentSituation(getRandomSituation());
+                    setShowQuestions(false);
+                }}
+            >
+                Prossima Situazione
+            </Button>
         </PracticePage>
-    )
+    );
 }
