@@ -35,7 +35,7 @@ export interface CategorizeData {
 
 export interface TerminologyData {
     definition: string;
-    answer: string;
+    validAnswers: string[];
 }
 
 export interface FlashcardData {
