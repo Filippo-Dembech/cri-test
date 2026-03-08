@@ -240,6 +240,26 @@ const terms: TerminologyData[] = [
         definition: "Pupille dilatate",
         validAnswers: ["midriatiche", "midriasi"]
     },
+    {
+        definition: "Danno che accade nell'istante del trauma",
+        validAnswers: ["danno primario"]
+    },
+    {
+        definition: "Danno che ha luogo nelle ore o nei giorni successivi",
+        validAnswers: ["danno secondario"]
+    },
+    {
+        definition: "Carenza di ossigenazione al cervello",
+        validAnswers: ["ipossia"]
+    },
+    {
+        definition: "Raccolta di aria nella cavità pleurica",
+        validAnswers: ["pneumotorace", "pnx"]
+    },
+    {
+        definition: "Saturazione bassa",
+        validAnswers: ["desaturazione"]
+    }
 ];
 
 function getRandomTerm() {

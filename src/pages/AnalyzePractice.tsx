@@ -71,6 +71,14 @@ const situations: Situation[] = [
             "Numero caregiver",
         ],
     },
+    {
+        name: "Precipitato",
+        questions: [
+            "Altezza da cui è precipitato?",
+            "Superficie di impatto?",
+            "Parte del corpo che ha colpito il terreno per prima? (triplice impatto)"
+        ],
+    },
 ];
 
 function getRandomSituation() {
