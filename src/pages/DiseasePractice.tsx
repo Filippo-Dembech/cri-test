@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "../ui/Button";
 import Dropdown from "../ui/Dropdown";
+import { useRandomList } from "../hooks/useRandomList";
 
 interface Disease {
     name: string;
@@ -120,18 +121,16 @@ const diseases: Disease[] = [
     }
 ];
 
-function getRandomDisease() {
-    const index = Math.floor(Math.random() * diseases.length);
-    return diseases[index];
-}
-
 export default function DiseasePractice() {
     const [roundCount, setRoundCount] = useState(0);
-    const [currentDisease, setCurrentDisease] = useState(getRandomDisease);
+    const { current: currentDisease, next: nextDisease } = useRandomList<Disease>(diseases);
+
 
     useEffect(() => {
         setRoundCount((count) => ++count);
     }, [currentDisease]);
+
+    if (!currentDisease) return <h2>No Patologie Disponibili</h2>
 
     return (
         <div>
@@ -141,7 +140,7 @@ export default function DiseasePractice() {
                 {currentDisease.symptoms && (
                     <Dropdown
                         key={`${roundCount}-1`}
-                        showLabel="Mostra Sintomi"
+                        showLabel="Mostra Segni/Sintomi"
                     >
                         <ul>
                             {currentDisease.symptoms?.map((s) => (
@@ -191,9 +190,7 @@ export default function DiseasePractice() {
                 outlined
                 className="flex justify-center max-w-200 m-auto"
                 style={{ marginTop: 20 }}
-                onClick={() => {
-                    setCurrentDisease(getRandomDisease);
-                }}
+                onClick={nextDisease}
             >
                 Prossima Patologia
             </Button>
