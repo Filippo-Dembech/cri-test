@@ -102,8 +102,15 @@ const diseases: Disease[] = [
     },
     {
         name: "Oggetto conficcato",
-        whatToDo: ["ABCDE", "Fissare manualmente l'oggetto"],
-        whatToAvoid: ["Rimuovere l'oggetto"],
+        whatToDo: ["ABCDE",
+            "Tagliare i vestiti",
+            "SE emorragie, comprimere sui lati della ferita",
+            "Fissare l'oggetto"
+        ],
+        whatToAvoid: [
+            "Rimuovere l'oggetto",
+            "Nascondere l'oggetto"
+        ],
     },
     {
         name: "Trauma Addominale",
@@ -112,25 +119,133 @@ const diseases: Disease[] = [
             "Contusioni/ematomi",
             "GRAVE: Addome contratto",
             "GRAVE: Aumento volume addominale (dovuto al riversamento di liquidi interni)",
-            "GRAVE: Segni di shock"
+            "GRAVE: Segni di shock",
         ],
         whatToDo: [
             "ABCDE",
-            "Indagare dolore addominale per discriminarlo dall'infarto del miocardio"
+            "Indagare dolore addominale per discriminarlo dall'infarto del miocardio",
+        ],
+    },
+    {
+        name: "Eviscerazione",
+        whatToDo: [
+            "Coprire con garze e telino sterile",
+            "Contattare tempestivamente la SOREU",
+        ],
+        whatToAvoid: [
+            "Rimettere i visceri all'interno",
+            "Versare disinfettanti",
+        ],
+    },
+    {
+        name: "Trauma Parti Molli",
+        whatToDo: [
+            "ABCDE",
+            "Rimuovere accessori o abiti stretti",
+            "Valutare possibile frattura (sensibilità, motilità, colore, temperatura, e polso)",
+            "Immobilizzare",
+        ],
+    },
+    {
+        name: "Frattura",
+        symptoms: [
+            "Dolore violento e ben localizzato",
+            "Incapacità a muovere l'arto",
+        ],
+        whatToDo: [
+            "Tagliare/sfilare delicatamente vestiti",
+            "Valutare polso a valle e a monte",
+            "Valutare temperatura",
+            "Valutare sensibilità",
+            "Valutare mobilità",
+            "Immobilizzare",
+            "Ricontrollare dopo immobilizzazione",
+            "Favorire la posizione antalgica",
+            "SE possibile, posizione antishock",
+            "SE possibile, applicare il ghiaccio",
+        ],
+        whatToAvoid: ["Stringere troppo stretto"],
+    },
+    {
+        name: "Frattura Esposta",
+        symptoms: ["Ossa esposte"],
+        whatToDo: [
+            "Trattare come frattura normale",
+            "Proteggere monconi esposti con telo sterile",
+        ],
+        whatToAvoid: [
+            "Stringere troppo stetto",
+            "Far rientrare i monconi ossei",
+            "Toccare i monconi ossei",
+            "Applicare disinfettanti",
+        ],
+    },
+    {
+        name: "Frattura Bacino",
+        symptoms: [
+            "Dolore anche/schiena",
+            "Differenza di lunghezza",
+            "Rotazione arto inferiore",
+        ],
+        whatToDo: ["Immobilizzazione con materassino a depressione"],
+        whatToAvoid: ["Log-roll"],
+    },
+    {
+        name: "Lussazione",
+        symptoms: ["Deformità articolazione"],
+        whatToDo: [
+            "Bloccare la lussazione dove si trova",
+            "Favorire la posizione antalgica",
+            "Applicare ghiaccio",
+        ],
+        whatToAvoid: [
+            "Cercare di riallineare le articolazioni",
+            "Escludere frattura",
+        ],
+    },
+    {
+        name: "Ferita",
+        whatToDo: [
+            "Scoprire parte interessata",
+            "Pulire con garze sterili e disinfettante",
+            "Pressione diretta con garze sterili",
+            "Fasciatura",
+            "Applicazione ghiaccio",
+        ],
+    },
+    {
+        name: "Ferita alla Testa",
+        whatToDo: ["Trattamento ferita", "Attenzione sangue in naso/bocca"],
+        whatToAvoid: [
+            "Comprimere la ferita",
+            "Disinfettare la ferita",
+            "Pulire la ferita",
+        ],
+    },
+    {
+        name: "Ferita all'Occhio",
+        whatToDo: [
+            "Coprire entrambi gli occhi",
+            "SE possibile, sciacquare (dalla base del naso verso l'esterno)",
+            "SE sostanza chimica, capire la sostanza"
+        ],
+        whatToAvoid: [
+            "Togliere lenti a contatto",
+            "Disinfettare"
         ]
     }
 ];
 
 export default function DiseasePractice() {
     const [roundCount, setRoundCount] = useState(0);
-    const { current: currentDisease, next: nextDisease } = useRandomList<Disease>(diseases);
-
+    const { current: currentDisease, next: nextDisease } =
+        useRandomList<Disease>(diseases);
 
     useEffect(() => {
         setRoundCount((count) => ++count);
     }, [currentDisease]);
 
-    if (!currentDisease) return <h2>No Patologie Disponibili</h2>
+    if (!currentDisease) return <h2>No Patologie Disponibili</h2>;
 
     return (
         <div>

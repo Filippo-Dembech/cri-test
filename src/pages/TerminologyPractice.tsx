@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { TerminologyData } from "../exercises";
 import PracticePage from "../ui/PracticePage";
 import Confetti from "react-confetti-boom";
+import { useRandomList } from "../hooks/useRandomList";
 
 const terms: TerminologyData[] = [
     {
@@ -30,7 +31,7 @@ const terms: TerminologyData[] = [
     },
     {
         definition: "Respiro veloce",
-        validAnswers: ["tachipnea"],
+        validAnswers: ["tachipnea", "tachipnoico"],
     },
     {
         definition: "Respiro lento",
@@ -46,7 +47,7 @@ const terms: TerminologyData[] = [
     },
     {
         definition: "Paziente che non riesce ad articolare bene le parole",
-        validAnswers: ["Disartrico"],
+        validAnswers: ["Disartria", "Disartrico"],
     },
     {
         definition: "Sangue nel vomito",
@@ -86,193 +87,228 @@ const terms: TerminologyData[] = [
     },
     {
         definition: "Necrosi da ischemia prolungata",
-        validAnswers: ["infarto"]
+        validAnswers: ["infarto"],
     },
     {
         definition: "Riduzione del flusso sanguigno (ossigeno insufficiente)",
-        validAnswers: ["ischemia"]
+        validAnswers: ["ischemia"],
     },
     {
         definition: "Sete intensa",
-        validAnswers: ["polidipsia"]
+        validAnswers: ["polidipsia"],
     },
     {
         definition: "Minzione frequente",
-        validAnswers: ["poliuria"]
+        validAnswers: ["poliuria"],
     },
     {
         definition: "Fuoriuscita di sangue dall'ano",
-        validAnswers: ["rettorragia"]
+        validAnswers: ["rettorragia"],
     },
     {
         definition: "Fuoriuscita di sangue con colpi di tosse",
-        validAnswers: ["emottisi"]
+        validAnswers: ["emottisi"],
     },
     {
         definition: "Fuoriuscita di sangue dal naso",
-        validAnswers: ["rinorragia", "epistassi"]
+        validAnswers: ["rinorragia", "epistassi"],
     },
     {
         definition: "Eccessiva sudorazione",
-        validAnswers: ["diaforesi"]
+        validAnswers: ["diaforesi"],
     },
     {
         definition: "Dolore al muscolo o a più gruppi muscolari",
-        validAnswers: ["mialgia"]
+        validAnswers: ["mialgia"],
     },
     {
-        definition: "Difficoltà a respirare da sdraiati (ma si respira bene da seduti o in piedi)",
-        validAnswers: ["ortopnea"]
+        definition:
+            "Difficoltà a respirare da sdraiati (ma si respira bene da seduti o in piedi)",
+        validAnswers: ["ortopnea"],
     },
     {
         definition: "Stitichezza",
-        validAnswers: ["stipsi"]
+        validAnswers: ["stipsi"],
     },
     {
         definition: "Sanguinamento mestruale abbondante",
-        validAnswers: ["menorragia"]
+        validAnswers: ["menorragia"],
     },
     {
         definition: "Assenza di ciclo mestruale",
-        validAnswers: ["amenorrea"]
+        validAnswers: ["amenorrea"],
     },
     {
         definition: "Sangue nelle urine",
-        validAnswers: ["ematuria"]
+        validAnswers: ["ematuria"],
     },
     {
         definition: "Difficoltà ad urinare e a volte anche dolore",
-        validAnswers: ["disuria"]
+        validAnswers: ["disuria"],
     },
     {
         definition: "Pelle a chiazze",
-        validAnswers: ["marezzata"]
+        validAnswers: ["marezzata"],
     },
     {
-        definition: 'Alterata percezione della sensibilità (formicolio, punture di spillo, arto "addormentato", ...)',
-        validAnswers: ["parestesia"]
+        definition:
+            'Alterata percezione della sensibilità (formicolio, punture di spillo, arto "addormentato", ...)',
+        validAnswers: ["parestesia"],
     },
     {
-        definition: 'Sensazione di bruciore che si avverte dietro lo sterno, spesso associata a reflusso gastroesofageo',
-        validAnswers: ["pirosi"]
+        definition:
+            "Sensazione di bruciore che si avverte dietro lo sterno, spesso associata a reflusso gastroesofageo",
+        validAnswers: ["pirosi"],
     },
     {
-        definition: 'Assenza totale di movimento in tutti e quattro gli arti',
-        validAnswers: ["tetraplegia"]
+        definition: "Assenza totale di movimento in tutti e quattro gli arti",
+        validAnswers: ["tetraplegia"],
     },
     {
-        definition: 'Ridotta forza e movimenti a tutti e quattro gli arti',
-        validAnswers: ["tetraparesi"]
+        definition: "Ridotta forza e movimenti a tutti e quattro gli arti",
+        validAnswers: ["tetraparesi"],
     },
     {
-        definition: 'Assenza totale di movimento negli arti inferiori',
-        validAnswers: ["paraplegia"]
+        definition: "Assenza totale di movimento negli arti inferiori",
+        validAnswers: ["paraplegia"],
     },
     {
-        definition: 'Riduzione di forza e movimento agli arti inferiori',
-        validAnswers: ["paraparesi"]
+        definition: "Riduzione di forza e movimento agli arti inferiori",
+        validAnswers: ["paraparesi"],
     },
     {
-        definition: 'Assenza totale di movimenti agli arti dello stesso lato',
-        validAnswers: ["emiplegia"]
+        definition: "Assenza totale di movimenti agli arti dello stesso lato",
+        validAnswers: ["emiplegia"],
     },
     {
-        definition: 'Riduzione di forza e movimento agli arti dello stesso lato',
-        validAnswers: ["emiparesi"]
+        definition:
+            "Riduzione di forza e movimento agli arti dello stesso lato",
+        validAnswers: ["emiparesi"],
     },
     {
-        definition: 'Assenza totale di movimento da un solo arto',
-        validAnswers: ["monoplegia"]
+        definition: "Assenza totale di movimento da un solo arto",
+        validAnswers: ["monoplegia"],
     },
     {
-        definition: 'Assenza di forza da un solo arto',
-        validAnswers: ["monoparesi"]
+        definition: "Assenza di forza da un solo arto",
+        validAnswers: ["monoparesi"],
     },
     {
-        definition: 'Assenza di forza',
-        validAnswers: ["paresi"]
+        definition: "Assenza di forza",
+        validAnswers: ["paresi"],
     },
     {
-        definition: 'Assenza totale di movimento volontario',
-        validAnswers: ["plegia"]
+        definition: "Assenza totale di movimento volontario",
+        validAnswers: ["plegia"],
     },
     {
-        definition: 'Capogiri che si manifestano alzandosi',
-        validAnswers: ["vertigini ortostatiche"]
+        definition: "Capogiri che si manifestano alzandosi",
+        validAnswers: ["vertigini ortostatiche"],
     },
     {
-        definition: 'Vomito che si verifica dopo aver mangiato',
-        validAnswers: ["emesi post-prandiale", "emesi post prandiale", "emesi postprandiale", "vomito post-prandiale", "vomito post prandiale", "vomito postprandiale"]
+        definition: "Vomito che si verifica dopo aver mangiato",
+        validAnswers: [
+            "emesi post-prandiale",
+            "emesi post prandiale",
+            "emesi postprandiale",
+            "vomito post-prandiale",
+            "vomito post prandiale",
+            "vomito postprandiale",
+        ],
     },
     {
-        definition: 'Mancanza persistente di appetito',
-        validAnswers: ["anoressia"]
+        definition: "Mancanza persistente di appetito",
+        validAnswers: ["anoressia"],
     },
     {
-        definition: 'Sensazione di stanchezza generalizzata',
-        validAnswers: ["astenia"]
+        definition: "Sensazione di stanchezza generalizzata",
+        validAnswers: ["astenia"],
     },
     {
         definition: "Vomito",
-        validAnswers: ["emesi"]
+        validAnswers: ["emesi"],
     },
     {
-        definition: "Metodica utilizzata in ambito cardiologico per dilatare un restringimento coronarico che riduce il flusso del sangue al cuore",
-        validAnswers: ["angioplastica"]
+        definition:
+            "Metodica utilizzata in ambito cardiologico per dilatare un restringimento coronarico che riduce il flusso del sangue al cuore",
+        validAnswers: ["angioplastica"],
     },
     {
         definition: "Difficoltà nella deglutizione",
-        validAnswers: ["disfagia"]
+        validAnswers: ["disfagia"],
     },
     {
         definition: "Pupille ristrette",
-        validAnswers: ["miosi", "miotiche"]
+        validAnswers: ["miosi", "miotiche"],
     },
     {
         definition: "Pupille asimmetriche tra loro",
-        validAnswers: ["anisocoriche", "anisocoria"]
+        validAnswers: ["anisocoriche", "anisocoria"],
     },
     {
         definition: "Pupille simmetriche tra loro",
-        validAnswers: ["isocoriche", "isocoria"]
+        validAnswers: ["isocoriche", "isocoria"],
     },
     {
         definition: "Pupille dilatate",
-        validAnswers: ["midriatiche", "midriasi"]
+        validAnswers: ["midriatiche", "midriasi"],
     },
     {
         definition: "Danno che accade nell'istante del trauma",
-        validAnswers: ["danno primario"]
+        validAnswers: ["danno primario"],
     },
     {
         definition: "Danno che ha luogo nelle ore o nei giorni successivi",
-        validAnswers: ["danno secondario"]
+        validAnswers: ["danno secondario"],
     },
     {
-        definition: "Carenza di ossigenazione al cervello",
-        validAnswers: ["ipossia"]
+        definition: "Carenza di ossigeno",
+        validAnswers: ["ipossia"],
     },
     {
         definition: "Raccolta di aria nella cavità pleurica",
-        validAnswers: ["pneumotorace", "pnx"]
+        validAnswers: ["pneumotorace", "pnx"],
     },
     {
         definition: "Saturazione bassa",
-        validAnswers: ["desaturazione"]
+        validAnswers: ["desaturazione"],
+    },
+    {
+        definition: "Perdita di continuità di un segmento osseo",
+        validAnswers: ["frattura"]
+    },
+    {
+        definition: "Perdita della continuità articolare",
+        validAnswers: ["lussazione"]
+    },
+    {
+        definition: "Frattura con monconi ossei rimasti nella sede naturale anatomica senza spostamenti evidenti",
+        validAnswers: ["frattura composta", "composta"]
+    },
+    {
+        definition: "Frattura con monconi ossei spostati dalla sede naturale anatomica",
+        validAnswers: ["frattura scomposta", "scomposta"]
+    },
+    {
+        definition: "Frattura in cui la cute sovrastante è rimasta intatta",
+        validAnswers: ["frattura chiusa", "chiusa"]
+    },
+    {
+        definition: "Frattura in cui la cute sovrastante ha subito una lacerazione",
+        validAnswers: ["frattura aperta", "aperta"]
+    },
+    {
+        definition: "Arresto delle emorragie",
+        validAnswers: ["emostasi"]
     }
 ];
-
-function getRandomTerm() {
-    const index = Math.floor(Math.random() * terms.length);
-    return terms[index];
-}
 
 export default function TerminologyPractice() {
     const [rounds, setRounds] = useState(0);
     const [rightAnswers, setRightAnswers] = useState(0);
     const [givenAnswer, setGivenAnswer] = useState("");
     const [showConfetti, setShowConfetti] = useState(false);
-    const [term, setTerm] = useState(getRandomTerm);
+    const { current: term, next: nextTerm } = useRandomList(terms);
     const [isRightAnswer, setIsRightAnswer] = useState<boolean | undefined>(
         undefined,
     );
@@ -283,6 +319,8 @@ export default function TerminologyPractice() {
         }, 3000);
     }, [term]);
 
+    if (!term) return <h2>Nessun termine disponibile</h2>;
+
     return (
         <PracticePage title="Pratica Terminologia">
             <div className="flex flex-col">
@@ -292,10 +330,14 @@ export default function TerminologyPractice() {
                     onSubmit={(e) => {
                         e.preventDefault();
                         if (
-                            term.validAnswers.find(validAnswer => validAnswer.toLowerCase() === givenAnswer.toLowerCase())
+                            term.validAnswers.find(
+                                (validAnswer) =>
+                                    validAnswer.toLowerCase() ===
+                                    givenAnswer.toLowerCase(),
+                            )
                         ) {
                             setRightAnswers((rightAnswers) => rightAnswers + 1);
-                            setTerm(getRandomTerm);
+                            nextTerm();
                             setIsRightAnswer(true);
                             setRounds((rounds) => rounds + 1);
                             setGivenAnswer("");
@@ -324,17 +366,17 @@ export default function TerminologyPractice() {
                         className="rounded-lg bg-red-500 text-white pb-1 px-2 transition-colors hover:bg-red-600 duration-100 cursor-pointer"
                         value="Rispondi"
                     />
+                    <button
+                        className="bg-slate-200 px-4 py-1 rounded-lg cursor-pointer hover:bg-slate-300 transition-all duration-200"
+                        onClick={() => {
+                            nextTerm();
+                            setRounds((rounds) => rounds + 1);
+                            setIsRightAnswer(undefined);
+                        }}
+                    >
+                        Salta
+                    </button>
                 </form>
-                <button
-                    className="bg-slate-200 px-4 py-1 rounded-lg cursor-pointer hover:bg-slate-300 transition-all duration-200"
-                    onClick={() => {
-                        setTerm(getRandomTerm);
-                        setRounds(rounds => rounds + 1)
-                        setIsRightAnswer(undefined);
-                    }}
-                >
-                    Salta
-                </button>
             </div>
             {showConfetti && (
                 <Confetti
