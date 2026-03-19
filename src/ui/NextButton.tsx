@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes } from "react";
 import { BsArrowRight } from "react-icons/bs";
+import Button from "./Button";
 
 interface NextButtonProps {
     show: boolean;
@@ -11,11 +12,11 @@ export default function NextButton({
 }: NextButtonProps & ButtonHTMLAttributes<HTMLButtonElement>) {
     if (show)
         return (
-            <button
-                className="flex items-center justify-center gap-3 cursor-pointer rounded-full bg-red-100 px-3 py-1"
+            <Button outlined
+                className="flex items-center gap-3"
                 {...rest}
             >
                 Prossimo <BsArrowRight />
-            </button>
+            </Button>
         );
 }
