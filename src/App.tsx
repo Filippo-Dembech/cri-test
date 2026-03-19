@@ -18,7 +18,7 @@ import DiagnosticSuspicionScorePractice from "./pages/DiagnosticSuspicionScorePr
 
 export default function App() {
     return (
-        <div className="p-8">
+        <div>
             <PracticeProvider>
                 <Routes>
                     <Route

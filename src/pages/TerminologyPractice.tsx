@@ -275,32 +275,35 @@ const terms: TerminologyData[] = [
     },
     {
         definition: "Perdita di continuità di un segmento osseo",
-        validAnswers: ["frattura"]
+        validAnswers: ["frattura"],
     },
     {
         definition: "Perdita della continuità articolare",
-        validAnswers: ["lussazione"]
+        validAnswers: ["lussazione"],
     },
     {
-        definition: "Frattura con monconi ossei rimasti nella sede naturale anatomica senza spostamenti evidenti",
-        validAnswers: ["frattura composta", "composta"]
+        definition:
+            "Frattura con monconi ossei rimasti nella sede naturale anatomica senza spostamenti evidenti",
+        validAnswers: ["frattura composta", "composta"],
     },
     {
-        definition: "Frattura con monconi ossei spostati dalla sede naturale anatomica",
-        validAnswers: ["frattura scomposta", "scomposta"]
+        definition:
+            "Frattura con monconi ossei spostati dalla sede naturale anatomica",
+        validAnswers: ["frattura scomposta", "scomposta"],
     },
     {
         definition: "Frattura in cui la cute sovrastante è rimasta intatta",
-        validAnswers: ["frattura chiusa", "chiusa"]
+        validAnswers: ["frattura chiusa", "chiusa"],
     },
     {
-        definition: "Frattura in cui la cute sovrastante ha subito una lacerazione",
-        validAnswers: ["frattura aperta", "aperta"]
+        definition:
+            "Frattura in cui la cute sovrastante ha subito una lacerazione",
+        validAnswers: ["frattura aperta", "aperta"],
     },
     {
         definition: "Arresto delle emorragie",
-        validAnswers: ["emostasi"]
-    }
+        validAnswers: ["emostasi"],
+    },
 ];
 
 export default function TerminologyPractice() {
@@ -323,7 +326,7 @@ export default function TerminologyPractice() {
 
     return (
         <PracticePage title="Pratica Terminologia">
-            <div className="flex flex-col">
+            <div className="flex flex-col sm:w-100">
                 <p className="text-xl mb-3">{term.definition}</p>
                 <form
                     className="flex flex-col gap-3 mb-3 sm:flex-row"
@@ -357,7 +360,7 @@ export default function TerminologyPractice() {
                                   }
                                 : {}
                         }
-                        className="border-2 border-slate-300 rounded-lg pb-1 px-2 outline-0"
+                        className="border-2 border-slate-300 rounded-lg pb-1 px-2 outline-0 flex-1"
                         value={givenAnswer}
                         onChange={(e) => setGivenAnswer(e.target.value)}
                     />
@@ -366,17 +369,20 @@ export default function TerminologyPractice() {
                         className="rounded-lg bg-red-500 text-white pb-1 px-2 transition-colors hover:bg-red-600 duration-100 cursor-pointer"
                         value="Rispondi"
                     />
-                    <button
-                        className="bg-slate-200 px-4 py-1 rounded-lg cursor-pointer hover:bg-slate-300 transition-all duration-200"
-                        onClick={() => {
-                            nextTerm();
-                            setRounds((rounds) => rounds + 1);
-                            setIsRightAnswer(undefined);
-                        }}
-                    >
-                        Salta
-                    </button>
                 </form>
+                <button
+                    className="bg-slate-200 px-4 py-1 rounded-lg cursor-pointer hover:bg-slate-300 transition-all duration-200"
+                    onClick={() => {
+                        nextTerm();
+                        setRounds((rounds) => rounds + 1);
+                        setIsRightAnswer(undefined);
+                    }}
+                >
+                    Salta
+                </button>
+                <p className="mt-3">
+                    Risposte corrette: {rightAnswers} / {rounds}
+                </p>
             </div>
             {showConfetti && (
                 <Confetti
@@ -386,9 +392,6 @@ export default function TerminologyPractice() {
                     y={0.9}
                 />
             )}
-            <p className="mt-3">
-                Risposte corrette: {rightAnswers} / {rounds}
-            </p>
         </PracticePage>
     );
 }
