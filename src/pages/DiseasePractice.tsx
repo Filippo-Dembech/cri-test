@@ -4,6 +4,7 @@ import Dropdown from "../ui/Dropdown";
 import { useRandomList } from "../hooks/useRandomList";
 import { motion, AnimatePresence } from "framer-motion";
 import { BiSolidRightArrow } from "react-icons/bi";
+import PracticePage from "../ui/PracticePage";
 
 interface Disease {
     name: string;
@@ -251,9 +252,10 @@ export default function DiseasePractice() {
     if (!currentDisease) return <h2>No Patologie Disponibili</h2>;
 
     return (
-        <div>
-            <h1 className="text-4xl font-bold">Pratica Patologie</h1>
-            <div style={{ overflow: "hidden" }}>
+        <PracticePage title="Pratica Patologie">
+            
+            <div className="flex flex-col sm:w-100">
+             <div style={{ overflow: "hidden" }}>
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentDisease.name}
@@ -327,6 +329,8 @@ export default function DiseasePractice() {
             >
                 Prossima Patologia <BiSolidRightArrow />
             </Button>
-        </div>
+                     
+            </div>
+  </PracticePage>
     );
 }
