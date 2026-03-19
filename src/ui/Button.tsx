@@ -17,12 +17,12 @@ export default function Button({
         return (
             <div className="relative">
                 <button
-                    className={`peer px-2 py-1 text-red-500 rounded-lg border border-red-500 cursor-pointer hover:bg-red-500 hover:text-white transition-colors duration-400 w-full ${className}`}
+                    className={`px-2 py-1 text-red-500 rounded-lg border border-red-500 cursor-pointer hover:bg-red-50 transition-colors duration-300 w-full ${className}`}
                     {...htmlButtonAttributes}
                 >
                     {children}
                 </button>
-                {icon && <span className="absolute text-red-500 top-1/2 left-6 -translate-1/2 peer-hover:text-white transition-colors duration-400">{icon}</span>}
+                {icon && <span className="absolute text-red-500 top-1/2 left-6 -translate-1/2 transition-colors duration-400">{icon}</span>}
             </div>
         );
     return (
