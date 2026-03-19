@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Button from "../ui/Button";
 import Dropdown from "../ui/Dropdown";
 import { useRandomList } from "../hooks/useRandomList";
+import { motion, AnimatePresence } from "framer-motion";
+import { BiSolidRightArrow } from "react-icons/bi";
 
 interface Disease {
     name: string;
@@ -102,15 +104,13 @@ const diseases: Disease[] = [
     },
     {
         name: "Oggetto conficcato",
-        whatToDo: ["ABCDE",
+        whatToDo: [
+            "ABCDE",
             "Tagliare i vestiti",
             "SE emorragie, comprimere sui lati della ferita",
-            "Fissare l'oggetto"
+            "Fissare l'oggetto",
         ],
-        whatToAvoid: [
-            "Rimuovere l'oggetto",
-            "Nascondere l'oggetto"
-        ],
+        whatToAvoid: ["Rimuovere l'oggetto", "Nascondere l'oggetto"],
     },
     {
         name: "Trauma Addominale",
@@ -227,14 +227,17 @@ const diseases: Disease[] = [
         whatToDo: [
             "Coprire entrambi gli occhi",
             "SE possibile, sciacquare (dalla base del naso verso l'esterno)",
-            "SE sostanza chimica, capire la sostanza"
+            "SE sostanza chimica, capire la sostanza",
         ],
-        whatToAvoid: [
-            "Togliere lenti a contatto",
-            "Disinfettare"
-        ]
-    }
+        whatToAvoid: ["Togliere lenti a contatto", "Disinfettare"],
+    },
 ];
+
+const variants = {
+    enter: { x: "100%", opacity: 0 },
+    center: { x: 0, opacity: 1 },
+    exit: { x: "-100%", opacity: 0 },
+};
 
 export default function DiseasePractice() {
     const [roundCount, setRoundCount] = useState(0);
@@ -250,64 +253,79 @@ export default function DiseasePractice() {
     return (
         <div>
             <h1 className="text-4xl font-bold">Pratica Patologie</h1>
-            <div className="flex flex-col max-w-200 gap-4">
-                <p className="text-2xl">{currentDisease.name}</p>
-                {currentDisease.symptoms && (
-                    <Dropdown
-                        key={`${roundCount}-1`}
-                        showLabel="Mostra Segni/Sintomi"
+            <div style={{ overflow: "hidden" }}>
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={currentDisease.name}
+                        variants={variants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{ duration: 0.3 }}
                     >
-                        <ul>
-                            {currentDisease.symptoms?.map((s) => (
-                                <li>- {s}</li>
-                            ))}
-                        </ul>
-                    </Dropdown>
-                )}
-                {currentDisease.questions && (
-                    <Dropdown
-                        key={`${roundCount}-2`}
-                        showLabel="Mostra Domande di Rito"
-                    >
-                        <ul>
-                            {currentDisease.questions?.map((s) => (
-                                <li>- {s}</li>
-                            ))}
-                        </ul>
-                    </Dropdown>
-                )}
-                {currentDisease.whatToDo && (
-                    <Dropdown
-                        key={`${roundCount}-3`}
-                        showLabel="Mostra Assistenza"
-                    >
-                        <ul>
-                            {currentDisease.whatToDo?.map((s) => (
-                                <li>- {s}</li>
-                            ))}
-                        </ul>
-                    </Dropdown>
-                )}
-                {currentDisease.whatToAvoid && (
-                    <Dropdown
-                        key={`${roundCount}-4`}
-                        showLabel="Mostra Cosa NON Fare"
-                    >
-                        <ul>
-                            {currentDisease.whatToAvoid?.map((s) => (
-                                <li>- {s}</li>
-                            ))}
-                        </ul>
-                    </Dropdown>
-                )}
+                        <div className="flex flex-col max-w-200 gap-4">
+                            <p className="text-2xl">{currentDisease.name}</p>
+                            {currentDisease.symptoms && (
+                                <Dropdown
+                                    key={`${roundCount}-1`}
+                                    showLabel="Mostra Segni/Sintomi"
+                                >
+                                    <ul>
+                                        {currentDisease.symptoms?.map((s) => (
+                                            <li>- {s}</li>
+                                        ))}
+                                    </ul>
+                                </Dropdown>
+                            )}
+                            {currentDisease.questions && (
+                                <Dropdown
+                                    key={`${roundCount}-2`}
+                                    showLabel="Mostra Domande di Rito"
+                                >
+                                    <ul>
+                                        {currentDisease.questions?.map((s) => (
+                                            <li>- {s}</li>
+                                        ))}
+                                    </ul>
+                                </Dropdown>
+                            )}
+                            {currentDisease.whatToDo && (
+                                <Dropdown
+                                    key={`${roundCount}-3`}
+                                    showLabel="Mostra Assistenza"
+                                >
+                                    <ul>
+                                        {currentDisease.whatToDo?.map((s) => (
+                                            <li>- {s}</li>
+                                        ))}
+                                    </ul>
+                                </Dropdown>
+                            )}
+                            {currentDisease.whatToAvoid && (
+                                <Dropdown
+                                    key={`${roundCount}-4`}
+                                    showLabel="Mostra Cosa NON Fare"
+                                >
+                                    <ul>
+                                        {currentDisease.whatToAvoid?.map(
+                                            (s) => (
+                                                <li>- {s}</li>
+                                            ),
+                                        )}
+                                    </ul>
+                                </Dropdown>
+                            )}
+                        </div>
+                    </motion.div>
+                </AnimatePresence>
             </div>
             <Button
                 outlined
-                className="flex justify-center max-w-200 m-auto"
+                className="flex justify-center max-w-200 m-auto items-center gap-3"
                 style={{ marginTop: 20 }}
                 onClick={nextDisease}
             >
-                Prossima Patologia
+                Prossima Patologia <BiSolidRightArrow />
             </Button>
         </div>
     );
