@@ -3,12 +3,23 @@ import type { StepsData } from "../../exercises";
 import Button from "../Button";
 import { GiPartyPopper } from "react-icons/gi";
 import Modal from "react-modal";
+import { motion, AnimatePresence } from "framer-motion";
 
 function Step({ step }: { step: string }) {
-    return <div className="border-2 border-red-200 rounded-lg p-3">{step}</div>;
+    return (
+        <motion.div
+            layout
+            className="border-2 border-red-200 rounded-lg p-3"
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+        >
+            {step}
+        </motion.div>
+    );
 }
 
-export default function Steps({ procedureName, steps }: StepsData) {
+export default function Steps({ procedureName, steps, onReset }: StepsData & { onReset: () => void }) {
     const [stepsToShow, setStepsToShow] = useState(0);
     const [showAlignment, setShowAlignment] = useState(false);
 
@@ -18,14 +29,8 @@ export default function Steps({ procedureName, steps }: StepsData) {
                 isOpen={showAlignment}
                 onRequestClose={() => setShowAlignment(false)}
                 style={{
-                    content: {
-                        maxHeight: "max-content",
-                        borderRadius: "40px",
-                        padding: "30px"
-                    },
-                    overlay: {
-                        backgroundColor: "rgba(0,0,0,0.3)"
-                    }
+                    content: { maxHeight: "max-content", borderRadius: "40px", padding: "30px" },
+                    overlay: { backgroundColor: "rgba(0,0,0,0.3)" },
                 }}
             >
                 <div className="flex flex-col gap-8">
@@ -37,9 +42,7 @@ export default function Steps({ procedureName, steps }: StepsData) {
                         <li>Afferrare articolazioni distale e a valle</li>
                         <li>Lieve trazione</li>
                         <li>Non portare l'arto verso di sè</li>
-                        <li>
-                            Mani che sorreggono l'arto, non pinzarlo dall'alto
-                        </li>
+                        <li>Mani che sorreggono l'arto, non pinzarlo dall'alto</li>
                     </ul>
                     <button
                         onClick={() => setShowAlignment(false)}
@@ -49,29 +52,61 @@ export default function Steps({ procedureName, steps }: StepsData) {
                     </button>
                 </div>
             </Modal>
+
             <h2 className="text-xl mb-4">{procedureName}</h2>
+
             <div className="flex flex-col gap-3">
-                {steps
-                    .filter((_, i) => i < stepsToShow)
-                    .map((step) =>
-                        step.toLowerCase().includes("allinea") &&
-                        step.toLowerCase().includes("arti") ? (
-                            <button onClick={() => setShowAlignment(true)} className="border-2 border-red-200 rounded-lg p-3 underline underline-offset-2 cursor-pointer text-left outline-0">
-                                {step}
-                            </button>
-                        ) : (
-                            <Step step={step} />
-                        ),
+                <AnimatePresence>
+                    {steps
+                        .filter((_, i) => i < stepsToShow)
+                        .map((step, i) =>
+                            step.toLowerCase().includes("allinea") &&
+                            step.toLowerCase().includes("arti") ? (
+                                <motion.button
+                                    key={i}
+                                    layout
+                                    onClick={() => setShowAlignment(true)}
+                                    className="border-2 border-red-200 rounded-lg p-3 underline underline-offset-2 cursor-pointer text-left outline-0"
+                                    initial={{ opacity: 0, x: -40 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.35, ease: "easeOut" }}
+                                >
+                                    {step}
+                                </motion.button>
+                            ) : (
+                                <Step key={i} step={step} />
+                            ),
+                        )}
+                </AnimatePresence>
+
+                <AnimatePresence mode="wait">
+                    {stepsToShow < steps.length ? (
+                        <motion.div
+                            key="next-btn"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            <Button onClick={() => setStepsToShow((curr) => curr + 1)}>
+                                Guarda Prossimo Step
+                            </Button>
+                        </motion.div>
+                    ) : (
+                        <motion.button
+                            key="end"
+                            onClick={onReset}
+                            className="flex gap-3 items-center justify-center border-red-600 border-2 rounded-2xl text-red-600 p-3 w-full cursor-pointer outline-0 hover:bg-red-600 hover:text-white transition-colors"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.97 }}
+                        >
+                            End <GiPartyPopper />
+                        </motion.button>
                     )}
-                {stepsToShow < steps.length ? (
-                    <Button onClick={() => setStepsToShow((curr) => curr + 1)}>
-                        Guarda Prossimo Step
-                    </Button>
-                ) : (
-                    <div className="flex gap-3 items-center justify-center border-red-600 border-2 rounded-2xl text-red-600 p-3">
-                        End <GiPartyPopper />
-                    </div>
-                )}
+                </AnimatePresence>
             </div>
         </div>
     );

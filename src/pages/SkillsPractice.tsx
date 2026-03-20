@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { StepsData } from "../exercises";
 import Steps from "../ui/exercise/Steps";
+import PracticePage from "../ui/PracticePage";
+import { motion, AnimatePresence } from "framer-motion";
 
 const skills: StepsData[] = [
     {
@@ -230,50 +232,79 @@ const skills: StepsData[] = [
 ];
 
 export default function SkillsPractice() {
-    const [selectedSkill, setSelectedSkill] = useState<StepsData | undefined>(
-        undefined,
-    );
+    const [selectedSkill, setSelectedSkill] = useState<StepsData | undefined>(undefined);
+    const selectRef = useRef<HTMLSelectElement>(null);
+
+    const handleReset = () => {
+        setSelectedSkill(undefined);
+        if (selectRef.current) selectRef.current.value = "";
+    };
+
     return (
-        <div>
-            <h1 className="text-4xl font-bold mb-5">Practica Skills</h1>
-            <div className="flex flex-col gap-10 max-w-200 m-auto">
-                <div className="p-3 bg-slate-100 cursor-pointer rounded-2xl">
+        <PracticePage title="Pratica Skills">
+            <div className="flex flex-col gap-10 w-full max-w-200 m-auto sm:p-8">
+
+                <motion.div
+                    className="p-3 bg-slate-100 cursor-pointer rounded-2xl"
+                    initial={{ opacity: 0, y: -16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                >
                     <select
+                        ref={selectRef}
                         className="w-full outline-0 cursor-pointer"
                         onChange={(e) =>
                             setSelectedSkill(
-                                skills.find(
-                                    (skill) =>
-                                        skill.procedureName === e.target.value,
-                                ),
+                                skills.find((skill) => skill.procedureName === e.target.value)
                             )
                         }
                     >
-                        <option
-                            selected
-                            disabled
-                        >
+                        <option value="" disabled selected>
                             Seleziona la skill...
                         </option>
                         {skills.map((skill) => (
-                            <option>{skill.procedureName}</option>
+                            <option key={skill.procedureName}>{skill.procedureName}</option>
                         ))}
                     </select>
-                </div>
-                <div className="flex-3 bg-red-50 rounded-lg p-3">
-                    {selectedSkill ? (
-                        <Steps
-                            key={selectedSkill.procedureName}
-                            procedureName={selectedSkill.procedureName}
-                            steps={selectedSkill.steps}
-                        />
-                    ) : (
-                        <p className="italic text-red-400">
-                            Nessuna skill selezionata
-                        </p>
-                    )}
-                </div>
+                </motion.div>
+
+                <motion.div
+                    className="flex-3 bg-red-50 rounded-lg p-3"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, ease: "easeOut", delay: 0.15 }}
+                >
+                    <AnimatePresence mode="wait">
+                        {selectedSkill ? (
+                            <motion.div
+                                key={selectedSkill.procedureName}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.25, ease: "easeInOut" }}
+                            >
+                                <Steps
+                                    procedureName={selectedSkill.procedureName}
+                                    steps={selectedSkill.steps}
+                                    onReset={handleReset}
+                                />
+                            </motion.div>
+                        ) : (
+                            <motion.p
+                                key="empty"
+                                className="italic text-red-400"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                Nessuna skill selezionata
+                            </motion.p>
+                        )}
+                    </AnimatePresence>
+                </motion.div>
+
             </div>
-        </div>
+        </PracticePage>
     );
 }
