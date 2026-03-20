@@ -17,7 +17,7 @@ import { TbActivityHeartbeat } from "react-icons/tb";
 
 export default function SSEPractice() {
     return (
-        <div>
+        <div className="p-8">
             <Title h={1}>PRATICA SSE</Title>
             <Background />
             <div className="flex flex-col gap-3 my-4 w-3/4 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 max-w-150">
