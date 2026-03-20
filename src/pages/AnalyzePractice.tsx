@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "../ui/Button";
 import PracticePage from "../ui/PracticePage";
 import Dropdown from "../ui/Dropdown";
+import {motion, AnimatePresence} from 'framer-motion'
 
 interface Situation {
     name: string;
@@ -85,7 +86,6 @@ function getRandomSituation() {
     const index = Math.floor(Math.random() * situations.length);
     return situations[index];
 }
-
 export default function AnalyzePractice() {
     const [currentSituation, setCurrentSituation] = useState(() =>
         getRandomSituation(),
@@ -93,26 +93,59 @@ export default function AnalyzePractice() {
 
     return (
         <PracticePage title="Pratica Domande di Rito">
-            <div className="mt-8 flex flex-col max-w-200 m-auto">
-                <p className="text-2xl mb-4">{currentSituation.name}</p>
-                <Dropdown key={currentSituation.name}>
-                    <ul className="my-3">
-                        {currentSituation.questions.map((question) => (
-                            <li>- {question}</li>
-                        ))}
-                    </ul>
-                </Dropdown>
-            </div>
-            <Button
-                outlined
-                className="flex justify-center max-w-200 m-auto"
-                style={{ marginTop: 20 }}
-                onClick={() => {
-                    setCurrentSituation(getRandomSituation());
-                }}
+            <motion.div
+                className="flex flex-col p-8 w-full max-w-120"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
             >
-                Prossima Situazione
-            </Button>
+                {/* Situation name — slides in from right on change */}
+                <AnimatePresence mode="wait">
+                    <motion.p
+                        key={currentSituation.name}
+                        className="text-2xl mb-4"
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -30 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                    >
+                        {currentSituation.name}
+                    </motion.p>
+                </AnimatePresence>
+
+                {/* Dropdown — fades and scales in on change */}
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={currentSituation.name}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.3, ease: "easeInOut", delay: 0.05 }}
+                    >
+                        <Dropdown key={currentSituation.name}>
+                            <ul className="my-3">
+                                {currentSituation.questions.map((question) => (
+                                    <li>- {question}</li>
+                                ))}
+                            </ul>
+                        </Dropdown>
+                    </motion.div>
+                </AnimatePresence>
+
+                {/* Button — subtle hover/tap */}
+                <motion.div
+                    style={{ marginTop: 20 }}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.96 }}
+                >
+                    <Button
+                        outlined
+                        onClick={() => setCurrentSituation(getRandomSituation())}
+                    >
+                        Prossima Situazione
+                    </Button>
+                </motion.div>
+            </motion.div>
         </PracticePage>
     );
 }
