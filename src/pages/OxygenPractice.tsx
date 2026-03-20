@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Button from "../ui/Button";
+import PracticePage from "../ui/PracticePage";
+import {motion, AnimatePresence} from 'framer-motion';
 
 type Disease = 
         "shock" | 
@@ -79,29 +81,95 @@ export default function OxygenPractice() {
     const [patientState, setPatientState] = useState<PatientState>(getRandomPatientState);
     const [showAnswer, setShowAnswer] = useState(false);
     const answer = getAnswerFrom(patientState);
-    
+
     function toggleShowAnswer() {
-        setShowAnswer(show => !show)
+        setShowAnswer((show) => !show);
     }
 
     return (
-        <div>
-            <h1 className="text-4xl font-bold">Pratica Ossigenoterapia</h1>
-            <div className="flex flex-col gap-4 mt-8 align-center max-w-150 m-auto">
-                <p>{patientStateToString(patientState)}</p>
-                <Button onClick={toggleShowAnswer} className="justify-center">{showAnswer ? "Nascondi Risposta" : "Mostra Risposta"}</Button>
-                {showAnswer && (
-                    <div>
-                        <div className="p-3 bg-slate-200 shadow rounded-2xl">{answer}</div>
-                        <span className="block w-fit m-auto">
-                        <Button outlined onClick={() => {
-                            setPatientState(getRandomPatientState);
-                            toggleShowAnswer();
-                        }} className="mt-4">Continua</Button>
-                        </span>
-                    </div>
-                )}
-            </div>
-        </div>
+        <PracticePage title="Pratica Ossigenoterapia">
+            <motion.div
+                className="flex flex-col gap-5 max-w-150 w-full"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+                {/* Patient state card */}
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={patientStateToString(patientState)}
+                        className="bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4"
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -30 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                    >
+                        <p className="text-sm font-medium text-slate-400 uppercase tracking-widest mb-1">
+                            Paziente
+                        </p>
+                        <p className="text-slate-800 text-base leading-relaxed">
+                            {patientStateToString(patientState)}
+                        </p>
+                    </motion.div>
+                </AnimatePresence>
+
+                {/* Toggle answer button */}
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+                    <Button onClick={toggleShowAnswer} className="justify-center w-full">
+                        {showAnswer ? "Nascondi Risposta" : "Mostra Risposta"}
+                    </Button>
+                </motion.div>
+
+                {/* Answer section */}
+                <AnimatePresence>
+                    {showAnswer && (
+                        <motion.div
+                            className="flex flex-col gap-4"
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.35, ease: "easeInOut" }}
+                            style={{ overflow: "hidden" }}
+                        >
+                            {/* Answer card with left accent border */}
+                            <motion.div
+                                className="relative bg-blue-50 border border-blue-100 rounded-2xl px-5 py-4"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
+                            >
+                                <div className="absolute left-0 top-4 bottom-4 w-1 bg-blue-400 rounded-full ml-0 translate-x-[-0.5px]" />
+                                <p className="text-sm font-medium text-blue-400 uppercase tracking-widest mb-1">
+                                    Risposta
+                                </p>
+                                <p className="text-blue-900 text-base leading-relaxed pl-1">
+                                    {answer}
+                                </p>
+                            </motion.div>
+
+                            {/* Continue button */}
+                            <motion.div
+                                className="flex justify-center"
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.25, delay: 0.2, ease: "easeOut" }}
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.96 }}
+                            >
+                                <Button
+                                    outlined
+                                    onClick={() => {
+                                        setPatientState(getRandomPatientState);
+                                        toggleShowAnswer();
+                                    }}
+                                >
+                                    Continua
+                                </Button>
+                            </motion.div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </motion.div>
+        </PracticePage>
     );
 }
