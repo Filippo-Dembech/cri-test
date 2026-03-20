@@ -1,9 +1,9 @@
 import { usePractice } from "../context/PracticeContext"
-import type { FillInData, FlashcardData, MultipleChoiceData, StepsData, TerminologyData, TrueFalseData } from "../exercises";
+import type { FillInData, FlashcardData, MultipleChoiceData, TerminologyData, TrueFalseData } from "../exercises";
 import FillIn from "../ui/exercise/FillIn";
 import Flashcard from "../ui/exercise/Flashcard";
 import MultipleChoice from "../ui/exercise/MultipleChoice";
-import Steps from "../ui/exercise/Steps";
+//import Steps from "../ui/exercise/Steps";
 import Terminology from "../ui/exercise/Terminology";
 import TrueFalse from "../ui/exercise/TrueFalse";
 
@@ -39,8 +39,8 @@ export default function PracticePage() {
                         return <Terminology definition={definition} validAnswers={validAnswers} /> 
                     }
                     if (exercise.type === "steps") {
-                        const { procedureName, steps }= exercise.data as StepsData;
-                        return <Steps procedureName={procedureName} steps={steps} /> 
+                        // const { procedureName, steps }= exercise.data as StepsData;
+                        // return <Steps procedureName={procedureName} steps={steps} /> 
                     }
                     return <p>{exercise.type}</p>
                 })}

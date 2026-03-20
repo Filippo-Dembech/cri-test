@@ -253,84 +253,122 @@ export default function DiseasePractice() {
 
     return (
         <PracticePage title="Pratica Patologie">
-            
-            <div className="flex flex-col sm:w-100">
-             <div style={{ overflow: "hidden" }}>
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={currentDisease.name}
-                        variants={variants}
-                        initial="enter"
-                        animate="center"
-                        exit="exit"
-                        transition={{ duration: 0.3 }}
-                    >
-                        <div className="flex flex-col max-w-200 gap-4">
-                            <p className="text-2xl">{currentDisease.name}</p>
-                            {currentDisease.symptoms && (
-                                <Dropdown
-                                    key={`${roundCount}-1`}
-                                    showLabel="Mostra Segni/Sintomi"
-                                >
-                                    <ul>
-                                        {currentDisease.symptoms?.map((s) => (
-                                            <li>- {s}</li>
-                                        ))}
-                                    </ul>
-                                </Dropdown>
-                            )}
-                            {currentDisease.questions && (
-                                <Dropdown
-                                    key={`${roundCount}-2`}
-                                    showLabel="Mostra Domande di Rito"
-                                >
-                                    <ul>
-                                        {currentDisease.questions?.map((s) => (
-                                            <li>- {s}</li>
-                                        ))}
-                                    </ul>
-                                </Dropdown>
-                            )}
-                            {currentDisease.whatToDo && (
-                                <Dropdown
-                                    key={`${roundCount}-3`}
-                                    showLabel="Mostra Assistenza"
-                                >
-                                    <ul>
-                                        {currentDisease.whatToDo?.map((s) => (
-                                            <li>- {s}</li>
-                                        ))}
-                                    </ul>
-                                </Dropdown>
-                            )}
-                            {currentDisease.whatToAvoid && (
-                                <Dropdown
-                                    key={`${roundCount}-4`}
-                                    showLabel="Mostra Cosa NON Fare"
-                                >
-                                    <ul>
-                                        {currentDisease.whatToAvoid?.map(
-                                            (s) => (
-                                                <li>- {s}</li>
-                                            ),
-                                        )}
-                                    </ul>
-                                </Dropdown>
-                            )}
-                        </div>
-                    </motion.div>
-                </AnimatePresence>
+            <div className="flex flex-col pb-8 sm:w-100">
+                <div style={{ overflow: "hidden" }}>
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={currentDisease.name}
+                            variants={variants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            transition={{ duration: 0.3 }}
+                        >
+                            <div className="flex flex-col max-w-200 gap-4">
+                                <p className="text-2xl">
+                                    {currentDisease.name}
+                                </p>
+                                {currentDisease.symptoms && (
+                                    <Dropdown
+                                        key={`${roundCount}-1`}
+                                        showLabel="Mostra Segni/Sintomi"
+                                    >
+                                        <div className="flex flex-wrap gap-2 py-2">
+                                            {currentDisease.symptoms?.map(
+                                                (s) => (
+                                                    <span
+                                                        key={s}
+                                                        className="flex items-center gap-1.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-full px-3 py-1 text-sm"
+                                                    >
+                                                        <span className="text-amber-400 font-bold text-xs">
+                                                            !
+                                                        </span>
+                                                        {s}
+                                                    </span>
+                                                ),
+                                            )}
+                                        </div>
+                                    </Dropdown>
+                                )}
+                                {currentDisease.questions && (
+                                    <Dropdown
+                                        key={`${roundCount}-2`}
+                                        showLabel="Mostra Domande di Rito"
+                                    >
+                                        <div className="flex flex-wrap gap-2 py-2">
+                                            {currentDisease.questions?.map(
+                                                (s) => (
+                                                    <span
+                                                        key={s}
+                                                        className="flex items-center gap-1.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-full px-3 py-1 text-sm"
+                                                    >
+                                                        <span className="text-blue-400 font-bold text-xs">
+                                                            ?
+                                                        </span>
+                                                        {s}
+                                                    </span>
+                                                ),
+                                            )}
+                                        </div>
+                                    </Dropdown>
+                                )}
+                                {currentDisease.whatToDo && (
+                                    <Dropdown
+                                        key={`${roundCount}-3`}
+                                        showLabel="Mostra Assistenza"
+                                    >
+                                        <div className="flex flex-wrap gap-2 py-2">
+                                            {currentDisease.whatToDo?.map(
+                                                (s) => (
+                                                    <span
+                                                        key={s}
+                                                        className="flex items-center gap-1.5 bg-green-50 text-green-700 border border-green-200 rounded-full px-3 py-1 text-sm"
+                                                    >
+                                                        <span className="text-green-500 font-bold text-xs">
+                                                            ✓
+                                                        </span>
+                                                        {s}
+                                                    </span>
+                                                ),
+                                            )}
+                                        </div>
+                                    </Dropdown>
+                                )}
+                                {currentDisease.whatToAvoid && (
+                                    <Dropdown
+                                        key={`${roundCount}-4`}
+                                        showLabel="Mostra Cosa NON Fare"
+                                    >
+                                        <div className="flex flex-wrap gap-2 py-2">
+                                            {currentDisease.whatToAvoid?.map(
+                                                (s) => (
+                                                    <span
+                                                        key={s}
+                                                        className="flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 rounded-full px-3 py-1 text-sm"
+                                                    >
+                                                        <span className="text-red-400 font-bold text-xs">
+                                                            ✕
+                                                        </span>
+                                                        {s}
+                                                    </span>
+                                                ),
+                                            )}
+                                        </div>
+                                    </Dropdown>
+                                )}
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+                <Button
+                    outlined
+                    className="flex justify-center max-w-200 m-auto items-center gap-3"
+                    style={{ marginTop: 20 }}
+                    onClick={nextDisease}
+                >
+                    Prossima Patologia <BiSolidRightArrow />
+                </Button>
             </div>
-            <Button
-                outlined
-                className="flex justify-center max-w-200 m-auto items-center gap-3"
-                style={{ marginTop: 20 }}
-                onClick={nextDisease}
-            >
-                Prossima Patologia <BiSolidRightArrow />
-            </Button>
-                     
-            </div>
-  </PracticePage>
+        </PracticePage>
     );
 }
