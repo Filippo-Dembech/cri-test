@@ -3,6 +3,7 @@ import type { TerminologyData } from "../exercises";
 import PracticePage from "../ui/PracticePage";
 import Confetti from "react-confetti-boom";
 import { useRandomList } from "../hooks/useRandomList";
+import { motion, AnimatePresence } from "framer-motion";
 
 const terms: TerminologyData[] = [
     {
@@ -312,9 +313,7 @@ export default function TerminologyPractice() {
     const [givenAnswer, setGivenAnswer] = useState("");
     const [showConfetti, setShowConfetti] = useState(false);
     const { current: term, next: nextTerm } = useRandomList(terms);
-    const [isRightAnswer, setIsRightAnswer] = useState<boolean | undefined>(
-        undefined,
-    );
+    const [isRightAnswer, setIsRightAnswer] = useState<boolean | undefined>(undefined);
 
     useEffect(() => {
         setTimeout(() => {
@@ -326,8 +325,26 @@ export default function TerminologyPractice() {
 
     return (
         <PracticePage title="Pratica Terminologia">
-            <div className="flex flex-col sm:w-100">
-                <p className="text-xl mb-3">{term.definition}</p>
+            <motion.div
+                className="flex flex-col sm:w-100"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+                {/* Definition — slides in from the right on each new term */}
+                <AnimatePresence mode="wait">
+                    <motion.p
+                        key={term.definition}
+                        className="text-xl mb-3"
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -30 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                    >
+                        {term.definition}
+                    </motion.p>
+                </AnimatePresence>
+
                 <form
                     className="flex flex-col gap-3 mb-3 sm:flex-row"
                     onSubmit={(e) => {
@@ -335,14 +352,13 @@ export default function TerminologyPractice() {
                         if (
                             term.validAnswers.find(
                                 (validAnswer) =>
-                                    validAnswer.toLowerCase() ===
-                                    givenAnswer.toLowerCase(),
+                                    validAnswer.toLowerCase() === givenAnswer.toLowerCase(),
                             )
                         ) {
-                            setRightAnswers((rightAnswers) => rightAnswers + 1);
+                            setRightAnswers((r) => r + 1);
                             nextTerm();
                             setIsRightAnswer(true);
-                            setRounds((rounds) => rounds + 1);
+                            setRounds((r) => r + 1);
                             setGivenAnswer("");
                             setShowConfetti(true);
                         } else {
@@ -350,40 +366,57 @@ export default function TerminologyPractice() {
                         }
                     }}
                 >
-                    <input
+                    {/* Input — shakes on wrong answer */}
+                    <motion.input
                         type="text"
+                        animate={isRightAnswer === false ? { x: [0, -8, 8, -6, 6, -4, 4, 0] } : { x: 0 }}
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
                         style={
                             isRightAnswer === false
-                                ? {
-                                      backgroundColor: "rgb(252, 165, 165)",
-                                      border: "2px solid red",
-                                  }
+                                ? { backgroundColor: "rgb(252, 165, 165)", border: "2px solid red" }
                                 : {}
                         }
                         className="border-2 border-slate-300 rounded-lg pb-1 px-2 outline-0 flex-1"
                         value={givenAnswer}
                         onChange={(e) => setGivenAnswer(e.target.value)}
                     />
-                    <input
+                    <motion.input
                         type="submit"
                         className="rounded-lg bg-red-500 text-white pb-1 px-2 transition-colors hover:bg-red-600 duration-100 cursor-pointer"
                         value="Rispondi"
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.96 }}
                     />
                 </form>
-                <button
+
+                {/* Skip button */}
+                <motion.button
                     className="bg-slate-200 px-4 py-1 rounded-lg cursor-pointer hover:bg-slate-300 transition-all duration-200"
                     onClick={() => {
                         nextTerm();
-                        setRounds((rounds) => rounds + 1);
+                        setRounds((r) => r + 1);
                         setIsRightAnswer(undefined);
                     }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.96 }}
                 >
                     Salta
-                </button>
-                <p className="mt-3">
-                    Risposte corrette: {rightAnswers} / {rounds}
-                </p>
-            </div>
+                </motion.button>
+
+                {/* Score — counts up with a pop on each correct answer */}
+                <AnimatePresence mode="wait">
+                    <motion.p
+                        key={rightAnswers}
+                        className="mt-3"
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                    >
+                        Risposte corrette: {rightAnswers} / {rounds}
+                    </motion.p>
+                </AnimatePresence>
+            </motion.div>
+
             {showConfetti && (
                 <Confetti
                     mode="boom"
