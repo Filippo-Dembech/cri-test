@@ -24,7 +24,7 @@ export default function PracticePage({ title, bodyClassName, children }: Practic
             <div
                 className={`${bodyClassName} flex-1 overflow-y-auto overflow-x-hidden rounded-2xl sm:border sm:border-red-100 sm:bg-red-50/30`}
             >
-                <div className="flex justify-center items-center min-h-full p-4 sm:p-8">
+                <div className="flex justify-center items-start min-h-full p-4 sm:p-8 sm:items-center">
                     {children}
                 </div>
             </div>
