@@ -94,7 +94,7 @@ export default function AnalyzePractice() {
     return (
         <PracticePage title="Pratica Domande di Rito">
             <motion.div
-                className="flex flex-col gap-4 w-full max-w-120"
+                className="flex flex-col gap-4 w-full max-w-120 p-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
