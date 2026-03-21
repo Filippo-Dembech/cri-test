@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
-import type { StepsData } from "../exercises";
+import type { StepsData } from "../../exercises";
 
 type Mode = "drag" | "build" | "review";
 

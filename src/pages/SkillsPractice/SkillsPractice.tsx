@@ -1,9 +1,10 @@
 import { useState, useRef } from "react";
-import type { StepsData } from "../exercises";
-import Steps from "../ui/exercise/Steps";
-import PracticePage from "../ui/PracticePage";
+import type { StepsData } from "../../exercises";
+import Steps from "../../ui/exercise/Steps";
+import PracticePage from "../../ui/PracticePage";
 import { motion, AnimatePresence } from "framer-motion";
 import SkillsReorderPractice from "./SkillsReorderPractice";
+import { SkillsSelector } from "./SkillsSelector";
 
 const skills: StepsData[] = [
     {
@@ -247,36 +248,21 @@ export default function SkillsPractice() {
 
     return (
         <PracticePage title="Pratica Skills">
-            <div className="flex flex-col gap-5 w-full max-w-200 m-auto p-3 sm:p-8">
+            <div className="flex flex-col gap-5 w-full max-w-200 p-3 sm:p-8">
 
                 {/* Skill selector — always visible */}
-                <motion.div
-                    initial={{ opacity: 0, y: -16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                >
-                    <p className="text-xs font-semibold uppercase tracking-widest text-red-400 mb-2">
-                        Skill
-                    </p>
-                    <div className="bg-white border border-red-200 rounded-2xl px-4 py-3 cursor-pointer hover:border-red-400 transition-colors duration-200">
-                        <select
-                            ref={selectRef}
-                            className="w-full outline-0 cursor-pointer bg-transparent text-red-900"
-                            onChange={(e) =>
-                                setSelectedSkill(
-                                    skills.find((skill) => skill.procedureName === e.target.value)
-                                )
-                            }
-                        >
-                            <option value="" disabled selected className="text-red-300">
-                                Seleziona la skill...
-                            </option>
-                            {skills.map((skill) => (
-                                <option key={skill.procedureName}>{skill.procedureName}</option>
-                            ))}
-                        </select>
-                    </div>
-                </motion.div>
+                <SkillsSelector
+                    selectRef={selectRef}
+                    skills={skills}
+                    onSelect={(selectedSkillName) =>
+                        setSelectedSkill(
+                            skills.find(
+                                (skill) =>
+                                    skill.procedureName === selectedSkillName,
+                            ),
+                        )
+                    }
+                />
 
                 {/* Only show the rest once a skill is selected */}
                 <AnimatePresence>
