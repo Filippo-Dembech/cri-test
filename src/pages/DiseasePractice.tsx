@@ -282,7 +282,7 @@ export default function DiseasePractice() {
                                 {currentDisease.symptoms && (
                                     <Dropdown
                                         key={`${roundCount}-1`}
-                                        showLabel="Mostra Segni/Sintomi"
+                                        showLabel="segni/sintomi"
                                     >
                                         <div className="flex flex-wrap gap-2 py-2">
                                             {currentDisease.symptoms.map((s) => (
@@ -297,7 +297,7 @@ export default function DiseasePractice() {
                                 {currentDisease.questions && (
                                     <Dropdown
                                         key={`${roundCount}-2`}
-                                        showLabel="Mostra Domande di Rito"
+                                        showLabel="domande di rito"
                                     >
                                         <div className="flex flex-wrap gap-2 py-2">
                                             {currentDisease.questions.map((s) => (
@@ -312,7 +312,7 @@ export default function DiseasePractice() {
                                 {currentDisease.whatToDo && (
                                     <Dropdown
                                         key={`${roundCount}-3`}
-                                        showLabel="Mostra Assistenza"
+                                        showLabel="assistenza"
                                     >
                                         <div className="flex flex-wrap gap-2 py-2">
                                             {currentDisease.whatToDo.map((s) => (
@@ -327,7 +327,7 @@ export default function DiseasePractice() {
                                 {currentDisease.whatToAvoid && (
                                     <Dropdown
                                         key={`${roundCount}-4`}
-                                        showLabel="Mostra Cosa NON Fare"
+                                        showLabel="cosa NON Fare"
                                     >
                                         <div className="flex flex-wrap gap-2 py-2">
                                             {currentDisease.whatToAvoid.map((s) => (

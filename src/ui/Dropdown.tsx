@@ -23,7 +23,7 @@ export default function Dropdown({
                 className="flex justify-between pb-1"
                 onClick={toggleContent}
             >
-                <span>{showLabel}</span>
+                <span>{showContent ? "Nascondi" : "Mostra"} {showLabel}</span>
                 <motion.span
                     animate={{ rotate: showContent ? 180 : 0 }}
                     transition={{ duration: 0.3 }}

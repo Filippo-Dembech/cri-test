@@ -127,7 +127,7 @@ export default function AnalyzePractice() {
                         exit={{ opacity: 0, y: -8 }}
                         transition={{ duration: 0.3, ease: "easeInOut", delay: 0.05 }}
                     >
-                        <Dropdown key={currentSituation.name} showLabel="Mostra domande">
+                        <Dropdown key={currentSituation.name} showLabel="domande">
                             <div className="flex flex-wrap gap-2 py-2">
                                 {currentSituation.questions.map((question, i) => (
                                     <span
