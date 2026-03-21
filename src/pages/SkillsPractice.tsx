@@ -242,34 +242,40 @@ export default function SkillsPractice() {
 
     return (
         <PracticePage title="Pratica Skills">
-            <div className="flex flex-col gap-10 w-full max-w-200 m-auto sm:p-8">
+            <div className="flex flex-col gap-5 w-full max-w-200 m-auto p-3 sm:p-8">
 
+                {/* Skill selector */}
                 <motion.div
-                    className="p-3 bg-slate-100 cursor-pointer rounded-2xl"
                     initial={{ opacity: 0, y: -16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
                 >
-                    <select
-                        ref={selectRef}
-                        className="w-full outline-0 cursor-pointer"
-                        onChange={(e) =>
-                            setSelectedSkill(
-                                skills.find((skill) => skill.procedureName === e.target.value)
-                            )
-                        }
-                    >
-                        <option value="" disabled selected>
-                            Seleziona la skill...
-                        </option>
-                        {skills.map((skill) => (
-                            <option key={skill.procedureName}>{skill.procedureName}</option>
-                        ))}
-                    </select>
+                    <p className="text-xs font-semibold uppercase tracking-widest text-red-400 mb-2">
+                        Skill
+                    </p>
+                    <div className="bg-white border border-red-200 rounded-2xl px-4 py-3 cursor-pointer hover:border-red-400 transition-colors duration-200">
+                        <select
+                            ref={selectRef}
+                            className="w-full outline-0 cursor-pointer bg-transparent text-red-900"
+                            onChange={(e) =>
+                                setSelectedSkill(
+                                    skills.find((skill) => skill.procedureName === e.target.value)
+                                )
+                            }
+                        >
+                            <option value="" disabled selected className="text-red-300">
+                                Seleziona la skill...
+                            </option>
+                            {skills.map((skill) => (
+                                <option key={skill.procedureName}>{skill.procedureName}</option>
+                            ))}
+                        </select>
+                    </div>
                 </motion.div>
 
+                {/* Content panel */}
                 <motion.div
-                    className="flex-3 bg-red-50 rounded-lg p-3"
+                    className="bg-red-50 border border-red-200 rounded-2xl p-5"
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, ease: "easeOut", delay: 0.15 }}
@@ -290,16 +296,19 @@ export default function SkillsPractice() {
                                 />
                             </motion.div>
                         ) : (
-                            <motion.p
+                            <motion.div
                                 key="empty"
-                                className="italic text-red-400"
+                                className="flex flex-col items-center justify-center py-10 gap-2"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.2 }}
                             >
-                                Nessuna skill selezionata
-                            </motion.p>
+                                <p className="text-red-300 text-3xl">✦</p>
+                                <p className="italic text-red-300 text-sm">
+                                    Nessuna skill selezionata
+                                </p>
+                            </motion.div>
                         )}
                     </AnimatePresence>
                 </motion.div>
