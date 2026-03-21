@@ -3,6 +3,7 @@ import type { StepsData } from "../exercises";
 import Steps from "../ui/exercise/Steps";
 import PracticePage from "../ui/PracticePage";
 import { motion, AnimatePresence } from "framer-motion";
+import SkillsReorderPractice from "./SkillsReorderPractice";
 
 const skills: StepsData[] = [
     {
@@ -231,7 +232,11 @@ const skills: StepsData[] = [
     },
 ];
 
+type PracticeMode = "review" | "drill";
+
+
 export default function SkillsPractice() {
+    const [practiceMode, setPracticeMode] = useState<PracticeMode>("review");
     const [selectedSkill, setSelectedSkill] = useState<StepsData | undefined>(undefined);
     const selectRef = useRef<HTMLSelectElement>(null);
 
@@ -244,7 +249,7 @@ export default function SkillsPractice() {
         <PracticePage title="Pratica Skills">
             <div className="flex flex-col gap-5 w-full max-w-200 m-auto p-3 sm:p-8">
 
-                {/* Skill selector */}
+                {/* Skill selector — always visible */}
                 <motion.div
                     initial={{ opacity: 0, y: -16 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -273,45 +278,71 @@ export default function SkillsPractice() {
                     </div>
                 </motion.div>
 
-                {/* Content panel */}
-                <motion.div
-                    className="bg-red-50 border border-red-200 rounded-2xl p-5"
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, ease: "easeOut", delay: 0.15 }}
-                >
-                    <AnimatePresence mode="wait">
-                        {selectedSkill ? (
-                            <motion.div
-                                key={selectedSkill.procedureName}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -10 }}
-                                transition={{ duration: 0.25, ease: "easeInOut" }}
-                            >
-                                <Steps
-                                    procedureName={selectedSkill.procedureName}
-                                    steps={selectedSkill.steps}
-                                    onReset={handleReset}
-                                />
-                            </motion.div>
-                        ) : (
-                            <motion.div
-                                key="empty"
-                                className="flex flex-col items-center justify-center py-10 gap-2"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.2 }}
-                            >
-                                <p className="text-red-300 text-3xl">✦</p>
-                                <p className="italic text-red-300 text-sm">
-                                    Nessuna skill selezionata
-                                </p>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </motion.div>
+                {/* Only show the rest once a skill is selected */}
+                <AnimatePresence>
+                    {selectedSkill && (
+                        <motion.div
+                            className="flex flex-col gap-5"
+                            initial={{ opacity: 0, y: 16 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 16 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                        >
+                            {/* Mode toggle */}
+                            <div className="flex gap-2 bg-red-50 border border-red-200 rounded-2xl p-1.5">
+                                {(["review", "drill"] as PracticeMode[]).map((m) => (
+                                    <motion.button
+                                        key={m}
+                                        onClick={() => setPracticeMode(m)}
+                                        className="relative flex-1 py-2 text-sm font-medium rounded-xl cursor-pointer transition-colors duration-150 z-10"
+                                        style={{ color: practiceMode === m ? "#7f1d1d" : "#f87171" }}
+                                        whileTap={{ scale: 0.97 }}
+                                    >
+                                        {practiceMode === m && (
+                                            <motion.div
+                                                layoutId="mode-pill"
+                                                className="absolute inset-0 bg-white border border-red-200 rounded-xl"
+                                                style={{ zIndex: -1 }}
+                                                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                            />
+                                        )}
+                                        {m === "review" ? "✦ Studia" : "⟳ Allenati"}
+                                    </motion.button>
+                                ))}
+                            </div>
+
+                            {/* Mode content */}
+                            <AnimatePresence mode="wait">
+                                {practiceMode === "review" ? (
+                                    <motion.div
+                                        key="review"
+                                        className="bg-red-50 border border-red-200 rounded-2xl p-5"
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        transition={{ duration: 0.25, ease: "easeInOut" }}
+                                    >
+                                        <Steps
+                                            procedureName={selectedSkill.procedureName}
+                                            steps={selectedSkill.steps}
+                                            onReset={handleReset}
+                                        />
+                                    </motion.div>
+                                ) : (
+                                    <motion.div
+                                        key="drill"
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: 20 }}
+                                        transition={{ duration: 0.25, ease: "easeInOut" }}
+                                    >
+                                        <SkillsReorderPractice selectedSkill={selectedSkill} />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
             </div>
         </PracticePage>
