@@ -316,9 +316,7 @@ export default function TerminologyPractice() {
     const [isRightAnswer, setIsRightAnswer] = useState<boolean | undefined>(undefined);
 
     useEffect(() => {
-        setTimeout(() => {
-            setShowConfetti(false);
-        }, 3000);
+        setTimeout(() => setShowConfetti(false), 3000);
     }, [term]);
 
     if (!term) return <h2>Nessun termine disponibile</h2>;
@@ -326,27 +324,33 @@ export default function TerminologyPractice() {
     return (
         <PracticePage title="Pratica Terminologia">
             <motion.div
-                className="flex flex-col p-2 w-full sm:w-100"
+                className="flex flex-col w-full sm:w-100 gap-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
             >
-                {/* Definition — slides in from the right on each new term */}
-                <AnimatePresence mode="wait">
-                    <motion.p
-                        key={term.definition}
-                        className="text-xl mb-3"
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -30 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                    >
-                        {term.definition}
-                    </motion.p>
-                </AnimatePresence>
+                {/* Definition card */}
+                <div className="bg-red-50 border border-red-200 rounded-2xl px-5 py-4">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-red-400 mb-2">
+                        Definizione
+                    </p>
+                    <AnimatePresence mode="wait">
+                        <motion.p
+                            key={term.definition}
+                            className="text-lg text-red-900 leading-relaxed"
+                            initial={{ opacity: 0, x: 30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -30 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                        >
+                            {term.definition}
+                        </motion.p>
+                    </AnimatePresence>
+                </div>
 
+                {/* Input + submit */}
                 <form
-                    className="flex flex-col gap-3 mb-3 sm:flex-row"
+                    className="flex flex-col gap-3 sm:flex-row"
                     onSubmit={(e) => {
                         e.preventDefault();
                         if (
@@ -366,23 +370,23 @@ export default function TerminologyPractice() {
                         }
                     }}
                 >
-                    {/* Input — shakes on wrong answer */}
                     <motion.input
                         type="text"
                         animate={isRightAnswer === false ? { x: [0, -8, 8, -6, 6, -4, 4, 0] } : { x: 0 }}
                         transition={{ duration: 0.4, ease: "easeInOut" }}
+                        placeholder="Scrivi il termine..."
                         style={
                             isRightAnswer === false
-                                ? { backgroundColor: "rgb(252, 165, 165)", border: "2px solid red" }
-                                : {}
+                                ? { backgroundColor: "rgb(254 226 226)", border: "2px solid #ef4444" }
+                                : { border: "2px solid #fecaca" }
                         }
-                        className="border-2 border-slate-300 rounded-lg pb-1 px-2 outline-0 flex-1"
+                        className="rounded-xl py-2 px-4 outline-0 flex-1 text-red-900 placeholder-red-300 bg-white"
                         value={givenAnswer}
                         onChange={(e) => setGivenAnswer(e.target.value)}
                     />
                     <motion.input
                         type="submit"
-                        className="rounded-lg bg-red-500 text-white pb-1 px-2 transition-colors hover:bg-red-600 duration-100 cursor-pointer"
+                        className="rounded-xl bg-red-500 text-white py-2 px-5 font-medium cursor-pointer hover:bg-red-600 transition-colors duration-150"
                         value="Rispondi"
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.96 }}
@@ -391,7 +395,7 @@ export default function TerminologyPractice() {
 
                 {/* Skip button */}
                 <motion.button
-                    className="bg-slate-200 px-4 py-1 rounded-lg cursor-pointer hover:bg-slate-300 transition-all duration-200"
+                    className="w-full border border-red-200 text-red-400 bg-transparent py-2 px-4 rounded-xl cursor-pointer hover:bg-red-50 hover:text-red-600 transition-all duration-200 text-sm font-medium"
                     onClick={() => {
                         nextTerm();
                         setRounds((r) => r + 1);
@@ -403,18 +407,25 @@ export default function TerminologyPractice() {
                     Salta
                 </motion.button>
 
-                {/* Score — counts up with a pop on each correct answer */}
-                <AnimatePresence mode="wait">
-                    <motion.p
-                        key={rightAnswers}
-                        className="mt-3"
-                        initial={{ opacity: 0, scale: 0.85 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.25, ease: "easeOut" }}
-                    >
-                        Risposte corrette: {rightAnswers} / {rounds}
-                    </motion.p>
-                </AnimatePresence>
+                {/* Score */}
+                <div className="flex justify-between items-center px-1">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-red-400">
+                        Risposte corrette
+                    </p>
+                    <AnimatePresence mode="wait">
+                        <motion.p
+                            key={rightAnswers}
+                            className="text-base font-semibold text-red-700"
+                            initial={{ opacity: 0, scale: 0.85 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.25, ease: "easeOut" }}
+                        >
+                            {rightAnswers}
+                            <span className="text-red-300 mx-1">/</span>
+                            {rounds}
+                        </motion.p>
+                    </AnimatePresence>
+                </div>
             </motion.div>
 
             {showConfetti && (
