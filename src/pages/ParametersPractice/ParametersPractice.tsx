@@ -36,38 +36,88 @@ export default function ParametersGame() {
     }
 
     useEffect(() => {
-        setFeedback(undefined);
+        //setFeedback(undefined);
         setRandomUnhealthyValue(() => getRandomUnhealthyValue(parameter.name));
     }, [parameter]);
 
     return (
         <PracticePage title="Pratica Parametri">
-            <div className="flex flex-col items-center">
-                <div className="text-center border-2 border-red-200 rounded-xl p-3 mb-3 sm:w-120">
-                    <p className="text-2xl">{parameter.name}</p>
+            <div className="flex flex-col gap-4 w-full items-center">
+                {/* Main card */}
+                <div className="w-full sm:w-120 bg-red-50 border border-red-200 rounded-2xl p-6 flex flex-col items-center gap-6">
+                    {/* Parameter name */}
+                    <p className="text-xs font-semibold uppercase tracking-widest text-red-400">
+                        Parametro
+                    </p>
+                    <p className="text-2xl font-medium text-red-900 -mt-4">
+                        {parameter.name}
+                    </p>
 
-                    {/* 1. Value bounces in when it changes */}
+                    {/* Big value — always visible */}
                     <motion.p
                         key={randomUnhealthyValue}
                         initial={{ scale: 0.5, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1, x: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
                         transition={{
                             type: "spring",
                             stiffness: 300,
                             damping: 15,
                         }}
                         style={
-                            feedback &&
-                            (feedback === "correct"
-                                ? { color: "green" }
-                                : { color: "red" })
+                            feedback
+                                ? feedback === "correct"
+                                    ? { color: "#16a34a" }
+                                    : { color: "#dc2626" }
+                                : { color: "#9f1239" }
                         }
-                        className="text-6xl font-bold mb-8 mt-4 sm:text-8xl"
+                        className="text-6xl font-bold sm:text-8xl leading-none"
                     >
                         {randomUnhealthyValue}
                     </motion.p>
 
-                    <div className="flex gap-3 justify-center">
+                    {/* Hint — slides down inside the card, no external layout impact */}
+                        <AnimatePresence>
+                            {feedback === "wrong" && (
+                                <motion.div
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: "auto" }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    transition={{
+                                        duration: 0.3,
+                                        ease: "easeInOut",
+                                    }}
+                                    className="w-full"
+                                >
+                                    <div className="w-full bg-red-200 border border-red-300 rounded-xl p-4 mt-2 text-center">
+                                        <p className="text-xs font-semibold uppercase tracking-widest text-red-500 mb-2">
+                                            Range corretto
+                                        </p>
+                                        {parameter.name ===
+                                        "Pressione Arteriosa (PA)" ? (
+                                            <>
+                                                <p className="font-bold text-2xl text-red-900">
+                                                    90 &lt; PAS &lt; 150
+                                                </p>
+                                                <p className="font-bold text-2xl text-red-900">
+                                                    PAD &lt; 130
+                                                </p>
+                                            </>
+                                        ) : (
+                                            <p className="font-bold text-2xl text-red-900">
+                                                {parameter.healthyRange.min} –{" "}
+                                                {parameter.healthyRange.max}
+                                            </p>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                    {/* Divider */}
+                    <div className="w-full border-t border-red-200" />
+
+                    {/* Answer buttons */}
+                    <div className="flex gap-3 justify-center w-full">
                         {(
                             [
                                 { value: "valore-basso", label: "Bassa" },
@@ -87,15 +137,16 @@ export default function ParametersGame() {
                                     stiffness: 400,
                                     damping: 15,
                                 }}
+                                className="flex-1"
                             >
                                 <Button
                                     onClick={() => checkAnswer(value)}
                                     disabled={!!feedback}
-                                    className={
+                                    className={`w-full justify-center ${
                                         givenAnswer === value
                                             ? "outline-3 outline-black"
                                             : ""
-                                    }
+                                    }`}
                                 >
                                     {label}
                                 </Button>
@@ -104,48 +155,28 @@ export default function ParametersGame() {
                     </div>
                 </div>
 
-                <div className="flex justify-between gap-8 items-center">
-                    <p>
-                        Risposte esatte: {rightAnswersCount}/{roundsCount}
+                {/* Score + next button */}
+                <div className="flex justify-between items-center w-full sm:w-120 px-1">
+                    <p className="text-sm text-red-400 font-medium">
+                        <span className="text-red-700 font-semibold text-base">
+                            {rightAnswersCount}
+                        </span>
+                        <span className="mx-1 text-red-300">/</span>
+                        <span className="text-red-700 font-semibold text-base">
+                            {roundsCount}
+                        </span>
+                        <span className="ml-2">corrette</span>
                     </p>
                     <NextButton
                         show={!!feedback}
+                        style={{ padding: "0px 10px" }}
                         onClick={() => {
                             setParameter(() => getRandomParameter());
                             setGivenAnswer(undefined);
+                            setFeedback(undefined);
                         }}
                     />
                 </div>
-
-                {/* 3. Hint panel slides up and fades in */}
-                <AnimatePresence>
-                    {feedback === "wrong" && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 20 }}
-                            transition={{ duration: 0.3 }}
-                            className="bg-slate-200 p-3 rounded-2xl mt-8 max-w-100 m-auto"
-                        >
-                            <p>Il range della {parameter.name} è:</p>
-                            {parameter.name === "Pressione Arteriosa (PA)" ? (
-                                <>
-                                    <p className="font-bold text-2xl text-center">
-                                        90 &lt; PAS &lt; 150
-                                    </p>
-                                    <p className="font-bold text-2xl text-center">
-                                        PAD &lt; 130
-                                    </p>
-                                </>
-                            ) : (
-                                <p className="font-bold text-2xl text-center">
-                                    {parameter.healthyRange.min} -{" "}
-                                    {parameter.healthyRange.max}
-                                </p>
-                            )}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
             </div>
         </PracticePage>
     );
