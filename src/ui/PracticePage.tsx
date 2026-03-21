@@ -10,7 +10,7 @@ export default function PracticePage({ title, bodyClassName, children }: Practic
         <div className="flex flex-col h-screen px-6 pt-6 pb-4 sm:px-10 sm:pt-8">
 
             {/* Header */}
-            <div className="mb-5 flex-shrink-0">
+            <div className="mb-5 shrink-0">
                 <p className="text-xs font-semibold uppercase tracking-widest text-red-400 mb-1">
                     Croce Rossa Italiana
                 </p>
@@ -18,7 +18,7 @@ export default function PracticePage({ title, bodyClassName, children }: Practic
             </div>
 
             {/* Divider */}
-            <div className="border-t border-red-100 mb-5 flex-shrink-0" />
+            <div className="border-t border-red-100 mb-5 shrink-0" />
 
             {/* Body */}
             <div
