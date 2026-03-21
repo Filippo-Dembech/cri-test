@@ -10,7 +10,7 @@ export default function PracticePage({ title, bodyClassName, children }: Practic
     return (
         <div className="flex flex-col h-screen p-8">
             <h1 className="text-4xl font-bold mb-4">{title}</h1>
-            <div className={`${bodyClassName} sm:border rounded-2xl flex justify-center items-center flex-1 overflow-auto`}>{children}</div>
+            <div className={`${bodyClassName} sm:border rounded-2xl flex justify-center items-center flex-1 overflow-y-auto overflow-x-hidden`}>{children}</div>
         </div>
     )
 }

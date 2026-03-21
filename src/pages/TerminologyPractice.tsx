@@ -326,7 +326,7 @@ export default function TerminologyPractice() {
     return (
         <PracticePage title="Pratica Terminologia">
             <motion.div
-                className="flex flex-col sm:w-100"
+                className="flex flex-col p-2 w-full sm:w-100"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
