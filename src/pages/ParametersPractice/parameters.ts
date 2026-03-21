@@ -23,7 +23,7 @@ export const parameters: Parameter[] = [
     },
     {
         name: "Temperatura",
-        healthyRange: { min: 36.1, max: 37.2 },
+        healthyRange: { min: 36, max: 37 },
         unhealthyRange: { min: 34, max: 40 },
     },
     {

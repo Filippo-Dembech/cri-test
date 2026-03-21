@@ -272,7 +272,7 @@ export default function DiseasePractice() {
                                 <p className="text-xs font-semibold uppercase tracking-widest text-red-400 mb-1">
                                     Patologia
                                 </p>
-                                <p className="text-xl font-semibold text-red-900 break-words">
+                                <p className="text-xl font-semibold text-red-900 wrap-break-words">
                                     {currentDisease.name}
                                 </p>
                             </div>
