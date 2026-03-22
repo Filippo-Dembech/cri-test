@@ -3,7 +3,7 @@ import { terms } from "../../terminologyData";
 import { shuffle } from "../../utils";
 import ProgressBar from "../../../../ui/ProgressBar";
 import Flashcard from "../../../../ui/flashcard/Flashcard";
-import RecapFeedback from "../RecapFeedback";
+import FlashcardFeedback from "./FlashcardFeedback";
 
 interface Props {
     termsCount: number | "all";
@@ -53,7 +53,7 @@ export default function FlashcardMode({ termsCount }: Props) {
 
     if (isRecapComplete)
         return (
-            <RecapFeedback
+            <FlashcardFeedback
                 right={knowTermsAmount}
                 total={totalTermsSeen}
                 onRestart={restart}

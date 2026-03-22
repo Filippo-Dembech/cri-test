@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import  { useState } from "react";
+import { useState } from "react";
 import { terms } from "../terminologyData";
 import type { MatchCard, MatchStatus, TermEntry } from "../types";
 import { shuffle } from "../utils";
@@ -13,17 +13,20 @@ export default function MatchMode({ termsCount }: Props) {
 
     const buildBatch = (pool: TermEntry[]) => {
         const batch = pool.slice(0, BATCH);
-        const cards: MatchCard[] = [];
+        const defCards: MatchCard[] = [];
+        const termCards: MatchCard[] = [];
         batch.forEach((t, i) => {
-            cards.push({ id: `d-${i}`, text: t.definition, type: "def", pairIdx: i });
-            cards.push({ id: `t-${i}`, text: t.validAnswers[0], type: "term", pairIdx: i });
+            defCards.push({ id: `d-${i}`, text: t.definition, type: "def", pairIdx: i });
+            termCards.push({ id: `t-${i}`, text: t.validAnswers[0], type: "term", pairIdx: i });
         });
-        return { batch, cards: shuffle(cards) };
+        return { defCards, termCards: shuffle(termCards) };
     };
 
-    const [pool] = useState(() => termsCount === "all" ? shuffle(terms) : shuffle(terms).slice(0, termsCount));
+    const [pool] = useState(() =>
+        termsCount === "all" ? shuffle(terms) : shuffle(terms).slice(0, termsCount)
+    );
     const [batchStart, setBatchStart] = useState(0);
-    const [{ cards }, setBoard] = useState(() => buildBatch(pool));
+    const [{ defCards, termCards }, setBoard] = useState(() => buildBatch(pool));
     const [selected, setSelected] = useState<MatchCard | null>(null);
     const [matched, setMatched] = useState<Set<number>>(new Set());
     const [flashStatus, setFlashStatus] = useState<Record<string, MatchStatus>>({});
@@ -35,8 +38,8 @@ export default function MatchMode({ termsCount }: Props) {
         if (flashStatus[card.id] === "wrong") return;
         if (selected?.id === card.id) { setSelected(null); return; }
 
+        // Same side: switch selection
         if (!selected) { setSelected(card); return; }
-
         if (selected.type === card.type) { setSelected(card); return; }
 
         const isMatch = selected.pairIdx === card.pairIdx;
@@ -86,10 +89,20 @@ export default function MatchMode({ termsCount }: Props) {
                 <div className={`w-24 h-24 rounded-full flex items-center justify-center border-4 ${pct >= 80 ? "border-green-400 bg-green-50" : pct >= 50 ? "border-amber-400 bg-amber-50" : "border-red-400 bg-red-50"}`}>
                     <span className={`text-2xl font-semibold ${pct >= 80 ? "text-green-700" : pct >= 50 ? "text-amber-700" : "text-red-700"}`}>{pct}%</span>
                 </div>
-                <p className="text-red-900 font-medium text-lg">{score.correct} su {score.attempts} abbinamenti corretti</p>
+                <p className="text-red-900 font-medium text-lg">
+                    {score.correct} su {score.attempts} abbinamenti corretti
+                </p>
                 <motion.button
                     className="rounded-xl bg-red-500 text-white py-2.5 px-8 font-medium cursor-pointer hover:bg-red-600 transition-colors text-sm"
-                    onClick={() => { setBatchStart(0); setBoard(buildBatch(pool)); setMatched(new Set()); setFlashStatus({}); setSelected(null); setScore({ correct: 0, attempts: 0 }); setDone(false); }}
+                    onClick={() => {
+                        setBatchStart(0);
+                        setBoard(buildBatch(pool));
+                        setMatched(new Set());
+                        setFlashStatus({});
+                        setSelected(null);
+                        setScore({ correct: 0, attempts: 0 });
+                        setDone(false);
+                    }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.96 }}
                 >
@@ -102,6 +115,31 @@ export default function MatchMode({ termsCount }: Props) {
     const totalBatches = Math.ceil(pool.length / BATCH);
     const currentBatch = Math.floor(batchStart / BATCH) + 1;
 
+    const cardClass = (card: MatchCard) => {
+        const isMatched = matched.has(card.pairIdx);
+        const isSelected = selected?.id === card.id;
+        const fs = flashStatus[card.id];
+        if (isMatched)    return "bg-green-50 border-green-300 text-green-700 cursor-default opacity-60";
+        if (fs === "correct") return "bg-green-50 border-green-300 text-green-700";
+        if (fs === "wrong")   return "bg-red-50 border-red-300 text-red-600";
+        if (isSelected)       return "bg-red-500 border-red-500 text-white";
+        return "bg-white border-red-100 text-red-900 hover:border-red-300 hover:bg-red-50";
+    };
+
+    const renderCard = (card: MatchCard) => (
+        <motion.button
+            key={card.id}
+            onClick={() => handleSelect(card)}
+            disabled={matched.has(card.pairIdx)}
+            animate={flashStatus[card.id] === "wrong" ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
+            transition={{ duration: 0.35 }}
+            whileTap={matched.has(card.pairIdx) ? {} : { scale: 0.97 }}
+            className={`w-full text-left px-3 py-3 rounded-xl border text-xs leading-snug transition-colors duration-150 cursor-pointer font-medium min-h-14 flex items-center ${cardClass(card)}`}
+        >
+            {card.text}
+        </motion.button>
+    );
+
     return (
         <div className="flex flex-col gap-4">
             {/* Progress */}
@@ -109,7 +147,9 @@ export default function MatchMode({ termsCount }: Props) {
                 <div className="flex-1 h-1.5 rounded-full bg-red-100 overflow-hidden">
                     <motion.div
                         className="h-full bg-red-400 rounded-full"
-                        animate={{ width: `${((currentBatch - 1) / totalBatches) * 100 + (matched.size / Math.min(BATCH, pool.length - batchStart)) * (100 / totalBatches)}%` }}
+                        animate={{
+                            width: `${((currentBatch - 1) / totalBatches) * 100 + (matched.size / Math.min(BATCH, pool.length - batchStart)) * (100 / totalBatches)}%`,
+                        }}
                         transition={{ duration: 0.4 }}
                     />
                 </div>
@@ -118,44 +158,23 @@ export default function MatchMode({ termsCount }: Props) {
                 </span>
             </div>
 
-            <p className="text-xs text-red-400 font-medium">
-                Abbina ogni termine alla sua definizione
-            </p>
+            {/* Board — two fixed columns */}
+            <div className="grid grid-cols-2 gap-3">
+                {/* Definitions column */}
+                <div className="flex flex-col gap-2">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-red-300 px-1">
+                        Definizione
+                    </p>
+                    {defCards.map(renderCard)}
+                </div>
 
-            <div className="grid grid-cols-2 gap-2">
-                {cards.map((card) => {
-                    const isMatched = matched.has(card.pairIdx);
-                    const isSelected = selected?.id === card.id;
-                    const fs = flashStatus[card.id];
-
-                    return (
-                        <motion.button
-                            key={card.id}
-                            onClick={() => handleSelect(card)}
-                            disabled={isMatched}
-                            animate={
-                                fs === "wrong"
-                                    ? { x: [0, -6, 6, -4, 4, 0] }
-                                    : { x: 0 }
-                            }
-                            transition={{ duration: 0.35 }}
-                            className={`text-left px-3 py-3 rounded-xl border text-xs leading-snug transition-colors duration-150 cursor-pointer font-medium min-h-14 flex items-center ${
-                                isMatched
-                                    ? "bg-green-50 border-green-300 text-green-700 cursor-default opacity-60"
-                                    : fs === "correct"
-                                    ? "bg-green-50 border-green-300 text-green-700"
-                                    : fs === "wrong"
-                                    ? "bg-red-50 border-red-300 text-red-600"
-                                    : isSelected
-                                    ? "bg-red-500 border-red-500 text-white"
-                                    : "bg-white border-red-100 text-red-900 hover:border-red-300 hover:bg-red-50"
-                            }`}
-                            whileTap={isMatched ? {} : { scale: 0.97 }}
-                        >
-                            {card.text}
-                        </motion.button>
-                    );
-                })}
+                {/* Terms column */}
+                <div className="flex flex-col gap-2">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-red-300 px-1">
+                        Termine
+                    </p>
+                    {termCards.map(renderCard)}
+                </div>
             </div>
         </div>
     );

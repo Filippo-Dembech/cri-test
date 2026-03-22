@@ -6,7 +6,7 @@ interface Props {
     onRestart: () => void;
 }
 
-export default function RecapFeedback({ right, total, onRestart}: Props) {
+export default function FlashcardFeedback({ right, total, onRestart}: Props) {
         const percentage = Math.round((right / total) * 100);
         return (
             <motion.div
@@ -14,18 +14,6 @@ export default function RecapFeedback({ right, total, onRestart}: Props) {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
             >
-                <div
-                    className={`w-24 h-24 rounded-full flex items-center justify-center border-4 ${percentage >= 80 ? "border-green-400 bg-green-50" : percentage >= 50 ? "border-amber-400 bg-amber-50" : "border-red-400 bg-red-50"}`}
-                >
-                    <span
-                        className={`text-2xl font-semibold ${percentage >= 80 ? "text-green-700" : percentage >= 50 ? "text-amber-700" : "text-red-700"}`}
-                    >
-                        {percentage}%
-                    </span>
-                </div>
-                <p className="text-red-900 font-medium text-lg">
-                    {right} su {total} termini conosciuti
-                </p>
                 <p className="text-red-400 text-sm text-center">
                     {percentage >= 80
                         ? "Ottimo lavoro! Stai memorizzando bene."
