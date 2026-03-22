@@ -250,7 +250,7 @@ export default function SkillsPractice() {
         <PracticePage title="Pratica Skills">
             <div className="flex flex-col gap-5 w-full max-w-200 p-3 sm:p-8">
 
-                {/* Skill selector — always visible */}
+                {/* always visible */}
                 <SkillsSelector
                     selectRef={selectRef}
                     skills={skills}
@@ -276,15 +276,15 @@ export default function SkillsPractice() {
                         >
                             {/* Mode toggle */}
                             <div className="flex gap-2 bg-red-50 border border-red-200 rounded-2xl p-1.5">
-                                {(["review", "drill"] as PracticeMode[]).map((m) => (
+                                {(["review", "drill"] as PracticeMode[]).map((mode) => (
                                     <motion.button
-                                        key={m}
-                                        onClick={() => setPracticeMode(m)}
+                                        key={mode}
+                                        onClick={() => setPracticeMode(mode)}
                                         className="relative flex-1 py-2 text-sm font-medium rounded-xl cursor-pointer transition-colors duration-150 z-10"
-                                        style={{ color: practiceMode === m ? "#7f1d1d" : "#f87171" }}
+                                        style={{ color: practiceMode === mode ? "#7f1d1d" : "#f87171" }}
                                         whileTap={{ scale: 0.97 }}
                                     >
-                                        {practiceMode === m && (
+                                        {practiceMode === mode && (
                                             <motion.div
                                                 layoutId="mode-pill"
                                                 className="absolute inset-0 bg-white border border-red-200 rounded-xl"
@@ -292,7 +292,7 @@ export default function SkillsPractice() {
                                                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
                                             />
                                         )}
-                                        {m === "review" ? "✦ Studia" : "⟳ Allenati"}
+                                        {mode === "review" ? "✦ Studia" : "⟳ Allenati"}
                                     </motion.button>
                                 ))}
                             </div>
