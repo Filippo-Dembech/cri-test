@@ -6,9 +6,13 @@ import ProgressBar from "../../../ui/ProgressBar";
 
 type Term = (typeof terms)[number];
 
-export default function TypingMode() {
+interface Props {
+    termsCount: number | "all";
+}
+
+export default function TypingMode({ termsCount }: Props) {
     const [queue, setQueue] = useState<Term[]>(() =>
-        shuffle(terms).slice(0, 3),
+        termsCount === "all" ? shuffle(terms) : shuffle(terms).slice(0, termsCount),
     );
     const [idx, setIdx] = useState(0);
     const [input, setInput] = useState("");

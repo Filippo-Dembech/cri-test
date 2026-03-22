@@ -4,7 +4,11 @@ import { terms } from "../terminologyData";
 import type { MatchCard, MatchStatus, TermEntry } from "../types";
 import { shuffle } from "../utils";
 
-export default function MatchMode() {
+interface Props {
+    termsCount: number | "all";
+}
+
+export default function MatchMode({ termsCount }: Props) {
     const BATCH = 6;
 
     const buildBatch = (pool: TermEntry[]) => {
@@ -17,7 +21,7 @@ export default function MatchMode() {
         return { batch, cards: shuffle(cards) };
     };
 
-    const [pool] = useState(() => shuffle(terms));
+    const [pool] = useState(() => termsCount === "all" ? shuffle(terms) : shuffle(terms).slice(0, termsCount));
     const [batchStart, setBatchStart] = useState(0);
     const [{ cards }, setBoard] = useState(() => buildBatch(pool));
     const [selected, setSelected] = useState<MatchCard | null>(null);

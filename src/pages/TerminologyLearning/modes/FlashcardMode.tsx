@@ -5,9 +5,13 @@ import ProgressBar from "../../../ui/ProgressBar";
 import Flashcard from "../../../ui/flashcard/Flashcard";
 import RecapFeedback from "./RecapFeedback";
 
-export default function FlashcardMode() {
-    const [termsQueue, setTermsQueue] = useState(() =>
-        shuffle(terms).slice(0, 20),
+interface Props {
+    termsCount: number | "all";
+}
+
+export default function FlashcardMode({ termsCount }: Props) {
+    const [termsQueue, setTermsQueue] = useState(termsCount === "all" ? shuffle(terms) : () =>
+        shuffle(terms).slice(0, termsCount),
     );
     const [currentIndex, setCurrentIndex] = useState(0);
     const [knowTermsAmount, setKnowTermsAmount] = useState(0);
@@ -39,7 +43,7 @@ export default function FlashcardMode() {
     }
 
     function restart() {
-        setTermsQueue(shuffle(terms).slice(0, 20));
+        setTermsQueue(termsCount === "all" ? shuffle(terms) : shuffle(terms).slice(0, termsCount));
         setCurrentIndex(0);
         setIsCardFlipped(false);
         setKnowTermsAmount(0);
