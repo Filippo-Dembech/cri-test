@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { shuffle } from "../utils";
-import { terms } from "../terminologyData";
+import { shuffle } from "../../utils";
+import { terms } from "../../terminologyData";
 import { AnimatePresence, motion } from "framer-motion";
-import ProgressBar from "../../../ui/ProgressBar";
-
-type Term = (typeof terms)[number];
+import ProgressBar from "../../../../ui/ProgressBar";
+import TypingFeedback from "./TypingFeedback";
+import type { TermEntry } from "../../types";
 
 interface Props {
     termsCount: number | "all";
 }
 
 export default function TypingMode({ termsCount }: Props) {
-    const [queue, setQueue] = useState<Term[]>(() =>
+    const [queue, setQueue] = useState<TermEntry[]>(() =>
         termsCount === "all" ? shuffle(terms) : shuffle(terms).slice(0, termsCount),
     );
     const [idx, setIdx] = useState(0);
@@ -19,7 +19,7 @@ export default function TypingMode({ termsCount }: Props) {
     const [status, setStatus] = useState<"idle" | "correct" | "wrong">("idle");
     const [revealed, setRevealed] = useState(false);
     const [correct, setCorrect] = useState(0);
-    const [missed, setMissed] = useState<Term[]>([]);
+    const [missed, setMissed] = useState<TermEntry[]>([]);
     const [done, setDone] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -30,7 +30,7 @@ export default function TypingMode({ termsCount }: Props) {
         if (status === "idle") inputRef.current?.focus();
     }, [idx, status]);
 
-    function addToMissed(term: Term) {
+    function addToMissed(term: TermEntry) {
         setMissed((prev) =>
             prev.some((t) => t === term) ? prev : [...prev, term],
         );
@@ -70,7 +70,7 @@ export default function TypingMode({ termsCount }: Props) {
         addToMissed(current);
     };
 
-    function restart(mode: "reshuffle" | "retry-missed" | "restart") {
+    function restart(mode: "restart" | "retry-missed" | "retry") {
         setIdx(0);
         setInput("");
         setStatus("idle");
@@ -79,9 +79,9 @@ export default function TypingMode({ termsCount }: Props) {
         setMissed([]);
         setDone(false);
 
-        if (mode === "reshuffle") {
+        if (mode === "restart") {
             // Nuova sessione con termini diversi
-            setQueue(shuffle(terms).slice(0, 20));
+            setQueue(termsCount === "all" ? shuffle(terms) : shuffle(terms).slice(0, termsCount));
         } else if (mode === "retry-missed") {
             // Solo i termini sbagliati, rimescolati
             setQueue(shuffle(missed));
@@ -89,96 +89,16 @@ export default function TypingMode({ termsCount }: Props) {
         // "restart" riusa la queue già in stato, nessuna modifica
     }
 
-    if (done) {
-        const pct = Math.round((correct / total) * 100);
-        return (
-            <motion.div
-                className="flex flex-col gap-6 py-4"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-            >
-                {/* Score circle */}
-                <div className="flex flex-col items-center gap-3">
-                    <div
-                        className={`w-24 h-24 rounded-full flex items-center justify-center border-4 ${pct >= 80 ? "border-green-400 bg-green-50" : pct >= 50 ? "border-amber-400 bg-amber-50" : "border-red-400 bg-red-50"}`}
-                    >
-                        <span
-                            className={`text-2xl font-semibold ${pct >= 80 ? "text-green-700" : pct >= 50 ? "text-amber-700" : "text-red-700"}`}
-                        >
-                            {pct}%
-                        </span>
-                    </div>
-                    <p className="text-red-900 font-medium text-lg text-center">
-                        {correct} su {total} corrette
-                    </p>
-                    {missed.length > 0 && (
-                        <p className="text-red-400 text-sm text-center">
-                            {missed.length}{" "}
-                            {missed.length === 1
-                                ? "termine da ripassare"
-                                : "termini da ripassare"}
-                        </p>
-                    )}
-                </div>
-
-                {/* Missed terms list */}
-                {missed.length > 0 && (
-                    <div className="flex flex-col gap-2">
-                        <p className="text-[10px] font-semibold uppercase tracking-widest text-red-300 px-1">
-                            Da ripassare
-                        </p>
-                        <div className="flex flex-col gap-2">
-                            {missed.map((term, i) => (
-                                <motion.div
-                                    key={i}
-                                    className="bg-red-50 border border-red-200 rounded-2xl px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4"
-                                    initial={{ opacity: 0, y: 8 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: i * 0.04 }}
-                                >
-                                    <p className="text-red-400 text-xs leading-relaxed flex-1">
-                                        {term.definition}
-                                    </p>
-                                    <p className="text-red-900 font-semibold text-sm sm:text-right sm:shrink-0 sm:max-w-[40%]">
-                                        {term.validAnswers[0]}
-                                    </p>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                <div className="flex flex-wrap gap-2 justify-center">
-                    <motion.button
-                        className="rounded-xl border border-red-200 text-red-500 bg-transparent py-2.5 px-5 font-medium cursor-pointer hover:bg-red-50 transition-colors text-sm"
-                        onClick={() => restart("restart")}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.96 }}
-                    >
-                        Ricomincia
-                    </motion.button>
-                    <motion.button
-                        className="rounded-xl border border-red-200 text-red-500 bg-transparent py-2.5 px-5 font-medium cursor-pointer hover:bg-red-50 transition-colors text-sm"
-                        onClick={() => restart("reshuffle")}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.96 }}
-                    >
-                        Nuova sessione
-                    </motion.button>
-                    {missed.length > 0 && (
-                        <motion.button
-                            className="rounded-xl bg-red-500 text-white py-2.5 px-5 font-medium cursor-pointer hover:bg-red-600 transition-colors text-sm"
-                            onClick={() => restart("retry-missed")}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.96 }}
-                        >
-                            Ripassa errori ({missed.length})
-                        </motion.button>
-                    )}
-                </div>
-            </motion.div>
-        );
-    }
+    if (done) return (
+        <TypingFeedback
+            correct={correct}
+            missed={missed}
+            total={total}
+            onRetry={() => restart("retry")}
+            onRetryMissed={() => restart("retry-missed")}
+            onRestart={() => restart("restart")}
+        />
+    )
     return (
         <div className="flex flex-col gap-4">
             {/* Progress */}

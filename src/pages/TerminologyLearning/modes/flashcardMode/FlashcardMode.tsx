@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { terms } from "../terminologyData";
-import { shuffle } from "../utils";
-import ProgressBar from "../../../ui/ProgressBar";
-import Flashcard from "../../../ui/flashcard/Flashcard";
-import RecapFeedback from "./RecapFeedback";
+import { terms } from "../../terminologyData";
+import { shuffle } from "../../utils";
+import ProgressBar from "../../../../ui/ProgressBar";
+import Flashcard from "../../../../ui/flashcard/Flashcard";
+import RecapFeedback from "../RecapFeedback";
 
 interface Props {
     termsCount: number | "all";

@@ -1,9 +1,9 @@
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import FlashcardMode from "./modes/FlashcardMode";
+import FlashcardMode from "./modes/flashcardMode/FlashcardMode";
 import ModeSelector from "./ModeSelector";
 import type { ModeType } from "./types";
-import TypingMode from "./modes/TypingMode";
+import TypingMode from "./modes/typingMode/TypingMode";
 import MatchMode from "./modes/MatchMode";
 import GentleSlide from "../../ui/animations/GentleSlide";
 import TermCountSelector from "./TermCountSelector";
