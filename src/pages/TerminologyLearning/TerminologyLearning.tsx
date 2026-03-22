@@ -3,7 +3,7 @@ import { useState } from "react";
 import FlashcardMode from "./modes/FlashcardMode";
 import ModeSelector from "./ModeSelector";
 import type { ModeType } from "./types";
-import TypeMode from "./modes/TypeMode";
+import TypingMode from "./modes/TypingMode";
 import MatchMode from "./modes/MatchMode";
 import GentleSlide from "../../ui/animations/GentleSlide";
 
@@ -30,7 +30,7 @@ export default function TerminologyLearning() {
                     from="top"
                 >
                     {mode === "flashcard" && <FlashcardMode />}
-                    {mode === "type"      && <TypeMode />}
+                    {mode === "type"      && <TypingMode />}
                     {mode === "match"     && <MatchMode />}
                 </GentleSlide>
             </AnimatePresence>
