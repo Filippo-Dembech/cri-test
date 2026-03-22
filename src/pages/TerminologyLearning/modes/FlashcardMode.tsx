@@ -14,22 +14,26 @@ export default function FlashcardMode() {
 
     const current = queue[idx];
 
-    const handleResult = (r: "known" | "unknown") => {
+    function handleResult(r: "known" | "unknown") {
+        if (result) return;
         setResult(r);
         setTotal((t) => t + 1);
         if (r === "known") setKnown((k) => k + 1);
-        setTimeout(() => {
-            setResult(null);
-            setFlipped(false);
-            if (idx + 1 >= queue.length) {
-                setDone(true);
-            } else {
-                setIdx((i) => i + 1);
-            }
-        }, 400);
-    };
+        setFlipped(false);
 
-    const handleRestart = () => {
+            // Update the term at the midpoint of the flip (card is edge-on = invisible)
+    setTimeout(() => {
+        setResult(null);
+        const nextIdx = idx + 1;
+        if (nextIdx >= queue.length) {
+            setDone(true);
+        } else {
+            setIdx(nextIdx);
+        }
+    }, 225); // half of your 450ms flip duration
+    }
+
+    function restart() {
         setQueue(shuffle(terms));
         setIdx(0);
         setFlipped(false);
@@ -37,7 +41,7 @@ export default function FlashcardMode() {
         setKnown(0);
         setTotal(0);
         setDone(false);
-    };
+    }
 
     if (done) {
         const pct = Math.round((known / total) * 100);
@@ -47,18 +51,28 @@ export default function FlashcardMode() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
             >
-                <div className={`w-24 h-24 rounded-full flex items-center justify-center border-4 ${pct >= 80 ? "border-green-400 bg-green-50" : pct >= 50 ? "border-amber-400 bg-amber-50" : "border-red-400 bg-red-50"}`}>
-                    <span className={`text-2xl font-semibold ${pct >= 80 ? "text-green-700" : pct >= 50 ? "text-amber-700" : "text-red-700"}`}>{pct}%</span>
+                <div
+                    className={`w-24 h-24 rounded-full flex items-center justify-center border-4 ${pct >= 80 ? "border-green-400 bg-green-50" : pct >= 50 ? "border-amber-400 bg-amber-50" : "border-red-400 bg-red-50"}`}
+                >
+                    <span
+                        className={`text-2xl font-semibold ${pct >= 80 ? "text-green-700" : pct >= 50 ? "text-amber-700" : "text-red-700"}`}
+                    >
+                        {pct}%
+                    </span>
                 </div>
                 <p className="text-red-900 font-medium text-lg">
                     {known} su {total} termini conosciuti
                 </p>
                 <p className="text-red-400 text-sm text-center">
-                    {pct >= 80 ? "Ottimo lavoro! Stai memorizzando bene." : pct >= 50 ? "Buon progresso, continua a esercitarti!" : "Continua a studiare, ci vuole pratica!"}
+                    {pct >= 80
+                        ? "Ottimo lavoro! Stai memorizzando bene."
+                        : pct >= 50
+                          ? "Buon progresso, continua a esercitarti!"
+                          : "Continua a studiare, ci vuole pratica!"}
                 </p>
                 <motion.button
                     className="rounded-xl bg-red-500 text-white py-2.5 px-8 font-medium cursor-pointer hover:bg-red-600 transition-colors text-sm"
-                    onClick={handleRestart}
+                    onClick={restart}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.96 }}
                 >
@@ -75,15 +89,20 @@ export default function FlashcardMode() {
                 <div className="flex-1 h-1.5 rounded-full bg-red-100 overflow-hidden">
                     <motion.div
                         className="h-full bg-red-400 rounded-full"
-                        animate={{ width: `${((idx) / queue.length) * 100}%` }}
+                        animate={{ width: `${(idx / queue.length) * 100}%` }}
                         transition={{ duration: 0.4 }}
                     />
                 </div>
-                <span className="text-xs text-red-400 font-medium tabular-nums">{idx + 1}/{queue.length}</span>
+                <span className="text-xs text-red-400 font-medium tabular-nums">
+                    {idx + 1}/{queue.length}
+                </span>
             </div>
 
             {/* Card */}
-            <div className="relative" style={{ perspective: 1000 }}>
+            <div
+                className="relative"
+                style={{ perspective: 1000 }}
+            >
                 <motion.div
                     className="relative w-full cursor-pointer"
                     style={{ transformStyle: "preserve-3d" }}
@@ -96,22 +115,34 @@ export default function FlashcardMode() {
                         className="w-full bg-red-50 border border-red-200 rounded-2xl px-6 py-10 flex flex-col items-center justify-center gap-3 min-h-44"
                         style={{ backfaceVisibility: "hidden" }}
                     >
-                        <p className="text-[10px] font-semibold uppercase tracking-widest text-red-300">Definizione</p>
-                        <p className="text-red-900 text-center text-base leading-relaxed">{current.definition}</p>
-                        <p className="text-[11px] text-red-300 mt-2">tocca per girare</p>
+                        <p className="text-[10px] font-semibold uppercase tracking-widest text-red-300">
+                            Definizione
+                        </p>
+                        <p className="text-red-900 text-center text-base leading-relaxed">
+                            {current.definition}
+                        </p>
+                        <p className="text-[11px] text-red-300 mt-2">
+                            tocca per girare
+                        </p>
                     </div>
                     {/* Back */}
                     <div
                         className="absolute inset-0 w-full bg-white border border-red-300 rounded-2xl px-6 py-10 flex flex-col items-center justify-center gap-3 min-h-44"
-                        style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+                        style={{
+                            backfaceVisibility: "hidden",
+                            transform: "rotateY(180deg)",
+                        }}
                     >
-                        <p className="text-[10px] font-semibold uppercase tracking-widest text-red-300">Termine</p>
+                        <p className="text-[10px] font-semibold uppercase tracking-widest text-red-300">
+                            Termine
+                        </p>
                         <p className="text-red-900 text-center text-xl font-semibold leading-relaxed">
                             {current.validAnswers[0]}
                         </p>
                         {current.validAnswers.length > 1 && (
                             <p className="text-[11px] text-red-300">
-                                anche: {current.validAnswers.slice(1).join(", ")}
+                                anche:{" "}
+                                {current.validAnswers.slice(1).join(", ")}
                             </p>
                         )}
                     </div>
