@@ -2,6 +2,7 @@ import { useState } from "react";
 import { terms } from "../terminologyData";
 import { shuffle } from "../utils";
 import { AnimatePresence, motion } from "framer-motion";
+import ProgressBar from "../../../ui/ProgressBar";
 
 export default function FlashcardMode() {
     const [queue, setQueue] = useState(() => shuffle(terms));
@@ -21,16 +22,16 @@ export default function FlashcardMode() {
         if (r === "known") setKnown((k) => k + 1);
         setFlipped(false);
 
-            // Update the term at the midpoint of the flip (card is edge-on = invisible)
-    setTimeout(() => {
-        setResult(null);
-        const nextIdx = idx + 1;
-        if (nextIdx >= queue.length) {
-            setDone(true);
-        } else {
-            setIdx(nextIdx);
-        }
-    }, 225); // half of your 450ms flip duration
+        // Update the term at the midpoint of the flip (card is edge-on = invisible)
+        setTimeout(() => {
+            setResult(null);
+            const nextIdx = idx + 1;
+            if (nextIdx >= queue.length) {
+                setDone(true);
+            } else {
+                setIdx(nextIdx);
+            }
+        }, 225); // half of your 450ms flip duration
     }
 
     function restart() {
@@ -44,7 +45,7 @@ export default function FlashcardMode() {
     }
 
     if (done) {
-        const pct = Math.round((known / total) * 100);
+        const percentage = Math.round((known / total) * 100);
         return (
             <motion.div
                 className="flex flex-col items-center gap-5 py-6"
@@ -52,21 +53,21 @@ export default function FlashcardMode() {
                 animate={{ opacity: 1, y: 0 }}
             >
                 <div
-                    className={`w-24 h-24 rounded-full flex items-center justify-center border-4 ${pct >= 80 ? "border-green-400 bg-green-50" : pct >= 50 ? "border-amber-400 bg-amber-50" : "border-red-400 bg-red-50"}`}
+                    className={`w-24 h-24 rounded-full flex items-center justify-center border-4 ${percentage >= 80 ? "border-green-400 bg-green-50" : percentage >= 50 ? "border-amber-400 bg-amber-50" : "border-red-400 bg-red-50"}`}
                 >
                     <span
-                        className={`text-2xl font-semibold ${pct >= 80 ? "text-green-700" : pct >= 50 ? "text-amber-700" : "text-red-700"}`}
+                        className={`text-2xl font-semibold ${percentage >= 80 ? "text-green-700" : percentage >= 50 ? "text-amber-700" : "text-red-700"}`}
                     >
-                        {pct}%
+                        {percentage}%
                     </span>
                 </div>
                 <p className="text-red-900 font-medium text-lg">
                     {known} su {total} termini conosciuti
                 </p>
                 <p className="text-red-400 text-sm text-center">
-                    {pct >= 80
+                    {percentage >= 80
                         ? "Ottimo lavoro! Stai memorizzando bene."
-                        : pct >= 50
+                        : percentage >= 50
                           ? "Buon progresso, continua a esercitarti!"
                           : "Continua a studiare, ci vuole pratica!"}
                 </p>
@@ -85,18 +86,7 @@ export default function FlashcardMode() {
     return (
         <div className="flex flex-col gap-4">
             {/* Progress */}
-            <div className="flex items-center gap-3">
-                <div className="flex-1 h-1.5 rounded-full bg-red-100 overflow-hidden">
-                    <motion.div
-                        className="h-full bg-red-400 rounded-full"
-                        animate={{ width: `${(idx / queue.length) * 100}%` }}
-                        transition={{ duration: 0.4 }}
-                    />
-                </div>
-                <span className="text-xs text-red-400 font-medium tabular-nums">
-                    {idx + 1}/{queue.length}
-                </span>
-            </div>
+            <ProgressBar done={idx} total={queue.length} />
 
             {/* Card */}
             <div
