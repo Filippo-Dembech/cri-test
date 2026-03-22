@@ -2,7 +2,7 @@ import { useState } from "react";
 import { terms } from "../terminologyData";
 import { shuffle } from "../utils";
 import ProgressBar from "../../../ui/ProgressBar";
-import Flashcard from "../../../ui/Flashcard";
+import Flashcard from "../../../ui/flashcard/Flashcard";
 import RecapFeedback from "./RecapFeedback";
 
 export default function FlashcardMode() {
