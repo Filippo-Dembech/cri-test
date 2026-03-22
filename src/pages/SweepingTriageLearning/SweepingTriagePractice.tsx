@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import PracticePage from "../ui/PracticePage";
+import PracticePage from "../../ui/PracticePage";
 import StartProtocol from "./StartProtocol";
 import StartProtocolPractice from "./StartProtocolPractice";
-import GentleSlide from "../ui/animations/GentleSlide";
+import GentleSlide from "../../ui/animations/GentleSlide";
 
 type Tab = "study" | "practice";
 
@@ -24,7 +24,7 @@ export default function SweepingTriagePractice() {
 
     return (
         <PracticePage title="Pratica Sweeping Triage">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-full sm:max-w-200">
             {/* Tab switcher */}
             <div className="flex gap-2 p-1 bg-red-50 border border-red-100 rounded-2xl">
                 {TABS.map((t) => (

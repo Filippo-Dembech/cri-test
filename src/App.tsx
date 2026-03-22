@@ -11,7 +11,7 @@ import TheoryPage from "./pages/TheoryPage";
 import RecapPage from "./pages/RecapPage";
 import SSEPractice from "./pages/SSEPractice";
 import OxygenPractice from "./pages/OxygenPractice";
-import SweepingTriagePractice from "./pages/SweepingTriagePractice";
+import SweepingTriagePractice from "./pages/SweepingTriageLearning/SweepingTriagePractice";
 import ECGPractice from "./pages/ECGPractice";
 import GlucosePractice from "./pages/GlucosePractice";
 import DiagnosticSuspicionScorePractice from "./pages/DiagnosticSuspicionScorePractice";
