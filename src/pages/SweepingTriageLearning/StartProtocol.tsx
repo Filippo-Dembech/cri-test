@@ -96,9 +96,6 @@ export default function StartProtocol() {
         setStepKey((k) => k + 1);
     }
 
-    const stepNumber = history.length + 1;
-    const totalSteps = 6;
-
     return (
         <div className="flex flex-col gap-5 w-full">
             {/* Header */}
@@ -109,23 +106,7 @@ export default function StartProtocol() {
                     </p>
                     <h2 className="text-red-900 font-semibold text-base">S.T.A.R.T. Triage</h2>
                 </div>
-                {!result && (
-                    <span className="text-xs text-red-400 font-medium tabular-nums">
-                        Passo {stepNumber}/{totalSteps}
-                    </span>
-                )}
             </div>
-
-            {/* Progress bar */}
-            {!result && (
-                <div className="h-1.5 rounded-full bg-red-100 overflow-hidden">
-                    <motion.div
-                        className="h-full bg-red-400 rounded-full"
-                        animate={{ width: `${((stepNumber - 1) / totalSteps) * 100}%` }}
-                        transition={{ duration: 0.4 }}
-                    />
-                </div>
-            )}
 
             <AnimatePresence mode="wait">
                 {!result ? (
