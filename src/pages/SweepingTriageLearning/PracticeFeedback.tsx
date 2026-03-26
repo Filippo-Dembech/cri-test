@@ -1,11 +1,11 @@
 import { motion } from "framer-motion"
 import ColorPill from "../../ui/ColorPill"
-import type { Scenario } from "./types";
+import type { ScenarioType } from "./types";
 import Score from "../../ui/Score";
 
 interface Props {
     onRestart: () => void;
-    results: { correct: boolean, scenario: Scenario }[];
+    results: { correct: boolean, scenario: ScenarioType }[];
     correct: number;
     total: number
 }

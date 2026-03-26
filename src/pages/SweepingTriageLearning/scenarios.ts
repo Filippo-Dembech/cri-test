@@ -1,6 +1,6 @@
-import type { Scenario } from "./types";
+import type { ScenarioType } from "./types";
 
-export const scenarios: Scenario[] = [
+export const scenarios: ScenarioType[] = [
     // ── Ramo green ────────────────────────────────────────────────────────────
     {
         id: "s-verde-1",

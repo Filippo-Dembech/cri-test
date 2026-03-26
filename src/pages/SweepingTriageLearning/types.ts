@@ -1,7 +1,7 @@
 export type Color = "green" | "yellow" | "red";
 export type ExerciseType = "scenario" | "next-step" | "what-if";
 
-export interface Scenario {
+export interface ScenarioType {
     id: string;
     type: ExerciseType;
     vignette: string;       // what the user reads

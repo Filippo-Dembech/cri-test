@@ -1,11 +1,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import PracticeFeedback from "./PracticeFeedback";
-import type { Color, ExerciseType, Scenario } from "./types";
+import type { Color, ScenarioType } from "./types";
 import { scenarios } from "./scenarios";
 import ColorPill from "../../ui/ColorPill";
 import ProgressBar from "../../ui/ProgressBar";
 import Subtitle from "../../ui/typography/Subtitle";
+import Scenario from "./Scenario";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -14,26 +15,29 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 const COLOR_STYLE: Record<Color, { pill: string; dot: string }> = {
-    green:  { pill: "bg-green-100 text-green-800 border-green-300", dot: "bg-green-500" },
-    yellow: { pill: "bg-amber-100 text-amber-800 border-amber-300", dot: "bg-amber-400" },
-    red:  { pill: "bg-red-100 text-red-700 border-red-300",       dot: "bg-red-500"   },
+    green: {
+        pill: "bg-green-100 text-green-800 border-green-300",
+        dot: "bg-green-500",
+    },
+    yellow: {
+        pill: "bg-amber-100 text-amber-800 border-amber-300",
+        dot: "bg-amber-400",
+    },
+    red: { pill: "bg-red-100 text-red-700 border-red-300", dot: "bg-red-500" },
 };
 
-const TYPE_LABEL: Record<ExerciseType, string> = {
-    "scenario":  "Scenario",
-    "next-step": "Passo successivo",
-    "what-if":   "E se...?",
-};
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function StartProtocolPractice() {
-    const [queue] = useState<Scenario[]>(() => shuffle(scenarios));
+    const [queue] = useState<ScenarioType[]>(() => shuffle(scenarios));
     const [idx, setIdx] = useState(0);
     const [selected, setSelected] = useState<Color | null>(null);
     const [attempts, setAttempts] = useState(0);
     const [showHint, setShowHint] = useState(false);
-    const [results, setResults] = useState<{ correct: boolean; scenario: Scenario }[]>([]);
+    const [results, setResults] = useState<
+        { correct: boolean; scenario: ScenarioType }[]
+    >([]);
     const [done, setDone] = useState(false);
     const [cardKey, setCardKey] = useState(0);
 
@@ -47,7 +51,11 @@ export default function StartProtocolPractice() {
         setAttempts(attempt);
         setSelected(color);
 
-        if (color !== scenario.correctAnswer && attempt === 1 && scenario.hint) {
+        if (
+            color !== scenario.correctAnswer &&
+            attempt === 1 &&
+            scenario.hint
+        ) {
             setShowHint(true);
         }
     }
@@ -98,11 +106,16 @@ export default function StartProtocolPractice() {
             <div className="flex items-center justify-between">
                 <div>
                     <Subtitle>Protocollo S.T.A.R.T.</Subtitle>
-                    <h2 className="text-red-900 font-semibold text-base">Esercitazione</h2>
+                    <h2 className="text-red-900 font-semibold text-base">
+                        Esercitazione
+                    </h2>
                 </div>
             </div>
 
-           <ProgressBar done={idx} total={queue.length} />
+            <ProgressBar
+                done={idx}
+                total={queue.length}
+            />
 
             <AnimatePresence mode="wait">
                 <motion.div
@@ -113,37 +126,7 @@ export default function StartProtocolPractice() {
                     exit={{ opacity: 0, x: -24 }}
                     transition={{ duration: 0.25 }}
                 >
-                    {/* Type badge */}
-                    <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-semibold uppercase tracking-widest text-red-300">
-                            {TYPE_LABEL[scenario.type]}
-                        </span>
-                    </div>
-
-                    {/* Vignette */}
-                    <div className="bg-red-50 border border-red-200 rounded-2xl px-5 py-6">
-                        <Subtitle>Paziente</Subtitle>
-                        <p className="text-red-900 text-base leading-relaxed mt-2">
-                            {scenario.vignette}
-                        </p>
-                    </div>
-
-                    {/* Hint */}
-                    <AnimatePresence>
-                        {showHint && scenario.hint && (
-                            <motion.div
-                                className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3"
-                                initial={{ opacity: 0, y: -6 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0 }}
-                            >
-                                <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-400 mb-1">
-                                    Suggerimento
-                                </p>
-                                <p className="text-amber-900 text-sm leading-snug">{scenario.hint}</p>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                    <Scenario scenario={scenario} showHint={showHint} />
 
                     {/* Answer options */}
                     <div className="flex flex-col gap-2">
@@ -151,12 +134,20 @@ export default function StartProtocolPractice() {
                         <div className="grid grid-cols-3 gap-2">
                             {scenario.options.map((color) => {
                                 const isThis = selected === color;
-                                const correct = color === scenario.correctAnswer;
-                                let style = "bg-white border-red-100 text-red-900 hover:border-red-300 hover:bg-red-50";
+                                const correct =
+                                    color === scenario.correctAnswer;
+                                let style =
+                                    "bg-white border-red-100 text-red-900 hover:border-red-300 hover:bg-red-50";
                                 if (isAnswered) {
-                                    if (correct) style = "bg-green-50 border-green-400 text-green-800";
-                                    else if (isThis && !correct) style = "bg-red-100 border-red-400 text-red-700 opacity-70";
-                                    else style = "bg-white border-red-100 text-red-300 opacity-40";
+                                    if (correct)
+                                        style =
+                                            "bg-green-50 border-green-400 text-green-800";
+                                    else if (isThis && !correct)
+                                        style =
+                                            "bg-red-100 border-red-400 text-red-700 opacity-70";
+                                    else
+                                        style =
+                                            "bg-white border-red-100 text-red-300 opacity-40";
                                 }
 
                                 return (
@@ -164,13 +155,23 @@ export default function StartProtocolPractice() {
                                         key={color}
                                         onClick={() => handleSelect(color)}
                                         disabled={isAnswered}
-                                        whileTap={isAnswered ? {} : { scale: 0.96 }}
+                                        whileTap={
+                                            isAnswered ? {} : { scale: 0.96 }
+                                        }
                                         className={`relative border rounded-xl py-3 flex flex-col items-center gap-1.5 transition-colors duration-150 cursor-pointer font-semibold text-sm ${style}`}
                                     >
-                                        <span className={`w-3 h-3 rounded-full ${COLOR_STYLE[color].dot}`} />
-                                        {color === "green" ? "VERDE" : color === "yellow" ? "GIALLO" : "ROSSO"}
+                                        <span
+                                            className={`w-3 h-3 rounded-full ${COLOR_STYLE[color].dot}`}
+                                        />
+                                        {color === "green"
+                                            ? "VERDE"
+                                            : color === "yellow"
+                                              ? "GIALLO"
+                                              : "ROSSO"}
                                         {isAnswered && correct && (
-                                            <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold">✓</span>
+                                            <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold">
+                                                ✓
+                                            </span>
                                         )}
                                     </motion.button>
                                 );
@@ -187,12 +188,26 @@ export default function StartProtocolPractice() {
                                 animate={{ opacity: 1, y: 0 }}
                             >
                                 {/* Feedback banner */}
-                                <div className={`rounded-xl border px-4 py-3 ${isCorrect ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}>
-                                    <p className={`text-xs font-semibold mb-1 ${isCorrect ? "text-green-600" : "text-red-500"}`}>
-                                        {isCorrect ? "Corretto" : "Non corretto — risposta: " }
-                                        {!isCorrect && <ColorPill color={scenario.correctAnswer}>{scenario.correctAnswer}</ColorPill>}
+                                <div
+                                    className={`rounded-xl border px-4 py-3 ${isCorrect ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}
+                                >
+                                    <p
+                                        className={`text-xs font-semibold mb-1 ${isCorrect ? "text-green-600" : "text-red-500"}`}
+                                    >
+                                        {isCorrect
+                                            ? "Corretto"
+                                            : "Non corretto — risposta: "}
+                                        {!isCorrect && (
+                                            <ColorPill
+                                                color={scenario.correctAnswer}
+                                            >
+                                                {scenario.correctAnswer}
+                                            </ColorPill>
+                                        )}
                                     </p>
-                                    <p className={`text-xs leading-relaxed ${isCorrect ? "text-green-900" : "text-red-900"}`}>
+                                    <p
+                                        className={`text-xs leading-relaxed ${isCorrect ? "text-green-900" : "text-red-900"}`}
+                                    >
                                         {scenario.explanation}
                                     </p>
                                 </div>
@@ -200,7 +215,10 @@ export default function StartProtocolPractice() {
                                 {/* Path steps */}
                                 <div className="flex flex-wrap gap-1.5 px-1">
                                     {scenario.path.map((step, i) => (
-                                        <span key={i} className="text-[11px] bg-red-50 border border-red-100 text-red-400 px-2 py-0.5 rounded-lg">
+                                        <span
+                                            key={i}
+                                            className="text-[11px] bg-red-50 border border-red-100 text-red-400 px-2 py-0.5 rounded-lg"
+                                        >
                                             {step}
                                         </span>
                                     ))}
@@ -214,7 +232,9 @@ export default function StartProtocolPractice() {
                                     animate={{ opacity: 1 }}
                                     transition={{ delay: 0.15 }}
                                 >
-                                    {idx + 1 < queue.length ? "Prossimo →" : "Vedi risultati"}
+                                    {idx + 1 < queue.length
+                                        ? "Prossimo →"
+                                        : "Vedi risultati"}
                                 </motion.button>
                             </motion.div>
                         )}
