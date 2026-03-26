@@ -1,12 +1,13 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import PracticeFeedback from "./PracticeFeedback";
-import type { Color, ScenarioType } from "./types";
+import type { ColorCode, ScenarioType } from "./types";
 import { scenarios } from "./scenarios";
 import ColorPill from "../../ui/ColorPill";
 import ProgressBar from "../../ui/ProgressBar";
 import Subtitle from "../../ui/typography/Subtitle";
 import Scenario from "./Scenario";
+import AnswerOptions from "./AnswerOptions";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -14,17 +15,6 @@ function shuffle<T>(arr: T[]): T[] {
     return [...arr].sort(() => Math.random() - 0.5);
 }
 
-const COLOR_STYLE: Record<Color, { pill: string; dot: string }> = {
-    green: {
-        pill: "bg-green-100 text-green-800 border-green-300",
-        dot: "bg-green-500",
-    },
-    yellow: {
-        pill: "bg-amber-100 text-amber-800 border-amber-300",
-        dot: "bg-amber-400",
-    },
-    red: { pill: "bg-red-100 text-red-700 border-red-300", dot: "bg-red-500" },
-};
 
 
 // ─── Main component ───────────────────────────────────────────────────────────
@@ -32,7 +22,7 @@ const COLOR_STYLE: Record<Color, { pill: string; dot: string }> = {
 export default function StartProtocolPractice() {
     const [queue] = useState<ScenarioType[]>(() => shuffle(scenarios));
     const [idx, setIdx] = useState(0);
-    const [selected, setSelected] = useState<Color | null>(null);
+    const [selectedColorCode, setSelectedColorCode] = useState<ColorCode | undefined>(undefined);
     const [attempts, setAttempts] = useState(0);
     const [showHint, setShowHint] = useState(false);
     const [results, setResults] = useState<
@@ -42,14 +32,14 @@ export default function StartProtocolPractice() {
     const [cardKey, setCardKey] = useState(0);
 
     const scenario = queue[idx];
-    const isAnswered = selected !== null;
-    const isCorrect = selected === scenario?.correctAnswer;
+    const isAnswered = selectedColorCode !== undefined;
+    const isCorrect = selectedColorCode === scenario?.correctAnswer;
 
-    function handleSelect(color: Color) {
+    function handleSelect(color: ColorCode) {
         if (isAnswered) return;
         const attempt = attempts + 1;
         setAttempts(attempt);
-        setSelected(color);
+        setSelectedColorCode(color);
 
         if (
             color !== scenario.correctAnswer &&
@@ -67,7 +57,7 @@ export default function StartProtocolPractice() {
             setDone(true);
         } else {
             setIdx(next);
-            setSelected(null);
+            setSelectedColorCode(undefined);
             setAttempts(0);
             setShowHint(false);
             setCardKey((k) => k + 1);
@@ -76,7 +66,7 @@ export default function StartProtocolPractice() {
 
     function restart() {
         setIdx(0);
-        setSelected(null);
+        setSelectedColorCode(undefined);
         setAttempts(0);
         setShowHint(false);
         setResults([]);
@@ -129,55 +119,12 @@ export default function StartProtocolPractice() {
                     <Scenario scenario={scenario} showHint={showHint} />
 
                     {/* Answer options */}
-                    <div className="flex flex-col gap-2">
-                        <Subtitle>Codice triage</Subtitle>
-                        <div className="grid grid-cols-3 gap-2">
-                            {scenario.options.map((color) => {
-                                const isThis = selected === color;
-                                const correct =
-                                    color === scenario.correctAnswer;
-                                let style =
-                                    "bg-white border-red-100 text-red-900 hover:border-red-300 hover:bg-red-50";
-                                if (isAnswered) {
-                                    if (correct)
-                                        style =
-                                            "bg-green-50 border-green-400 text-green-800";
-                                    else if (isThis && !correct)
-                                        style =
-                                            "bg-red-100 border-red-400 text-red-700 opacity-70";
-                                    else
-                                        style =
-                                            "bg-white border-red-100 text-red-300 opacity-40";
-                                }
-
-                                return (
-                                    <motion.button
-                                        key={color}
-                                        onClick={() => handleSelect(color)}
-                                        disabled={isAnswered}
-                                        whileTap={
-                                            isAnswered ? {} : { scale: 0.96 }
-                                        }
-                                        className={`relative border rounded-xl py-3 flex flex-col items-center gap-1.5 transition-colors duration-150 cursor-pointer font-semibold text-sm ${style}`}
-                                    >
-                                        <span
-                                            className={`w-3 h-3 rounded-full ${COLOR_STYLE[color].dot}`}
-                                        />
-                                        {color === "green"
-                                            ? "VERDE"
-                                            : color === "yellow"
-                                              ? "GIALLO"
-                                              : "ROSSO"}
-                                        {isAnswered && correct && (
-                                            <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold">
-                                                ✓
-                                            </span>
-                                        )}
-                                    </motion.button>
-                                );
-                            })}
-                        </div>
-                    </div>
+                    <AnswerOptions
+                        scenario={scenario}
+                        selected={selectedColorCode}
+                        isAnswered={isAnswered}
+                        onSelect={(selectedColorCode) => handleSelect(selectedColorCode)}
+                    />
 
                     {/* Explanation */}
                     <AnimatePresence>

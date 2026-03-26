@@ -1,4 +1,4 @@
-export type Color = "green" | "yellow" | "red";
+export type ColorCode = "green" | "yellow" | "red";
 export type ExerciseType = "scenario" | "next-step" | "what-if";
 
 export interface ScenarioType {
@@ -6,8 +6,8 @@ export interface ScenarioType {
     type: ExerciseType;
     vignette: string;       // what the user reads
     hint?: string;          // shown after first wrong attempt
-    correctAnswer: Color;
-    options: Color[];       // always 2–3 choices
+    correctAnswer: ColorCode;
+    options: ColorCode[];       // always 2–3 choices
     explanation: string;    // shown after answering
     path: string[];         // the logical steps, shown in recap
 }
