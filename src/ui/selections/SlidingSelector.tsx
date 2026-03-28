@@ -46,8 +46,8 @@ export default function SlidingSelector<TId extends string>({ options, currentOp
                 whileTap={{ scale: 0.95 }}
             >
                 <div>
-                    <span className="text-red-500 text-sm mr-1.5">{current.icon}</span>
-                    <span className="text-sm font-semibold text-red-700">{current.label}</span>
+                    <span className="text-red-500 text-sm mr-1.5">{current?.icon}</span>
+                    <span className="text-sm font-semibold text-red-700">{current?.label}</span>
                 </div>
                 <span className="text-red-300 text-xs">▾</span>
             </motion.button>

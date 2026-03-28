@@ -3,10 +3,10 @@ import type { StepsData } from "../../exercises";
 import Steps from "../../ui/exercise/Steps";
 import PracticePage from "../../ui/PracticePage";
 import { motion, AnimatePresence } from "framer-motion";
-import SkillsReorderPractice from "./SkillsReorderPractice";
 import { skills } from "./skills";
 import Dropdown from "../../ui/selections/Dropdown";
 import { Tabs, type TabItem } from "../../ui/Tabs";
+import StepsBuilder from "../../ui/exercise/StepsBuilder";
 
 const TABS: TabItem[] = [
     {
@@ -68,8 +68,8 @@ export default function SkillsLearning() {
                                             onReset={handleReset}
                                         />
                                     ) : (
-                                        <SkillsReorderPractice
-                                            selectedSkill={selectedSkill}
+                                        <StepsBuilder
+                                            steps={selectedSkill.steps}
                                         />
                                     )
                                 ) : (
