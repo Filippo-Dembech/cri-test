@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { PracticeProvider } from "./context/PracticeContext";
 import PracticePage from "./pages/PracticePage";
 import ParametersPractice from "./pages/ParametersPractice/ParametersPractice";
-import TerminologyPractice from "./pages/TerminologyPractice";
+import TerminologyPractice from "./pages/TerminologyLearning/TerminologyPractice";
 import SkillsPractice from "./pages/SkillsPractice/SkillsPractice";
 import AnalyzePractice from "./pages/AnalyzePractice";
 import DiseasePractice from "./pages/DiseasePractice";
