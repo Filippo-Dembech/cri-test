@@ -3,8 +3,12 @@ export interface Range {
     max: number | string;
 }
 
-export interface Parameter {
-    name: string;
-    healthyRange: Range;
-    unhealthyRange: Range;
-}
+export type Parameter = {
+  name: string;
+  shortName: string;
+  unit: string;
+  healthyRange: { min: number | string; max: number | string };
+  unhealthyRange: { min: number; max: number };
+  step?: number;
+  isBloodPressure?: boolean;
+};

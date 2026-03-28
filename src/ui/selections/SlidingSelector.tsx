@@ -42,7 +42,7 @@ export default function SlidingSelector<TId extends string>({ options, currentOp
             {/* ── Pill trigger ──────────────────────────────────────────── */}
             <motion.button
                 onClick={() => setOpen(true)}
-                className="flex items-center justify-between px-3 py-1.5 rounded-full border border-red-200 bg-white hover:bg-red-50 transition-colors cursor-pointer"
+                className="flex items-center justify-between gap-1.5 px-3 py-1.5 rounded-full border border-red-200 bg-white hover:bg-red-50 transition-colors cursor-pointer"
                 whileTap={{ scale: 0.95 }}
             >
                 <div>
