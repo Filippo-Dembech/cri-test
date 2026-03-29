@@ -10,7 +10,7 @@ import CoursePage from "./pages/CoursePage";
 import TheoryPage from "./pages/TheoryPage";
 import RecapPage from "./pages/RecapPage";
 import SSEPractice from "./pages/SSEPractice";
-import OxygenPractice from "./pages/OxygenPractice";
+import OxygenPractice from "./pages/OxygenLearning/OxygenPractice";
 import SweepingTriagePractice from "./pages/SweepingTriageLearning/SweepingTriagePractice";
 import ECGPractice from "./pages/ECGPractice";
 import GlucoseLearning from "./pages/GlucoseLearning/GlucoseLearning";

@@ -1,8 +1,9 @@
 import { Tabs, type TabItem } from "../../ui/Tabs";
 import GentleSlide from "../../ui/animations/GentleSlide";
 import PracticePage from "../../ui/PracticePage";
-import StartProtocol from "./StartProtocol";
 import StartProtocolPractice from "./StartProtocolPractice";
+import ProcedureWalker from "../../ui/ProcedureWalker";
+import { startTriage } from "./procedure";
 
 const TABS: TabItem[] = [
     { id: "study",    label: "Studia",  description: "Esplora il protocollo passo per passo" },
@@ -16,7 +17,7 @@ export default function SweepingTriagePractice() {
                 <Tabs tabs={TABS} defaultValue="study">
                     {(activeTab) => (
                         <GentleSlide from="top">
-                            {activeTab === "study"    && <StartProtocol />}
+                            {activeTab === "study"    && <ProcedureWalker procedure={startTriage} />}
                             {activeTab === "practice" && <StartProtocolPractice />}
                         </GentleSlide>
                     )}

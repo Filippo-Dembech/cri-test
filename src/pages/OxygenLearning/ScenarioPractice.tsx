@@ -1,7 +1,6 @@
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import Button from "../ui/Button";
-import PracticePage from "../ui/PracticePage";
-import {motion, AnimatePresence} from 'framer-motion';
+import Button from "../../ui/Button";
 
 type Disease = 
         "shock" | 
@@ -16,15 +15,6 @@ type PatientState = {
     hasDyspnea: boolean,
     isBPCO: boolean
 }
-
-// disease signs data for modals
-const diseaseSigns = {
-    shock: {},
-    COIntoxication: {},
-    drowning: {},
-    dysbarism: {},
-    hypothermia: {},
-};
 
 function getRandomDisease(): Disease | undefined {
     const diseases: Disease[] = [
@@ -77,7 +67,8 @@ function getAnswerFrom(patientState: PatientState) {
     return "Cannula nasale -> maschera semplice -> maschera con reservoir fino al raggiungimento di 88-92% di saturazione";
 }
 
-export default function OxygenPractice() {
+
+export default function ScenarioPractice() {
     const [patientState, setPatientState] = useState<PatientState>(getRandomPatientState);
     const [showAnswer, setShowAnswer] = useState(false);
     const answer = getAnswerFrom(patientState);
@@ -85,10 +76,8 @@ export default function OxygenPractice() {
     function toggleShowAnswer() {
         setShowAnswer((show) => !show);
     }
-
     return (
-        <PracticePage title="Pratica Ossigenoterapia">
-            <motion.div
+                    <motion.div
                 className="flex flex-col gap-5 max-w-150 w-full"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -170,6 +159,5 @@ export default function OxygenPractice() {
                     )}
                 </AnimatePresence>
             </motion.div>
-        </PracticePage>
-    );
+    )
 }
