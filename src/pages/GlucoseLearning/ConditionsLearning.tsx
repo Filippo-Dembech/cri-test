@@ -711,7 +711,7 @@ function GlicemiaPractice() {
 
 // ─── Root component ───────────────────────────────────────────────────────────
 
-export default function GlicemiaLearning() {
+export default function ConditionsLearning() {
     const [tab, setTab] = useState<Tab>("study");
     const [tabKey, setTabKey] = useState(0);
 

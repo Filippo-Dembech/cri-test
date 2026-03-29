@@ -13,7 +13,7 @@ import SSEPractice from "./pages/SSEPractice";
 import OxygenPractice from "./pages/OxygenPractice";
 import SweepingTriagePractice from "./pages/SweepingTriageLearning/SweepingTriagePractice";
 import ECGPractice from "./pages/ECGPractice";
-import GlucosePractice from "./pages/GlucosePractice";
+import GlucoseLearning from "./pages/GlucoseLearning/GlucoseLearning";
 import DiagnosticSuspicionScorePractice from "./pages/DiagnosticSuspicionScorePractice";
 
 export default function App() {
@@ -105,7 +105,7 @@ export default function App() {
                     />
                     <Route
                         path="/blood-glucose-practice"
-                        element={<GlucosePractice />}
+                        element={<GlucoseLearning />}
                     />
                     <Route
                         path="/diagnostic-suspicion-score-practice"

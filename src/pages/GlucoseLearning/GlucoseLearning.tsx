@@ -1,9 +1,9 @@
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import GlicemiaLearning from "./GlicemiaPractice/GlicemiaLearning";
-import TechniquePractice from "./GlicemiaPractice/TechniquePractice";
-import GentleSlide from "../ui/animations/GentleSlide";
-import PracticePage from "../ui/PracticePage";
+import ConditionsLearning from "./ConditionsLearning";
+import TechniqueLearning from "./TechniqueLearning";
+import GentleSlide from "../../ui/animations/GentleSlide";
+import PracticePage from "../../ui/PracticePage";
 
 type Topic = "criteri" | "tecnica";
 
@@ -12,7 +12,7 @@ const TOPICS: { id: Topic; label: string; description: string }[] = [
     { id: "tecnica", label: "Tecnica",  description: "Come eseguire la rilevazione" },
 ];
 
-export default function GlicemiaPage() {
+export default function GlucoseLearning() {
     const [topic, setTopic] = useState<Topic>("criteri");
     const [topicKey, setTopicKey] = useState(0);
 
@@ -48,8 +48,8 @@ export default function GlicemiaPage() {
             {/* Content — each child manages its own study/practice tab internally */}
             <AnimatePresence mode="wait">
                 <GentleSlide key={topicKey} from="top">
-                    {topic === "criteri" && <GlicemiaLearning />}
-                    {topic === "tecnica" && <TechniquePractice />}
+                    {topic === "criteri" && <ConditionsLearning />}
+                    {topic === "tecnica" && <TechniqueLearning />}
                 </GentleSlide>
             </AnimatePresence>
 </div>

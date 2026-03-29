@@ -11,11 +11,12 @@ import SlidingSelector, {
     type SelectorOption,
 } from "../../ui/selections/SlidingSelector";
 import PracticePage from "../../ui/PracticePage";
+import { icons } from "../../icons/icons";
 
 const modes: SelectorOption<ModeType>[] = [
-    { id: "flashcard", label: "Flashcard", sub: "studia", icon: "⧉" },
-    { id: "type", label: "Scrivi", sub: "ricorda", icon: "✎" },
-    { id: "match", label: "Abbina", sub: "gioca", icon: "⇄" },
+    { id: "flashcard", label: "Flashcard", sub: "studia", icon: icons.pagesEmpty },
+    { id: "type", label: "Scrivi", sub: "ricorda", icon: icons.pencil },
+    { id: "match", label: "Abbina", sub: "gioca", icon: icons.arrowsBidirectional },
 ];
 
 export default function TerminologyPractice() {
