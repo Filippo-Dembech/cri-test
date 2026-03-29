@@ -58,7 +58,6 @@ export const icons = {
     // Office / Stationery
     paperclips: "🖇",
     pushpin: "🖈",
-    pencil: "🖉",
     pen: "🖊",
     fountainPen: "🖋",
     paintbrush: "🖌",
