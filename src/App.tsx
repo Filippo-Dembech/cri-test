@@ -4,7 +4,7 @@ import PracticePage from "./pages/PracticePage";
 import ParametersPractice from "./pages/ParametersPractice/ParametersPractice";
 import TerminologyPractice from "./pages/TerminologyLearning/TerminologyPractice";
 import SkillsPractice from "./pages/SkillsLearning/SkillsLearning";
-import AnalyzePractice from "./pages/AnalyzePractice";
+import AnalyzePractice from "./pages/AnalyzeLearning/AnalyzePractice";
 import DiseasePractice from "./pages/DiseasePractice";
 import CoursePage from "./pages/CoursePage";
 import TheoryPage from "./pages/TheoryPage";

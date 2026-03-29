@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Button from "../ui/Button";
-import PracticePage from "../ui/PracticePage";
-import Dropdown from "../ui/Dropdown";
+import Button from "../../ui/Button";
+import PracticePage from "../../ui/PracticePage";
 import {motion, AnimatePresence} from 'framer-motion'
+import Accordion from "../../ui/Accordion";
 
 interface Situation {
     name: string;
@@ -100,7 +100,7 @@ export default function AnalyzePractice() {
                 transition={{ duration: 0.4, ease: "easeOut" }}
             >
                 {/* Situation card */}
-                <div className="bg-red-50 border border-red-200 rounded-2xl px-5 py-4">
+                <div className="bg-red-100 border border-red-200 rounded-2xl px-5 py-4">
                     <p className="text-xs font-semibold uppercase tracking-widest text-red-400 mb-2">
                         Situazione
                     </p>
@@ -118,16 +118,9 @@ export default function AnalyzePractice() {
                     </AnimatePresence>
                 </div>
 
-                {/* Questions dropdown */}
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={currentSituation.name}
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -8 }}
-                        transition={{ duration: 0.3, ease: "easeInOut", delay: 0.05 }}
-                    >
-                        <Dropdown key={currentSituation.name} showLabel="domande">
+                <Accordion>
+                    <Accordion.Section label="Mostra domande">
+
                             <div className="flex flex-wrap gap-2 py-2">
                                 {currentSituation.questions.map((question, i) => (
                                     <span
@@ -139,9 +132,8 @@ export default function AnalyzePractice() {
                                     </span>
                                 ))}
                             </div>
-                        </Dropdown>
-                    </motion.div>
-                </AnimatePresence>
+                    </Accordion.Section>
+                </Accordion>
 
                 {/* Next button */}
                 <motion.div

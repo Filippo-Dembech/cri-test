@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Button from "../ui/Button";
-import Dropdown from "../ui/Dropdown";
 import { useRandomList } from "../hooks/useRandomList";
 import { motion, AnimatePresence } from "framer-motion";
 import { BiSolidRightArrow } from "react-icons/bi";
 import PracticePage from "../ui/PracticePage";
+import Accordion from "../ui/Accordion";
 
 interface Disease {
     name: string;
@@ -268,7 +268,7 @@ export default function DiseasePractice() {
                             className="flex flex-col gap-4"
                         >
                             {/* Name card */}
-                            <div className="bg-red-50 border border-red-200 rounded-2xl px-5 py-4">
+                            <div className="bg-red-100 border border-red-200 rounded-2xl px-5 py-4">
                                 <p className="text-xs font-semibold uppercase tracking-widest text-red-400 mb-1">
                                     Patologia
                                 </p>
@@ -278,11 +278,11 @@ export default function DiseasePractice() {
                             </div>
 
                             {/* Dropdowns */}
-                            <div className="flex flex-col gap-2">
+                            <Accordion>
                                 {currentDisease.symptoms && (
-                                    <Dropdown
+                                    <Accordion.Section
                                         key={`${roundCount}-1`}
-                                        showLabel="segni/sintomi"
+                                        label="Segni e Sintomi"
                                     >
                                         <div className="flex flex-wrap gap-2 py-2">
                                             {currentDisease.symptoms.map((s) => (
@@ -292,12 +292,12 @@ export default function DiseasePractice() {
                                                 </span>
                                             ))}
                                         </div>
-                                    </Dropdown>
+                                    </Accordion.Section>
                                 )}
                                 {currentDisease.questions && (
-                                    <Dropdown
+                                    <Accordion.Section
                                         key={`${roundCount}-2`}
-                                        showLabel="domande di rito"
+                                        label="Domande di Rito"
                                     >
                                         <div className="flex flex-wrap gap-2 py-2">
                                             {currentDisease.questions.map((s) => (
@@ -307,12 +307,12 @@ export default function DiseasePractice() {
                                                 </span>
                                             ))}
                                         </div>
-                                    </Dropdown>
+                                    </Accordion.Section>
                                 )}
                                 {currentDisease.whatToDo && (
-                                    <Dropdown
+                                    <Accordion.Section
                                         key={`${roundCount}-3`}
-                                        showLabel="assistenza"
+                                        label="Assistenza"
                                     >
                                         <div className="flex flex-wrap gap-2 py-2">
                                             {currentDisease.whatToDo.map((s) => (
@@ -322,12 +322,12 @@ export default function DiseasePractice() {
                                                 </span>
                                             ))}
                                         </div>
-                                    </Dropdown>
+                                    </Accordion.Section>
                                 )}
                                 {currentDisease.whatToAvoid && (
-                                    <Dropdown
+                                    <Accordion.Section
                                         key={`${roundCount}-4`}
-                                        showLabel="cosa NON Fare"
+                                        label="Cosa NON Fare"
                                     >
                                         <div className="flex flex-wrap gap-2 py-2">
                                             {currentDisease.whatToAvoid.map((s) => (
@@ -337,9 +337,9 @@ export default function DiseasePractice() {
                                                 </span>
                                             ))}
                                         </div>
-                                    </Dropdown>
+                                    </Accordion.Section>
                                 )}
-                            </div>
+                            </Accordion>
                         </motion.div>
                     </AnimatePresence>
                 </div>
