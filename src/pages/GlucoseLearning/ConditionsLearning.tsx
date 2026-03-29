@@ -1,6 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import GentleSlide from "../../ui/animations/GentleSlide";
+import SlidingSelector, { type SelectorOption } from "../../ui/selections/SlidingSelector";
+import { icons } from "../../icons/icons";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -721,9 +723,9 @@ export default function ConditionsLearning() {
         setTabKey((k) => k + 1);
     }
 
-    const TABS: { id: Tab; label: string; description: string }[] = [
-        { id: "study",    label: "Studia",   description: "Condizioni e parametri del protocollo" },
-        { id: "practice", label: "Pratica",  description: "Mettiti alla prova con scenari clinici" },
+    const TABS: SelectorOption<"study" | "practice">[] = [
+        { id: "study",    label: "Studia",   sub: "Condizioni e parametri del protocollo", icon: icons.book },
+        { id: "practice", label: "Pratica",  sub: "Mettiti alla prova con scenari clinici", icon: icons.lightningMood},
     ];
 
     return (
@@ -733,25 +735,11 @@ export default function ConditionsLearning() {
                 <h1 className="text-red-900 font-semibold text-lg">Rilevazione glicemia capillare</h1>
             </div>
 
-            {/* Tab switcher */}
-            <div className="flex gap-2 p-1 bg-red-50 border border-red-100 rounded-2xl">
-                {TABS.map((t) => (
-                    <button
-                        key={t.id}
-                        onClick={() => switchTab(t.id)}
-                        className={`flex-1 flex flex-col items-center gap-0.5 py-2.5 px-3 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer
-                            ${tab === t.id
-                                ? "bg-white border border-red-200 text-red-600 shadow-sm"
-                                : "text-red-300 hover:text-red-400"}`}
-                    >
-                        {t.label}
-                        <span className={`text-[10px] font-normal leading-tight text-center transition-colors
-                            ${tab === t.id ? "text-red-400" : "text-red-200"}`}>
-                            {t.description}
-                        </span>
-                    </button>
-                ))}
-            </div>
+            <SlidingSelector
+                options={TABS}
+                currentOption={tab}
+                onSelect={(tab) => switchTab(tab.id)}
+            />
 
             {/* Content */}
             <AnimatePresence mode="wait">

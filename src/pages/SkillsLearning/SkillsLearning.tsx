@@ -7,6 +7,9 @@ import { skills } from "./skills";
 import Dropdown from "../../ui/selections/Dropdown";
 import { Tabs, type TabItem } from "../../ui/Tabs";
 import StepsBuilder from "../../ui/exercise/StepsBuilder";
+import SlidingSelector from "../../ui/selections/SlidingSelector";
+import { icons } from "../../icons/icons";
+import NextStep from "../../ui/exercise/NextStep";
 
 const TABS: TabItem[] = [
     {
@@ -21,6 +24,7 @@ export default function SkillsLearning() {
     const [selectedSkill, setSelectedSkill] = useState<StepsData | undefined>(
         undefined,
     );
+    const [practiceMode, setPracticeMode] = useState<"builder" | "next-step">("builder")
 
     const handleReset = () => setSelectedSkill(undefined);
 
@@ -68,9 +72,25 @@ export default function SkillsLearning() {
                                             onReset={handleReset}
                                         />
                                     ) : (
-                                        <StepsBuilder
-                                            steps={selectedSkill.steps}
-                                        />
+                                        <div className="flex flex-col gap-3">
+                                            <SlidingSelector
+                                                options={[
+                                                    {id: "builder", label: "Costruisci", icon: icons.paperclips},
+                                                    {id: "next-step", label: "Prossimo step", icon: icons.target}
+                                                ]}
+                                                currentOption={practiceMode}
+                                                onSelect={(practiceMode) => setPracticeMode(practiceMode.id)}
+                                            />
+                                            {practiceMode === "builder" ? (
+                                                <StepsBuilder
+                                                    steps={selectedSkill.steps}
+                                                />
+                                            ): (
+                                                <NextStep
+                                                    steps={selectedSkill.steps.map(step => ({text: step}))}
+                                                />
+                                            )}
+                                        </div>
                                     )
                                 ) : (
                                     <p className="text-red-300 text-sm text-center">
